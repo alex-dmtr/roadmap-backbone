@@ -1,0 +1,22 @@
+{
+  "name": "roadmap-backbone",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "browserify app/main.js > js/bundle.js && node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alex-dmtr/roadmap-backbone.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alex-dmtr/roadmap-backbone/issues"
+  },
+  "homepage": "https://github.com/alex-dmtr/roadmap-backbone#readme",
+  "dependencies": {
+    "open": "0.0.5"
+  }
+}
