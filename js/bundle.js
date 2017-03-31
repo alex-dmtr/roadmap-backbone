@@ -1,17 +1,19 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 var models = require('./models')
+var Router = require('./router')
 
-var User = models.User
+var App = new Marionette.Application({
+  onStart: function(options) {
 
-var you = new User()
+    var router = new Router(options)
 
-while (!you.isValid())
-{
-  you.set('email', prompt('put in your email'))
-}
+    /** Starts the URL handling framework */
+    Backbone.history.start()
+  }
+})
 
-alert('your email is correct')
-},{"./models":3}],2:[function(require,module,exports){
+App.start()
+},{"./models":3,"./router":6}],2:[function(require,module,exports){
 var Group = Backbone.Model.extend({
   idAtribute: "_id",
   defaults: {
@@ -44,6 +46,8 @@ var Post = Backbone.Model.extend({
     groupId: null
   }
 })
+
+module.exports = Post
 },{}],5:[function(require,module,exports){
 function validateEmail(email) {
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -79,4 +83,60 @@ var User = Backbone.Model.extend({
 })
 
 module.exports = User
+},{}],6:[function(require,module,exports){
+var LayoutView = require('./views/layout')
+
+var Controller = Marionette.Object.extend({
+  regions: {
+    main: '#app-hook'
+  },
+  initialize: function() {
+    // this.options.regionManager = new Marionette.RegionManager({
+    //   regions: {
+    //     main: '#app-hook'
+    //   }
+    // })
+
+    var initialData = this.getOption('initialData')
+
+    var layout = new LayoutView()
+
+    this.options.layout = layout 
+  },
+
+  index: function() {
+    $("body").append("Welcome home!")
+  },
+  register: function() {
+    var layout = this.getOption('layout')
+    layout.triggerMethod('show:register')
+  }
+})
+
+var Router = Marionette.AppRouter.extend({
+  appRoutes: {
+    '': 'index',
+    'register/': 'register'
+  },
+
+  initialize: function() {
+    this.controller = new Controller ({
+      initialData: this.getOption('initialData')
+    })
+  }
+})
+
+module.exports = Router
+},{"./views/layout":7}],7:[function(require,module,exports){
+var LayoutView = Marionette.View.extend({
+  regions: {
+    layout: '.layout-hook'
+  },
+
+  onShowRegister: function() {
+    alert('got to register')
+  }
+})
+
+module.exports = LayoutView
 },{}]},{},[1]);

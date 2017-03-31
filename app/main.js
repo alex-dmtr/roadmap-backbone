@@ -1,12 +1,14 @@
 var models = require('./models')
+var Router = require('./router')
 
-var User = models.User
+var App = new Marionette.Application({
+  onStart: function(options) {
 
-var you = new User()
+    var router = new Router(options)
 
-while (!you.isValid())
-{
-  you.set('email', prompt('put in your email'))
-}
+    /** Starts the URL handling framework */
+    Backbone.history.start()
+  }
+})
 
-alert('your email is correct')
+App.start()
