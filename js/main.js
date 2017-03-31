@@ -1,1 +1,1 @@
-
+var models = require('./models')
