@@ -11,19 +11,48 @@ while (!you.isValid())
 }
 
 alert('your email is correct')
-},{"./models":2}],2:[function(require,module,exports){
+},{"./models":3}],2:[function(require,module,exports){
+var Group = Backbone.Model.extend({
+  idAtribute: "_id",
+  defaults: {
+    name: 'name',
+    ownerId: null,
+    description: 'desc',
+    avatarUrl: 'avatarUrl',
+    memberIds: []
+  },
+
+  initialize: function() {
+
+  }
+})
+
+module.exports = Group
+},{}],3:[function(require,module,exports){
 module.exports = {
-  User: require('./user')
+  User: require('./user'),
+  Group: require('./group'),
+  Post: require('./post')
 }
-},{"./user":3}],3:[function(require,module,exports){
+},{"./group":2,"./post":4,"./user":5}],4:[function(require,module,exports){
+var Post = Backbone.Model.extend({
+  idAttribute: "_id",
+  defaults: {
+    message: "msg",
+    createdAt: new Date(),
+    ownerId: null,
+    groupId: null
+  }
+})
+},{}],5:[function(require,module,exports){
 function validateEmail(email) {
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(email);
 }
 
 var User = Backbone.Model.extend({
+  idAttribute: "_id",  
   defaults: {
-    idAttribute: "_id",
     username: 'username',
     email: 'email',
     description: 'desc',

@@ -4,8 +4,8 @@ function validateEmail(email) {
 }
 
 var User = Backbone.Model.extend({
+  idAttribute: "_id",  
   defaults: {
-    idAttribute: "_id",
     username: 'username',
     email: 'email',
     description: 'desc',
