@@ -9,10 +9,14 @@ if (window.__agent) {
 
 
 
-var RootView = require('./views/root')
+
 var models = require('./models')
 var Router = require('./router')
 
+// var RootView = require('./views/root')
+// var NavView = require('./views/nav')
+
+var LayoutView = require('./views/layout')
 var App =  Mn.Application.extend({
   region: '#app-hook',
   onStart: function(options) {
@@ -22,12 +26,17 @@ var App =  Mn.Application.extend({
     /** Starts the URL handling framework */
     Bb.history.start()
 
-    this.showView(new RootView())
+    // this.showView(new RootView())
+    // (new NavView()).render()
+    this.showView(new LayoutView())
+
+    // (new NavView()).render()
   }
 })
 
-console.log('Hello world!')
+
 var myApp = new App()
 myApp.start()
 
-$.ajax({url: "https://localhost:3000/api/users", method: "GET", success: console.log, error: console.log})
+
+// $.ajax({url: "https://localhost:3000/api/users", method: "GET", success: console.log, error: console.log})

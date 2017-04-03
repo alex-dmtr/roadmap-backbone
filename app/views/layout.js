@@ -1,8 +1,8 @@
 var Handlebars = require('handlebars')
-var register = require('./register')
-var index = require('./index')
+// var register = require('./register')
 var Bb = require('backbone')
 var Mn = require('backbone.marionette')
+var NavView = require('./nav')
 
 var LayoutView = Mn.View.extend({
   // template: Handlebars.compile("Hello, {{name}}"),
@@ -11,21 +11,30 @@ var LayoutView = Mn.View.extend({
   //   <div id='layout-hook'>
   //   </div>
   // `),
-  el: '#layout-hook',
+  // el: '#layout-hook',
   regions: {
-    layout: '#layout-hook'
+    navRegion: '#nav-region'
   },
 
-  onShowIndex: function() {
-    console.log('at index')
+  template: _.template(`
+      <div id='nav-region'>
+      </div>
+  `),
+
+  // onShowIndex: function() {
+  //   console.log('at index')
     
-    this.showChildView('layout', new index())
-    Bb.history.navigate('/')
-  },
+  //   this.showChildView('layout', new index())
+  //   Bb.history.navigate('/')
+  // },
 
-  onShowRegister: function() {
-    this.showChildView('layout', new register())
-    Bb.history.navigate('register/')
+  // onShowRegister: function() {
+  //   this.showChildView('layout', new register())
+  //   Bb.history.navigate('register/')
+  // },
+
+  onRender: function() {
+    this.showChildView('navRegion', new NavView())
   }
 })
 
