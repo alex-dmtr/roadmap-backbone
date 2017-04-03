@@ -1,4 +1,6 @@
-var Post = Backbone.Model.extend({
+var Bb = require('backbone')
+
+var Post = Bb.Model.extend({
   idAttribute: "_id",
   defaults: {
     message: "msg",
