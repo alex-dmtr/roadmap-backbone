@@ -1,5 +1,3 @@
-var Bb = require('backbone')
-
 var Post = Bb.Model.extend({
   // idAttribute: "_id",
   defaults: {

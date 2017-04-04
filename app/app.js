@@ -1,7 +1,5 @@
-var _ = require('underscore')
-window._ = _
-var Bb = require('backbone')
-var Mn = require('backbone.marionette')
+window.Bb = Backbone
+window.Mn = Marionette = Backbone.Marionette
 
 if (window.__agent) {
   window.__agent.start(Backbone, Marionette);

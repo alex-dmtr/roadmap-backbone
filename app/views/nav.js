@@ -1,5 +1,3 @@
-var Bb = require('backbone')
-var Mn = require('backbone.marionette')
 var User = require('./../models/user')
 var template = require('../templates/nav.hbs') 
 var NavView = Mn.View.extend({

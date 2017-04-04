@@ -1,6 +1,3 @@
-var Bb = require('backbone')
-var Mn = require('backbone.marionette')
-
 var LayoutView = require('./views/layout')
 // var Controller = Marionette.Object.extend({
 //   tagName: '#app-hook',

@@ -1,5 +1,3 @@
-var Bb = require('backbone')
-
 var Group = Bb.Model.extend({
   // idAtribute: "_id",
   defaults: {

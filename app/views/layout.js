@@ -1,6 +1,3 @@
-var Handlebars = require('handlebars')
-var Bb = require('backbone')
-var Mn = require('backbone.marionette')
 var NavView = require('./nav')
 var LoginView = require('./login')
 var RegisterView = require('./register')

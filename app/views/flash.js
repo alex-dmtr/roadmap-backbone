@@ -1,5 +1,3 @@
-var Bb = require('backbone')
-var Mn = require('backbone.marionette')
 var template = require('../templates/flash.hbs')
 var Flash = require('../models/flash')
 
