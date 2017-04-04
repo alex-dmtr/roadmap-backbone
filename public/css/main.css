@@ -5,6 +5,12 @@
    ========================================================================== */
 
 
+#login-form, #register-form {
+  margin: auto;
+  /*width: 50%;*/
+  max-width: 900px;
+  padding: 10px;
+}
 
 
 

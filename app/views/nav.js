@@ -13,19 +13,11 @@ var NavView = Mn.View.extend({
   //   role: 'navigation'
   // },
 
-  ui: {
-    inputUsername: "input#username",
-    inputPassword: "input#password",
-    inputButton: "input#login-button"
-  },
+
 
   triggers: {
     "click #login-button": "show:login",
     "click #register-button": "show:register" 
-  },
-
-  initialize: function() {
-    
   },
 
   // onShowLogin: function() {

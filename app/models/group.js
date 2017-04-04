@@ -1,7 +1,7 @@
 var Bb = require('backbone')
 
 var Group = Bb.Model.extend({
-  idAtribute: "_id",
+  // idAtribute: "_id",
   defaults: {
     name: 'name',
     ownerId: null,

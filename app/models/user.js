@@ -6,21 +6,21 @@ function validateEmail(email) {
 }
 
 var User = Bb.Model.extend({
-  idAttribute: "_id",  
+  // idAttribute: "_id",  
   defaults: {
-    username: 'username',
-    email: 'email',
-    description: 'desc',
-    password: 'pass',
+    username: '',
+    email: '',
+    description: '',
+    password: '',
     age: 21,
-    currentProject: 'project',
-    agency: 'agency'
+    currentProject: '',
+    agency: ''
   },
 
   validate: function(attrs, options) {
-    if (attrs.username=="") return "username can't be null"
-    if (attrs.password=="") return "password can't be null"
-    if (!validateEmail(attrs.email)) return "email not valid"
+    if (attrs.username=="") return "Username can't be null."
+    if (attrs.password=="") return "Password can't be null."
+    if (attrs.email!=="" && !validateEmail(attrs.email)) return "Email not valid."
 
   },
 

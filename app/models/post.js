@@ -1,7 +1,7 @@
 var Bb = require('backbone')
 
 var Post = Bb.Model.extend({
-  idAttribute: "_id",
+  // idAttribute: "_id",
   defaults: {
     message: "msg",
     createdAt: new Date(),
