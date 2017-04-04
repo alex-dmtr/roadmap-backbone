@@ -33,6 +33,7 @@ var Controller = {
 var Router = Mn.AppRouter.extend({
   // controller: Controller,
   routes: {
+    '': 'home',
     'login': 'login',
     'register': 'register'
   },
@@ -42,6 +43,11 @@ var Router = Mn.AppRouter.extend({
     // this.controller = new Controller ({
     //   initialData: this.getOption('initialData')
     // })
+  },
+
+  home: function() {
+    var layout = this.options.layoutView
+    layout.triggerMethod('show:home')
   },
 
   login: function() {

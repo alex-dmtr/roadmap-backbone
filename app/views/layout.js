@@ -2,6 +2,7 @@ var NavView = require('./nav')
 var LoginView = require('./login')
 var RegisterView = require('./register')
 var FlashView = require('./flash')
+var HomeView = require('./home')
 var User = require('../models/user')
 var template = require('../templates/layout.hbs')
 
@@ -17,6 +18,7 @@ var LayoutView = Mn.View.extend({
   childViewEvents: {
     'show:login': 'onShowLogin',
     'show:register': 'onShowRegister',
+    'show:home': 'onShowHome',
     'do:login': 'onDoLogin'
   },
 
@@ -30,6 +32,13 @@ var LayoutView = Mn.View.extend({
     this.navView = new NavView()
     this.user = new User()
   },
+
+  onShowHome: function(args) {
+    this.homeView = new HomeView()
+  
+    this.showChildView('mainRegion', this.homeView)
+    Bb.history.navigate('')
+},
 
   onShowLogin: function(args) {
     this.loginView = new LoginView({model: this.user})
