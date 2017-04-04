@@ -21,7 +21,7 @@ var App =  Mn.Application.extend({
   region: '#app-hook',
   onStart: function(options) {
 
-    // var router = new Router(options)
+    var router = new Router(options)
 
     /** Starts the URL handling framework */
     Bb.history.start()
