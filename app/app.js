@@ -7,36 +7,40 @@ if (window.__agent) {
   window.__agent.start(Backbone, Marionette);
 }
 
-
-
-
 var models = require('./models')
 var Router = require('./router')
 
-// var RootView = require('./views/root')
-// var NavView = require('./views/nav')
 
 var LayoutView = require('./views/layout')
 var App =  Mn.Application.extend({
   region: '#app-hook',
-  onStart: function(options) {
-
-    var router = new Router(options)
+  onStart: function() {
+    // console.log(this.options.layoutView)
 
     /** Starts the URL handling framework */
-    Bb.history.start()
 
     // this.showView(new RootView())
     // (new NavView()).render()
-    this.showView(new LayoutView())
 
+    var router = new Router(this.options)
+
+    this.showView(this.options.layoutView)
+    
     // (new NavView()).render()
+
+  if (!Bb.history.started)
+      Bb.history.start({pushState: true, root: "/"})
   }
 })
 
 
-var myApp = new App()
-myApp.start()
+var myApp = new App({
+  layoutView:new LayoutView()
+})
+
+$(function() {
+  myApp.start()  
+})
 
 
 // $.ajax({url: "https://localhost:3000/api/users", method: "GET", success: console.log, error: console.log})

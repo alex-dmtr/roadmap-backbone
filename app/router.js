@@ -36,27 +36,25 @@ var Controller = {
 var Router = Mn.AppRouter.extend({
   // controller: Controller,
   routes: {
-    '': 'index',
-    'register/': 'register'
+    'login': 'login',
+    'register': 'register'
   },
 
-  initialize: function() {
+  initialize: function(options) {
+    this.options = options
     // this.controller = new Controller ({
     //   initialData: this.getOption('initialData')
     // })
-
-    var layout = new LayoutView()
-
-    this.options.layout = layout
   },
 
-  index: function() {
-    var layout = this.options.layout
-    layout.triggerMethod('show:index')
+  login: function() {
+    var layout = this.options.layoutView
+    layout.triggerMethod('show:login')
   },
 
   register: function() {
-    var layout = this.options.layout
+    var layout = this.options.layoutView
+
     layout.triggerMethod('show:register')
   }
 })

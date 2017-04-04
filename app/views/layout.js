@@ -3,6 +3,7 @@ var Bb = require('backbone')
 var Mn = require('backbone.marionette')
 var NavView = require('./nav')
 var LoginView = require('./login')
+var RegisterView = require('./register')
 var template = require('../templates/layout.hbs')
 
 var LayoutView = Mn.View.extend({
@@ -13,25 +14,11 @@ var LayoutView = Mn.View.extend({
 
   template: template,
 
-  // onShowIndex: function() {
-  //   console.log('at index')
-    
-  //   this.showChildView('layout', new index())
-  //   Bb.history.navigate('/')
-  // },
-
-  // onShowRegister: function() {
-  //   this.showChildView('layout', new register())
-  //   Bb.history.navigate('register/')
-  // },
-
-  onShowLogin: function() {
-    this.showChildView('mainRegion', new LoginView())
+  childViewEvents: {
+    'show:login': 'onShowLogin',
+    'show:register': 'onShowRegister'
   },
 
-  onShowRegister: function() {
-    alert('register!')
-  },
 
   onRender: function() {
     this.showChildView('navRegion', this.navView)    
@@ -40,14 +27,19 @@ var LayoutView = Mn.View.extend({
 
   initialize: function() {
     this.navView = new NavView()
+  },
 
-    this.navView.on("show:login", function(args) {
-      alert('login!')
-    })
+  onShowLogin: function(args) {
+    this.loginView = new LoginView()
 
-    this.navView.on("show:register", function(args) {
-      alert('register!')
-    })
+    this.showChildView('mainRegion', this.loginView)
+    Bb.history.navigate('login')
+  },
+
+  onShowRegister: function(args) {
+    this.registerView = new RegisterView()
+    this.showChildView('mainRegion', this.registerView)
+    Bb.history.navigate('register')
   }
 
 })
