@@ -1,4 +1,4 @@
-var template = require('../templates/home.hbs')
+var template = Handlebars.templates.home
 
 var Index = Mn.View.extend({
   template: template,

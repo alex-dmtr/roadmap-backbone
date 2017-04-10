@@ -4,7 +4,8 @@ var RegisterView = require('./register')
 var FlashView = require('./flash')
 var HomeView = require('./home')
 var User = require('../models/user')
-var template = require('../templates/layout.hbs')
+var template = Handlebars.templates.layout
+// var LocalStorage = require('backbone.localstorage')
 
 var LayoutView = Mn.View.extend({
   regions: {
@@ -29,8 +30,14 @@ var LayoutView = Mn.View.extend({
   },
 
   initialize: function() {
-    this.navView = new NavView()
     this.user = new User()
+    
+    this.navView = new NavView({user: this.user})
+
+    this.user.on('change:jwt', () => {
+      console.log('jwt changed')
+      this.navView.render()
+    })
   },
 
   onShowHome: function(args) {
@@ -38,7 +45,7 @@ var LayoutView = Mn.View.extend({
   
     this.showChildView('mainRegion', this.homeView)
     Bb.history.navigate('')
-},
+  },
 
   onShowLogin: function(args) {
     this.loginView = new LoginView({model: this.user})
@@ -67,7 +74,18 @@ var LayoutView = Mn.View.extend({
       url: `https://localhost:3000/api/auth`,
       data: { username: this.user.get('username'), password: this.user.get('password')},
       success: (data) =>  {
-        alert(JSON.stringify(data))
+        let user = this.user
+
+        user.set('id', data.user.id)
+        user.set('username', data.user.username)
+        user.set('jwt', data.jwt)
+        user.unset('password')
+
+        // console.log(JSON.stringify(user.toJSON()))
+
+        user.save()
+
+        this.onShowHome()
       },
       error: (err) => {
         this.triggerMethod('show:error', 'Username and password combination not recognised.')

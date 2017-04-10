@@ -1,8 +1,8 @@
-var template = require('../templates/register.hbs')
+var template = Handlebars.templates.register
 
 var Register = Mn.View.extend({
   // tagName: 'div',
-  template: template()
+  template
 })
 
 module.exports = Register

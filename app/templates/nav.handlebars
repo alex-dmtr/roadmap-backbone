@@ -17,8 +17,12 @@
           </ul>
 
           <ul class="nav navbar-nav navbar-right">
-        <li><a href=# id='login-button'>Sign in</a></li>
-        <li><a href=# id='register-button'>Sign up</a></li>
+            {{#if user.jwt}}
+              <li><a href=# id='profile-button'>{{user.username}}</a></li>
+            {{else}}
+              <li><a href=# id='login-button'>Sign in</a></li>
+              <li><a href=# id='register-button'>Sign up</a></li>
+            {{/if}}
       </ul>
         </div>
   

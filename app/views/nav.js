@@ -1,17 +1,13 @@
 var User = require('./../models/user')
-var template = require('../templates/nav.hbs') 
+var template = Handlebars.templates.nav
+
 var NavView = Mn.View.extend({
-  // el: '#nav-hook',
-  template: template(),
 
-  // tagName: 'nav',
-  // className: 'navbar navbar-inverse',
-
-  // attributes: {
-  //   role: 'navigation'
-  // },
-
-
+  getTemplate: function() {
+    return template({
+      user: this.user? this.user.toJSON(): null
+    })
+  },
 
   triggers: {
     "click #home-button": "show:home",
@@ -19,28 +15,13 @@ var NavView = Mn.View.extend({
     "click #register-button": "show:register" 
   },
 
-  // onShowLogin: function() {
-  //   alert('login from child')
-  // }
+  initialize: function({user}) {
+    this.user = user
 
-  // login: function(event) {
-  //   event.preventDefault()
+  },
 
-  //   var user = {
-  //     username: this.getUI('inputUsername').val(),
-  //     password: this.getUI('inputPassword').val()
-  //   }
-
-  //   $.post({
-  //     url: "https://localhost:3000/api/auth",
-  //     data: user,
-  //     success: function(data) {
-  //       alert(JSON.stringify(data))
-  //     },
-  //     error: function(err) {
-  //       alert(JSON.stringify(err))
-  //     }
-  //   })
+  onRender: function() {
+  }
 
  
 })

@@ -1,7 +1,7 @@
-var template = require('../templates/login.hbs') 
+var template = Handlebars.templates.login
 
 var LoginView = Mn.View.extend({
-  template: template(),
+  template: template,
 
   ui: {
     inputUsername: "input#username",

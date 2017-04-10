@@ -5,6 +5,9 @@ if (window.__agent) {
   window.__agent.start(Backbone, Marionette);
 }
 
+require('./templates')
+
+
 var models = require('./models')
 var Router = require('./router')
 

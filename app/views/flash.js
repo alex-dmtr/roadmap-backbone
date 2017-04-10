@@ -1,4 +1,4 @@
-var template = require('../templates/flash.hbs')
+var template = Handlebars.templates.flash
 var Flash = require('../models/flash')
 
 var FlashView = Mn.View.extend({
