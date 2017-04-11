@@ -37,6 +37,13 @@ templates['nav'] = template({"1":function(container,depth0,helpers,partials,data
     + ((stack1 = helpers["if"].call(depth0 != null ? depth0 : {},((stack1 = (depth0 != null ? depth0.user : depth0)) != null ? stack1.jwt : stack1),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.program(3, data, 0),"data":data})) != null ? stack1 : "")
     + "      </ul>\n        </div>\n  \n      </div>\n    </nav>\n</div>";
 },"useData":true});
+templates['profile'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var helper;
+
+  return "<div>\n  <h2>"
+    + container.escapeExpression(((helper = (helper = helpers.username || (depth0 != null ? depth0.username : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : {},{"name":"username","hash":{},"data":data}) : helper)))
+    + "</h2>\n  \n\n  <a href=# id='logout-button'>Logout</a>\n</div>";
+},"useData":true});
 templates['register'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     return "<div>\n\n\n  <form role=\"form\" id=\"login-form\">\n      <h2>Sign up</h2>\n  <p>Create an account to view and access our groups.</p>\n  <p>We're a happy, growing community! :)</p>\n    <div class=\"form-group\">\n      <input type=\"text\" id=\"username\" placeholder=\"Username\" class=\"form-control\">\n    </div>\n    <div class=\"form-group\">\n      <input type=\"password\" id=\"password\"placeholder=\"Password\" class=\"form-control\">\n    </div>\n    <button type=\"button\" class=\"btn btn-success\" id='login-button'>Sign in</button>\n  </form>\n</div>";
 },"useData":true});

@@ -379,23 +379,22 @@ var LayoutView = Mn.View.extend({
     console.log(args);
   },
 
-  onDoLogin: function onDoLogin(args) {
+  onDoLogin: function onDoLogin(user) {
     var _this2 = this;
 
     $.post({
       url: 'https://localhost:3000/api/auth',
-      data: { username: this.user.get('username'), password: this.user.get('password') },
+      data: { username: user.get('username'), password: user.get('password') },
       success: function success(data) {
-        var user = _this2.user;
+        _this2.user = new LocalUser();
 
-        user.set('id', data.user.id);
-        user.set('username', data.user.username);
-        user.set('jwt', data.jwt);
-        user.unset('password');
+        _this2.user.set('id', data.user.id);
+        _this2.user.set('username', data.user.username);
+        _this2.user.set('jwt', data.jwt);
 
         // console.log(JSON.stringify(user.toJSON()))
 
-        user.save();
+        _this2.user.save();
 
         _this2.onShowHome();
       },

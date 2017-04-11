@@ -1,6 +1,6 @@
 window.Bb = Backbone
 window.Mn = Marionette = Backbone.Marionette
-
+window.Hbs = Handlebars
 if (window.__agent) {
   window.__agent.start(Backbone, Marionette);
 }

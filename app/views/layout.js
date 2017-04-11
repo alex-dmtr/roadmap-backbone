@@ -3,6 +3,7 @@ var LoginView = require('./login')
 var RegisterView = require('./register')
 var FlashView = require('./flash')
 var HomeView = require('./home')
+var ProfileView = require('./profile')
 var LocalUser = require('../models/local.user')
 var template = Handlebars.templates.layout
 // var LocalStorage = require('backbone.localstorage')
@@ -20,7 +21,9 @@ var LayoutView = Mn.View.extend({
     'show:login': 'onShowLogin',
     'show:register': 'onShowRegister',
     'show:home': 'onShowHome',
-    'do:login': 'onDoLogin'
+    'do:login': 'onDoLogin',
+    'do:logout': 'onDoLogout',
+    'show:profile': 'onShowProfile'
   },
 
 
@@ -32,13 +35,11 @@ var LayoutView = Mn.View.extend({
 
   initialize: function() {
     this.user = new LocalUser()
+    this.user.fetch()
     
     this.navView = new NavView({user: this.user})
 
-    this.user.on('change:jwt', () => {
-      console.log('jwt changed')
-      this.navView.render()
-    })
+    this.user.on('change', this.navView.render)
   },
 
   onShowHome: function(args) {
@@ -70,21 +71,17 @@ var LayoutView = Mn.View.extend({
     console.log(args)
   },
 
-  onDoLogin: function(args) {
+  onDoLogin: function(user) {
     $.post({
       url: `https://localhost:3000/api/auth`,
-      data: { username: this.user.get('username'), password: this.user.get('password')},
+      data: { username: user.get('username'), password: user.get('password')},
       success: (data) =>  {
-        let user = this.user
 
-        user.set('id', data.user.id)
-        user.set('username', data.user.username)
-        user.set('jwt', data.jwt)
-        user.unset('password')
+        this.user.set('id', data.user.id)
+        this.user.set('username', data.user.username)
+        this.user.set('jwt', data.jwt)
 
-        // console.log(JSON.stringify(user.toJSON()))
-
-        user.save()
+        this.user.save()
 
         this.onShowHome()
       },
@@ -92,6 +89,24 @@ var LayoutView = Mn.View.extend({
         this.triggerMethod('show:error', 'Username and password combination not recognised.')
       }
     })
+  },
+
+  onShowProfile: function() {
+    if (this.user.get('jwt') == null) {
+      return this.onShowHome()
+    }
+
+    this.profileView = new ProfileView({model:this.user})
+    this.showChildView('mainRegion', this.profileView)
+    Bb.history.navigate('profile')
+  },
+  onDoLogout: function() {
+    this.user.destroy()
+    this.user.unset('username')
+    this.user.unset('jwt')
+    this.user.unset('id')
+    this.onShowHome()
+    this.navView.render()
   }
 
 })

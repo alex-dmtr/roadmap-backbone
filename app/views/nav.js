@@ -11,7 +11,8 @@ var NavView = Mn.View.extend({
   triggers: {
     "click #home-button": "show:home",
     "click #login-button": "show:login",
-    "click #register-button": "show:register" 
+    "click #register-button": "show:register" ,
+    "click #profile-button": "show:profile"
   },
 
   initialize: function({user}) {
