@@ -77,12 +77,62 @@ module.exports = Group;
 'use strict';
 
 module.exports = {
-  User: require('./user'),
+  LocalUser: require('./local.user'),
+  LoginUser: require('./login.user'),
   Group: require('./group'),
   Post: require('./post')
 };
 
-},{"./group":"/home/adumitru/coding/roadmap-backbone/app/models/group.js","./post":"/home/adumitru/coding/roadmap-backbone/app/models/post.js","./user":"/home/adumitru/coding/roadmap-backbone/app/models/user.js"}],"/home/adumitru/coding/roadmap-backbone/app/models/post.js":[function(require,module,exports){
+},{"./group":"/home/adumitru/coding/roadmap-backbone/app/models/group.js","./local.user":"/home/adumitru/coding/roadmap-backbone/app/models/local.user.js","./login.user":"/home/adumitru/coding/roadmap-backbone/app/models/login.user.js","./post":"/home/adumitru/coding/roadmap-backbone/app/models/post.js"}],"/home/adumitru/coding/roadmap-backbone/app/models/local.user.js":[function(require,module,exports){
+'use strict';
+
+var _backbone = require('backbone.localstorage');
+
+var LocalUser = Bb.Model.extend({
+  localStorage: new _backbone.LocalStorage('local.user'),
+
+  defaults: {
+    username: '',
+    id: null,
+    jwt: null
+  }
+});
+
+module.exports = LocalUser;
+
+},{"backbone.localstorage":"/home/adumitru/coding/roadmap-backbone/node_modules/backbone.localstorage/build/backbone.localStorage.js"}],"/home/adumitru/coding/roadmap-backbone/app/models/login.user.js":[function(require,module,exports){
+'use strict';
+
+function validateEmail(email) {
+  var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return re.test(email);
+}
+
+var LoginUser = Bb.Model.extend({
+
+  defaults: {
+    username: '',
+    password: ''
+  },
+
+  validate: function validate(attrs, options) {
+    if (attrs.username == "") return "Username can't be null.";
+    if (attrs.password == "") return "Password can't be null.";
+    // if (attrs.email!=="" && !validateEmail(attrs.email)) return "Email not valid."
+  },
+
+  initialize: function initialize() {
+    // this.on('change', function(model) {
+    //   if (!model.isValid())
+    //     console.log(model.validationError)
+    // })
+  }
+
+});
+
+module.exports = LoginUser;
+
+},{}],"/home/adumitru/coding/roadmap-backbone/app/models/post.js":[function(require,module,exports){
 "use strict";
 
 var Post = Bb.Model.extend({
@@ -97,49 +147,7 @@ var Post = Bb.Model.extend({
 
 module.exports = Post;
 
-},{}],"/home/adumitru/coding/roadmap-backbone/app/models/user.js":[function(require,module,exports){
-'use strict';
-
-var _backbone = require('backbone.localstorage');
-
-function validateEmail(email) {
-  var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  return re.test(email);
-}
-
-console.log("LocalStorage works OK => ", _backbone.LocalStorage != null);
-
-var User = Bb.Model.extend({
-  // idAttribute: "_id",  
-  // localStorage: new LocalStorage('user'),
-
-  defaults: {
-    username: '',
-    email: '',
-    description: '',
-    password: '',
-    age: 21,
-    currentProject: '',
-    agency: ''
-  },
-
-  validate: function validate(attrs, options) {
-    if (attrs.username == "") return "Username can't be null.";
-    if (attrs.password == "") return "Password can't be null.";
-    if (attrs.email !== "" && !validateEmail(attrs.email)) return "Email not valid.";
-  },
-
-  initialize: function initialize() {
-    this.on('change', function (model) {
-      if (!model.isValid()) console.log(model.validationError);
-    });
-  }
-
-});
-
-module.exports = User;
-
-},{"backbone.localstorage":"/home/adumitru/coding/roadmap-backbone/node_modules/backbone.localstorage/build/backbone.localStorage.js"}],"/home/adumitru/coding/roadmap-backbone/app/router.js":[function(require,module,exports){
+},{}],"/home/adumitru/coding/roadmap-backbone/app/router.js":[function(require,module,exports){
 'use strict';
 
 var LayoutView = require('./views/layout');
@@ -222,7 +230,7 @@ module.exports = Router;
             return "<div>\n" + ((stack1 = helpers["if"].call(depth0 != null ? depth0 : {}, depth0 != null ? depth0.error : depth0, { "name": "if", "hash": {}, "fn": container.program(1, data, 0), "inverse": container.noop, "data": data })) != null ? stack1 : "") + "\n</div>";
         }, "useData": true });
     templates['home'] = template({ "compiler": [7, ">= 4.0.0"], "main": function main(container, depth0, helpers, partials, data) {
-            return "<div>\n  <h2>Home</h2>\n  <p>Welcome to our groups website! You can meet awesome people here.</p>\n  <p>Joining is easy. Just click <a href=# id='register-button'>here</a> to go to to the sign up page.</p>\n\n  <p>Hello world!</p>\n</div>";
+            return "<div>\n  <h2>Home</h2>\n  <p>Welcome to our groups website! You can meet awesome people here.</p>\n  <p>Joining is easy. Just click <a href=# id='register-button'>here</a> to go to to the sign up page.</p>\n\n  <p>Hello there!</p>\n  <p>General Kenobi.</p>\n</div>";
         }, "useData": true });
     templates['layout'] = template({ "compiler": [7, ">= 4.0.0"], "main": function main(container, depth0, helpers, partials, data) {
             return "<div id='nav-region'>\n\n</div>\n<div id='flash-region' class='container'>\n\n</div>\n<div id='main-region' class='container'>\n\n</div>";
@@ -294,7 +302,7 @@ var LoginView = require('./login');
 var RegisterView = require('./register');
 var FlashView = require('./flash');
 var HomeView = require('./home');
-var User = require('../models/user');
+var LocalUser = require('../models/local.user');
 var template = Handlebars.templates.layout;
 // var LocalStorage = require('backbone.localstorage')
 
@@ -322,7 +330,7 @@ var LayoutView = Mn.View.extend({
   initialize: function initialize() {
     var _this = this;
 
-    this.user = new User();
+    this.user = new LocalUser();
 
     this.navView = new NavView({ user: this.user });
 
@@ -340,7 +348,7 @@ var LayoutView = Mn.View.extend({
   },
 
   onShowLogin: function onShowLogin(args) {
-    this.loginView = new LoginView({ model: this.user });
+    this.loginView = new LoginView();
 
     this.showChildView('mainRegion', this.loginView);
     Bb.history.navigate('login');
@@ -391,10 +399,11 @@ var LayoutView = Mn.View.extend({
 
 module.exports = LayoutView;
 
-},{"../models/user":"/home/adumitru/coding/roadmap-backbone/app/models/user.js","./flash":"/home/adumitru/coding/roadmap-backbone/app/views/flash.js","./home":"/home/adumitru/coding/roadmap-backbone/app/views/home.js","./login":"/home/adumitru/coding/roadmap-backbone/app/views/login.js","./nav":"/home/adumitru/coding/roadmap-backbone/app/views/nav.js","./register":"/home/adumitru/coding/roadmap-backbone/app/views/register.js"}],"/home/adumitru/coding/roadmap-backbone/app/views/login.js":[function(require,module,exports){
+},{"../models/local.user":"/home/adumitru/coding/roadmap-backbone/app/models/local.user.js","./flash":"/home/adumitru/coding/roadmap-backbone/app/views/flash.js","./home":"/home/adumitru/coding/roadmap-backbone/app/views/home.js","./login":"/home/adumitru/coding/roadmap-backbone/app/views/login.js","./nav":"/home/adumitru/coding/roadmap-backbone/app/views/nav.js","./register":"/home/adumitru/coding/roadmap-backbone/app/views/register.js"}],"/home/adumitru/coding/roadmap-backbone/app/views/login.js":[function(require,module,exports){
 "use strict";
 
 var template = Handlebars.templates.login;
+var LoginUser = require('../models/login.user');
 
 var LoginView = Mn.View.extend({
   template: template,
@@ -410,6 +419,8 @@ var LoginView = Mn.View.extend({
     'click #login-button': 'send:login'
   },
 
+  model: new LoginUser(),
+
   onSendLogin: function onSendLogin() {
     this.model.set('username', this.getUI('inputUsername').val());
     this.model.set('password', this.getUI('inputPassword').val());
@@ -417,7 +428,7 @@ var LoginView = Mn.View.extend({
     if (!this.model.isValid()) {
       this.getUI('validationError').text(this.model.validationError);
     } else {
-      this.triggerMethod('do:login');
+      this.triggerMethod('do:login', this.model);
     }
   },
 
@@ -428,10 +439,10 @@ var LoginView = Mn.View.extend({
 
 module.exports = LoginView;
 
-},{}],"/home/adumitru/coding/roadmap-backbone/app/views/nav.js":[function(require,module,exports){
+},{"../models/login.user":"/home/adumitru/coding/roadmap-backbone/app/models/login.user.js"}],"/home/adumitru/coding/roadmap-backbone/app/views/nav.js":[function(require,module,exports){
 "use strict";
 
-var User = require('./../models/user');
+// var LocalUser = require('./../models/user')
 var template = Handlebars.templates.nav;
 
 var NavView = Mn.View.extend({
@@ -460,7 +471,7 @@ var NavView = Mn.View.extend({
 
 module.exports = NavView;
 
-},{"./../models/user":"/home/adumitru/coding/roadmap-backbone/app/models/user.js"}],"/home/adumitru/coding/roadmap-backbone/app/views/register.js":[function(require,module,exports){
+},{}],"/home/adumitru/coding/roadmap-backbone/app/views/register.js":[function(require,module,exports){
 "use strict";
 
 var template = Handlebars.templates.register;

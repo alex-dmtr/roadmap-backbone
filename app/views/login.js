@@ -1,4 +1,5 @@
 var template = Handlebars.templates.login
+var LoginUser = require('../models/login.user')
 
 var LoginView = Mn.View.extend({
   template: template,
@@ -14,6 +15,8 @@ var LoginView = Mn.View.extend({
     'click #login-button': 'send:login'
   },
 
+  model: new LoginUser(),
+
   onSendLogin: function() {
     this.model.set('username', this.getUI('inputUsername').val())
     this.model.set('password', this.getUI('inputPassword').val())
@@ -24,7 +27,7 @@ var LoginView = Mn.View.extend({
     }
     else
     {
-      this.triggerMethod('do:login')
+      this.triggerMethod('do:login', this.model)
     }
   },
 

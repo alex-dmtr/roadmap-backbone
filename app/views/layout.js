@@ -3,7 +3,7 @@ var LoginView = require('./login')
 var RegisterView = require('./register')
 var FlashView = require('./flash')
 var HomeView = require('./home')
-var User = require('../models/user')
+var LocalUser = require('../models/local.user')
 var template = Handlebars.templates.layout
 // var LocalStorage = require('backbone.localstorage')
 
@@ -30,7 +30,7 @@ var LayoutView = Mn.View.extend({
   },
 
   initialize: function() {
-    this.user = new User()
+    this.user = new LocalUser()
     
     this.navView = new NavView({user: this.user})
 
@@ -48,7 +48,7 @@ var LayoutView = Mn.View.extend({
   },
 
   onShowLogin: function(args) {
-    this.loginView = new LoginView({model: this.user})
+    this.loginView = new LoginView()
 
     this.showChildView('mainRegion', this.loginView)
     Bb.history.navigate('login')

@@ -1,5 +1,6 @@
 module.exports = {
-  User: require('./user'),
+  LocalUser: require('./local.user'),
+  LoginUser: require('./login.user'),
   Group: require('./group'),
   Post: require('./post')
 }

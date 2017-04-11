@@ -1,4 +1,4 @@
-var User = require('./../models/user')
+// var LocalUser = require('./../models/user')
 var template = Handlebars.templates.nav
 
 var NavView = Mn.View.extend({
