@@ -38,6 +38,16 @@ var myApp = new App({
   layoutView: new LayoutView()
 });
 
+$(document).on("click", "a:not([data-bypass])", function (evt) {
+  var href = { prop: $(this).prop("href"), attr: $(this).attr("href") };
+  var root = location.protocol + "//" + location.host + Backbone.history.options.root;
+
+  if (href.prop && href.prop.slice(0, root.length) === root) {
+    evt.preventDefault();
+    Bb.history.navigate(href.attr, true);
+  }
+});
+
 $(function () {
   myApp.start();
 });
@@ -230,7 +240,7 @@ module.exports = Router;
             return "<div>\n" + ((stack1 = helpers["if"].call(depth0 != null ? depth0 : {}, depth0 != null ? depth0.error : depth0, { "name": "if", "hash": {}, "fn": container.program(1, data, 0), "inverse": container.noop, "data": data })) != null ? stack1 : "") + "\n</div>";
         }, "useData": true });
     templates['home'] = template({ "compiler": [7, ">= 4.0.0"], "main": function main(container, depth0, helpers, partials, data) {
-            return "<div>\n  <h2>Home</h2>\n  <p>Welcome to our groups website! You can meet awesome people here.</p>\n  <p>Joining is easy. Just click <a href=# id='register-button'>here</a> to go to to the sign up page.</p>\n\n  <p>Hello there!</p>\n  <p>General Kenobi.</p>\n</div>";
+            return "<div>\n  <h2>Home</h2>\n  <p>Welcome to our groups website! You can meet awesome people here.</p>\n  <p>Joining is easy. Just click <a href='/register'>here</a> to go to to the sign up page.</p>\n</div>";
         }, "useData": true });
     templates['layout'] = template({ "compiler": [7, ">= 4.0.0"], "main": function main(container, depth0, helpers, partials, data) {
             return "<div id='nav-region'>\n\n</div>\n<div id='flash-region' class='container'>\n\n</div>\n<div id='main-region' class='container'>\n\n</div>";
@@ -442,7 +452,6 @@ module.exports = LoginView;
 },{"../models/login.user":"/home/adumitru/coding/roadmap-backbone/app/models/login.user.js"}],"/home/adumitru/coding/roadmap-backbone/app/views/nav.js":[function(require,module,exports){
 "use strict";
 
-// var LocalUser = require('./../models/user')
 var template = Handlebars.templates.nav;
 
 var NavView = Mn.View.extend({

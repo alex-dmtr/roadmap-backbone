@@ -24,6 +24,7 @@ var LayoutView = Mn.View.extend({
   },
 
 
+
   onRender: function() {
     this.showChildView('navRegion', this.navView)    
     // this.triggerMethod('show:login')

@@ -48,7 +48,6 @@ gulp.task('default', ['build'], () => {
 	}).on('update', function (buffer) {
 		console.log('bundle - %d bytes', buffer.length)
 	}).on('reload', function(cb) {
-		console.log('reload')
 		gulp.start('scripts')
 		
 	})
