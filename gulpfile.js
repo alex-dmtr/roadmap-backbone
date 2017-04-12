@@ -8,7 +8,7 @@ var declare = require('gulp-declare')
 var concat = require('gulp-concat')
 var shell = require('gulp-shell')
 
-gulp.task('build', ['scripts'], shell.task(['browserify --full-paths  app/app.js -t [ babelify --presets [ es2015 ] ] > public/bundle.js']))
+gulp.task('build', ['scripts'], shell.task(['browserify --full-paths  app/main.js -t [ babelify --presets [ es2015 ] ] > public/bundle.js']))
 
 gulp.task('inspect', ['build'], shell.task([
 	'browserify-inspect-bundle public/bundle.js',
@@ -25,7 +25,7 @@ gulp.task('scripts', ['hbs'], () => {
 	// 	.pipe(gulp.dest('./public/js/vendor/'))
 })
 gulp.task('default', ['build'], () => {
-	budo('./app/app.js', {
+	budo('./app/main.js', {
 		live: true,             // setup live reload 
 		port: 8000,             // use this port 
 		// watchGlob: ['app/**/*.*, public/**/*.{html,css}'],

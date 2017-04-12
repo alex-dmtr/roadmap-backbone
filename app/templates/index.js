@@ -45,6 +45,6 @@ templates['profile'] = template({"compiler":[7,">= 4.0.0"],"main":function(conta
     + "</h2>\n  \n\n  <a href=# id='logout-button'>Logout</a>\n</div>";
 },"useData":true});
 templates['register'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "<div>\n\n\n  <form role=\"form\" id=\"login-form\">\n      <h2>Sign up</h2>\n  <p>Create an account to view and access our groups.</p>\n  <p>We're a happy, growing community! :)</p>\n    <div class=\"form-group\">\n      <input type=\"text\" id=\"username\" placeholder=\"Username\" class=\"form-control\">\n    </div>\n    <div class=\"form-group\">\n      <input type=\"password\" id=\"password\"placeholder=\"Password\" class=\"form-control\">\n    </div>\n    <button type=\"button\" class=\"btn btn-success\" id='login-button'>Sign in</button>\n  </form>\n</div>";
+    return "<div>\n\n\n  <form role=\"form\" id=\"login-form\">\n    <h2>Create an account</h2>\n    <p>Create an account to view and access our groups.</p>\n    <p>We're a happy, growing community! :)</p>\n      <div class=\"form-group\">\n        <input type=\"text\" id=\"username\" placeholder=\"Username\" class=\"form-control\">\n      </div>\n      <div class=\"form-group\">\n        <input type=\"password\" id=\"password\"placeholder=\"Password\" class=\"form-control\">\n      </div>\n      <button type=\"button\" class=\"btn btn-success\" id='login-button'>Sign in</button>\n    </form>\n</div>";
 },"useData":true});
 })();

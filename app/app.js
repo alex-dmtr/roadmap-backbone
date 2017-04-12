@@ -10,12 +10,15 @@ require('./templates')
 
 var models = require('./models')
 var Router = require('./router')
-
+var Auth = require('./auth')
+var Groups = require('./collections/groups')
 
 var LayoutView = require('./views/layout')
 var App =  Mn.Application.extend({
   region: '#app-hook',
   onStart: function() {
+    this.auth = Auth
+    this.groups = Groups
     // console.log(this.options.layoutView)
 
     /** Starts the URL handling framework */
@@ -26,12 +29,11 @@ var App =  Mn.Application.extend({
     var router = new Router(this.options)
 
     this.showView(this.options.layoutView)
-    
     // (new NavView()).render()
 
   if (!Bb.history.started)
       Bb.history.start({pushState: true, root: "/"})
-  }
+  },
 })
 
 
@@ -39,19 +41,7 @@ var myApp = new App({
   layoutView:new LayoutView()
 })
 
-$(document).on("click", "a:not([data-bypass])", function(evt) {
-  var href = { prop: $(this).prop("href"), attr: $(this).attr("href") };
-  var root = location.protocol + "//" + location.host + Backbone.history.options.root;
-
-  if (href.prop && href.prop.slice(0, root.length) === root) {
-    evt.preventDefault();
-    Bb.history.navigate(href.attr, true);
-  }
-});
-
-$(function() {
-  myApp.start()  
-})
+module.exports = myApp
 
 
 // $.ajax({url: "https://localhost:3000/api/users", method: "GET", success: console.log, error: console.log})

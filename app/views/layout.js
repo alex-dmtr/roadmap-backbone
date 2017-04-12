@@ -6,6 +6,8 @@ var HomeView = require('./home')
 var ProfileView = require('./profile')
 var LocalUser = require('../models/local.user')
 var template = Handlebars.templates.layout
+var auth = require('../auth')
+
 // var LocalStorage = require('backbone.localstorage')
 
 var LayoutView = Mn.View.extend({
@@ -34,12 +36,8 @@ var LayoutView = Mn.View.extend({
   },
 
   initialize: function() {
-    this.user = new LocalUser()
-    this.user.fetch()
     
-    this.navView = new NavView({user: this.user})
-
-    this.user.on('change', this.navView.render)
+    this.navView = new NavView()
   },
 
   onShowHome: function(args) {
@@ -72,39 +70,33 @@ var LayoutView = Mn.View.extend({
   },
 
   onDoLogin: function(user) {
-    $.post({
-      url: `https://localhost:3000/api/auth`,
-      data: { username: user.get('username'), password: user.get('password')},
-      success: (data) =>  {
-
-        this.user.set('id', data.user.id)
-        this.user.set('username', data.user.username)
-        this.user.set('jwt', data.jwt)
-
-        this.user.save()
-
+    auth.doLogin(user)
+      .then(() => {
         this.onShowHome()
-      },
-      error: (err) => {
-        this.triggerMethod('show:error', 'Username and password combination not recognised.')
-      }
-    })
+        this.navView.render()
+      })
+      .catch((err) => {
+
+        var status = err.status
+
+        if (status == 401)
+          this.triggerMethod('show:error', "Username and password combination not recognised")
+        else
+          this.triggerMethod('show:error', "Server error")
+      })
   },
 
   onShowProfile: function() {
-    if (this.user.get('jwt') == null) {
+    if (!auth.isAuthenticated()) {
       return this.onShowHome()
     }
 
-    this.profileView = new ProfileView({model:this.user})
+    this.profileView = new ProfileView({model:auth.user})
     this.showChildView('mainRegion', this.profileView)
     Bb.history.navigate('profile')
   },
   onDoLogout: function() {
-    this.user.destroy()
-    this.user.unset('username')
-    this.user.unset('jwt')
-    this.user.unset('id')
+    auth.doLogout()
     this.onShowHome()
     this.navView.render()
   }

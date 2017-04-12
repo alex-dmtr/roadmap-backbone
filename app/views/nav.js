@@ -1,10 +1,11 @@
 var template = Handlebars.templates.nav
+var auth = require('../auth')
 
 var NavView = Mn.View.extend({
 
   getTemplate: function() {
     return template({
-      user: this.user? this.user.toJSON(): null
+      user: auth.isAuthenticated()? auth.user.toJSON(): null
     })
   },
 
@@ -15,13 +16,6 @@ var NavView = Mn.View.extend({
     "click #profile-button": "show:profile"
   },
 
-  initialize: function({user}) {
-    this.user = user
-
-  },
-
-  onRender: function() {
-  }
 
  
 })

@@ -7,7 +7,8 @@ var LocalUser = Bb.Model.extend({
     defaults: {
       username: '',
       id: null,
-      jwt: null
+      jwt: null,
+      is_auth: false
     },
 
     fetch: function() {
@@ -16,6 +17,10 @@ var LocalUser = Bb.Model.extend({
 
     destroy: function() {
       localStorage.removeItem(UID)
+      this.unset('username')
+      this.unset('id')
+      this.unset('jwt')
+      this.set('is_auth', false)
     },
 
     save: function() {
