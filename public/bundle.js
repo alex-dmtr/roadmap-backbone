@@ -383,9 +383,7 @@ module.exports = Router;
                 alias1 = container.lambda,
                 alias2 = container.escapeExpression;
 
-            return "    <h2>" + alias2(alias1(depth0 != null ? depth0.name : depth0, depth0)) + "</h2>\n    <p>Created by: <strong>" + alias2(alias1((stack1 = depth0 != null ? depth0.owner : depth0) != null ? stack1.username : stack1, depth0)) + "</strong></p>\n\n    <p>Members:</p>\n    <ul>\n" + ((stack1 = helpers.each.call(depth0 != null ? depth0 : {}, depth0 != null ? depth0.users : depth0, { "name": "each", "hash": {}, "fn": container.program(2, data, 0), "inverse": container.noop, "data": data })) != null ? stack1 : "") + "    </ul>\n";
-        }, "2": function _(container, depth0, helpers, partials, data) {
-            return "        <li>" + container.escapeExpression(container.lambda(depth0 != null ? depth0.username : depth0, depth0)) + "</li>\n";
+            return "    <h2>" + alias2(alias1(depth0 != null ? depth0.name : depth0, depth0)) + " <small><a>Join group</a></h2>\n    <p>Created by: <strong>" + alias2(alias1((stack1 = depth0 != null ? depth0.owner : depth0) != null ? stack1.username : stack1, depth0)) + "</strong></p>\n\n    " + alias2(alias1(depth0 != null ? depth0.description : depth0, depth0)) + "\n\n\n";
         }, "compiler": [7, ">= 4.0.0"], "main": function main(container, depth0, helpers, partials, data) {
             var stack1;
 
@@ -528,6 +526,7 @@ var LayoutView = Mn.View.extend({
         Bb.history.navigate('');
       });
     } else {
+      this.homeView = new HomeView();
       this.showChildView('mainRegion', this.homeView);
       Bb.history.navigate('');
     }

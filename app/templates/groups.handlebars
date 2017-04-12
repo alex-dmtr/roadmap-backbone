@@ -1,14 +1,30 @@
 <div>
-
+  <h1>Groups in your area</h1>
+  <table>
+    <tbody>
   {{#each items}}
-    <h2>{{this.name}}</h2>
-    <p>Created by: <strong>{{this.owner.username}}</strong></p>
+  <tr>
+    <div class="row">
+    <div class="col-md-4">
+      <img src="{{this.avatarUrl}}" class="img img-responsive"></img>
 
-    <p>Members:</p>
-    <ul>
-      {{#each this.users}}
-        <li>{{this.username}}</li>
-      {{/each}}
-    </ul>
+    </div>
+
+    <div class="col-md-8">
+      <h2>
+  {{this.name}} </h2>
+      <p>{{this.description}}</p>
+      <a>Join group</a>
+      
+      <p>Created by: <strong>{{this.owner.username}}</strong></p>
+
+  
+    </div>
+    </div>
+  
+  </tr>
   {{/each}}
-</div>
+
+  </tbody>
+  </table>
+</div>  
