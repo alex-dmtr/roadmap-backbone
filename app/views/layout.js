@@ -7,6 +7,7 @@ var ProfileView = require('./profile')
 var LocalUser = require('../models/local.user')
 var template = Handlebars.templates.layout
 var auth = require('../auth')
+var Groups = require('../collections/groups')
 
 // var LocalStorage = require('backbone.localstorage')
 
@@ -41,10 +42,26 @@ var LayoutView = Mn.View.extend({
   },
 
   onShowHome: function(args) {
-    this.homeView = new HomeView()
+    if (auth.isAuthenticated()) {
+      let groups = new Groups()
+      groups.fetch().then(() => {
+
+        console.log(groups.models)
+
+        this.homeView = new HomeView({collection: groups})
+
+
+        this.showChildView('mainRegion', this.homeView)
+        Bb.history.navigate('')
+      })
+
+    }
+    else {
+      this.homeView = new HomeView()
+      this.showChildView('mainRegion', this.homeView)
+      Bb.history.navigate('')
+    }
   
-    this.showChildView('mainRegion', this.homeView)
-    Bb.history.navigate('')
   },
 
   onShowLogin: function(args) {

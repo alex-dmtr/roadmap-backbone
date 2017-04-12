@@ -2,7 +2,7 @@ var Group = Bb.Model.extend({
   // idAtribute: "_id",
   defaults: {
     name: 'name',
-    ownerId: null,
+    owner: null,
     description: 'desc',
     avatarUrl: 'avatarUrl',
     memberIds: []

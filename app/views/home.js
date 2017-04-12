@@ -1,11 +1,22 @@
-var template = Handlebars.templates.home
+var home = Handlebars.templates.home
+var groupsTemplate = Handlebars.templates.groups
 
-var Index = Mn.View.extend({
-  template: template,
+var auth = require('../auth')
+var Home = Mn.View.extend({
+  getTemplate: function() {
+
+    if (!auth.isAuthenticated())
+      return home
+    else {
+    
+      return groupsTemplate
+
+    }
+  },
 
   triggers: {
     'click #register-button': 'show:register'
   }
 })
 
-module.exports = Index
+module.exports = Home

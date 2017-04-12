@@ -20,16 +20,16 @@ $.ajaxPrefilter(function( options ) {
     }
   });
 
-$.ajax({
-  url:"https://localhost:3000/api/groups", 
-  success: (data) => {
-    console.log(data)
-  },
-  error: (err) => {
-    console.log(err)
-  }
+// $.ajax({
+//   url:"https://localhost:3000/api/groups", 
+//   success: (data) => {
+//     console.log(data)
+//   },
+//   error: (err) => {
+//     console.log(err)
+//   }
 
-})
+// })
 
 $(function() {
   App.start()  

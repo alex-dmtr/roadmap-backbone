@@ -1,0 +1,14 @@
+<div>
+
+  {{#each items}}
+    <h2>{{this.name}}</h2>
+    <p>Created by: <strong>{{this.owner.username}}</strong></p>
+
+    <p>Members:</p>
+    <ul>
+      {{#each this.users}}
+        <li>{{this.username}}</li>
+      {{/each}}
+    </ul>
+  {{/each}}
+</div>
