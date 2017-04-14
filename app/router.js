@@ -36,7 +36,8 @@ var Router = Mn.AppRouter.extend({
     '': 'home',
     'login': 'login',
     'register': 'register',
-    'profile': 'profile'
+    'profile': 'profile',
+    'groups/:group': 'showGroup'
   },
 
   initialize: function(options) {
@@ -66,6 +67,13 @@ var Router = Mn.AppRouter.extend({
     var layout = this.options.layoutView
 
     layout.triggerMethod('show:profile')
+  },
+
+  showGroup: function(group) {
+    var layout = this.options.layoutView
+
+    // console.log(group)
+    layout.triggerMethod('show:group', group)
   }
 })
 

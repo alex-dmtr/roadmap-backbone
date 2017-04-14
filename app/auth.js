@@ -24,6 +24,7 @@ class AuthClass {
   doLogin(user) {
     
     return new Promise((resolve, reject) => {
+      console.log(user.toJSON())
       $.post({
         url: `https://localhost:3000/api/auth`,
         data: { username: user.get('username'), password: user.get('password')},

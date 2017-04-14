@@ -20,6 +20,19 @@ $.ajaxPrefilter(function( options ) {
     }
   });
 
+// add loading spinner
+// https://api.jquery.com/ajaxStart/
+$(document).ajaxStart(function() {
+  $("#loader").show()
+  // $("#main-region").hide()
+})
+
+// https://api.jquery.com/ajaxStop/
+$(document).ajaxStop(function() {
+  $("#loader").hide()
+  // $("#main-region").show()
+})
+
 // $.ajax({
 //   url:"https://localhost:3000/api/groups", 
 //   success: (data) => {

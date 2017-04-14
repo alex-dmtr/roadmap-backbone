@@ -5,9 +5,11 @@ var FlashView = require('./flash')
 var HomeView = require('./home')
 var ProfileView = require('./profile')
 var LocalUser = require('../models/local.user')
+var GroupView = require('./group')
 var template = Handlebars.templates.layout
 var auth = require('../auth')
 var Groups = require('../collections/groups')
+var Group = require('../models/group')
 
 // var LocalStorage = require('backbone.localstorage')
 
@@ -116,6 +118,25 @@ var LayoutView = Mn.View.extend({
     auth.doLogout()
     this.onShowHome()
     this.navView.render()
+  },
+
+  onShowGroup: function(group) {
+    if (!auth.isAuthenticated()) {
+      return this.showHome()
+    }
+
+    let g = new Group({id: group})
+
+    g.fetch().then(() => {
+
+      this.showChildView('mainRegion', new GroupView({model: g}))
+      Bb.history.navigate(`groups/${group}`)
+      
+    })
+    .catch((err) => {
+      this.triggerMethod('show:error', JSON.stringify(err))
+      this.onShowHome()
+    })
   }
 
 })

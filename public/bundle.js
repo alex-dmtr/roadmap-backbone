@@ -80,6 +80,7 @@ var AuthClass = function () {
       var _this = this;
 
       return new Promise(function (resolve, reject) {
+        console.log(user.toJSON());
         $.post({
           url: 'https://localhost:3000/api/auth',
           data: { username: user.get('username'), password: user.get('password') },
@@ -153,6 +154,17 @@ $.ajaxPrefilter(function (options) {
   };
 });
 
+// add loading spinner
+// https://api.jquery.com/ajaxStart/
+$(document).ajaxStart(function () {
+  $("#loading").show();
+});
+
+// https://api.jquery.com/ajaxStop/
+$(document).ajaxStop(function () {
+  $("#loading").hide();
+});
+
 // $.ajax({
 //   url:"https://localhost:3000/api/groups", 
 //   success: (data) => {
@@ -184,6 +196,7 @@ module.exports = Flash;
 
 var Group = Bb.Model.extend({
   // idAtribute: "_id",
+  urlRoot: "https://localhost:3000/api/group/",
   defaults: {
     name: 'name',
     owner: null,
@@ -328,7 +341,8 @@ var Router = Mn.AppRouter.extend({
     '': 'home',
     'login': 'login',
     'register': 'register',
-    'profile': 'profile'
+    'profile': 'profile',
+    'groups/:group': 'showGroup'
   },
 
   initialize: function initialize(options) {
@@ -358,6 +372,13 @@ var Router = Mn.AppRouter.extend({
     var layout = this.options.layoutView;
 
     layout.triggerMethod('show:profile');
+  },
+
+  showGroup: function showGroup(group) {
+    var layout = this.options.layoutView;
+
+    // console.log(group)
+    layout.triggerMethod('show:group', group);
   }
 });
 
@@ -365,6 +386,8 @@ module.exports = Router;
 
 },{"./views/layout":"/home/adumitru/coding/roadmap-backbone/app/views/layout.js"}],"/home/adumitru/coding/roadmap-backbone/app/templates/index.js":[function(require,module,exports){
 "use strict";
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 (function () {
     var template = Handlebars.template,
@@ -378,16 +401,26 @@ module.exports = Router;
 
             return "<div>\n" + ((stack1 = helpers["if"].call(depth0 != null ? depth0 : {}, depth0 != null ? depth0.error : depth0, { "name": "if", "hash": {}, "fn": container.program(1, data, 0), "inverse": container.noop, "data": data })) != null ? stack1 : "") + "\n</div>";
         }, "useData": true });
+    templates['group'] = template({ "compiler": [7, ">= 4.0.0"], "main": function main(container, depth0, helpers, partials, data) {
+            var stack1,
+                helper,
+                alias1 = depth0 != null ? depth0 : {},
+                alias2 = helpers.helperMissing,
+                alias3 = "function",
+                alias4 = container.escapeExpression;
+
+            return "\n <div>\n\n  <div class=\"col-xs-6\">\n\n    \n    <h1>" + alias4((helper = (helper = helpers.name || (depth0 != null ? depth0.name : depth0)) != null ? helper : alias2, (typeof helper === "undefined" ? "undefined" : _typeof(helper)) === alias3 ? helper.call(alias1, { "name": "name", "hash": {}, "data": data }) : helper)) + " </h1>\n      <p>" + alias4((helper = (helper = helpers.description || (depth0 != null ? depth0.description : depth0)) != null ? helper : alias2, (typeof helper === "undefined" ? "undefined" : _typeof(helper)) === alias3 ? helper.call(alias1, { "name": "description", "hash": {}, "data": data }) : helper)) + "</p>\n      <a>Join group</a>\n\n      <p>Group owner: <strong>" + alias4(container.lambda((stack1 = depth0 != null ? depth0.owner : depth0) != null ? stack1.username : stack1, depth0)) + "</strong>\n      <p>Members:</p>\n      <ul>\n        \n      </ul>\n  </div>\n  <div class=\"col-xs-6\">\n    <img src='" + alias4((helper = (helper = helpers.avatarUrl || (depth0 != null ? depth0.avatarUrl : depth0)) != null ? helper : alias2, (typeof helper === "undefined" ? "undefined" : _typeof(helper)) === alias3 ? helper.call(alias1, { "name": "avatarUrl", "hash": {}, "data": data }) : helper)) + "' class=\"img img-responsive img-thumbnail\"></img>\n  </div>\n</div>";
+        }, "useData": true });
     templates['groups'] = template({ "1": function _(container, depth0, helpers, partials, data) {
             var stack1,
                 alias1 = container.lambda,
                 alias2 = container.escapeExpression;
 
-            return "    <h2>" + alias2(alias1(depth0 != null ? depth0.name : depth0, depth0)) + " <small><a>Join group</a></h2>\n    <p>Created by: <strong>" + alias2(alias1((stack1 = depth0 != null ? depth0.owner : depth0) != null ? stack1.username : stack1, depth0)) + "</strong></p>\n\n    " + alias2(alias1(depth0 != null ? depth0.description : depth0, depth0)) + "\n\n\n";
+            return "  <tr >\n \n    <div class=\"row\">\n    <div class=\"col-xs-4\">\n      <img src=\"" + alias2(alias1(depth0 != null ? depth0.avatarUrl : depth0, depth0)) + "\" class=\"img img-responsive\"></img>\n\n    </div>\n\n    <div class=\"col-xs-8\">\n      <h2>\n      <a href=\"/groups/" + alias2(alias1(depth0 != null ? depth0.id : depth0, depth0)) + "\">" + alias2(alias1(depth0 != null ? depth0.name : depth0, depth0)) + "</a> </h2>\n      <p>" + alias2(alias1(depth0 != null ? depth0.description : depth0, depth0)) + "</p>\n      <a>Join group</a>\n      \n      <p>Created by: <strong>" + alias2(alias1((stack1 = depth0 != null ? depth0.owner : depth0) != null ? stack1.username : stack1, depth0)) + "</strong></p>\n\n  \n    </div>\n    </div>\n  </tr>\n";
         }, "compiler": [7, ">= 4.0.0"], "main": function main(container, depth0, helpers, partials, data) {
             var stack1;
 
-            return "<div>\n\n" + ((stack1 = helpers.each.call(depth0 != null ? depth0 : {}, depth0 != null ? depth0.items : depth0, { "name": "each", "hash": {}, "fn": container.program(1, data, 0), "inverse": container.noop, "data": data })) != null ? stack1 : "") + "</div>";
+            return "<div>\n  <h1>Groups in your area</h1>\n  <table>\n    <tbody>\n" + ((stack1 = helpers.each.call(depth0 != null ? depth0 : {}, depth0 != null ? depth0.items : depth0, { "name": "each", "hash": {}, "fn": container.program(1, data, 0), "inverse": container.noop, "data": data })) != null ? stack1 : "") + "\n  </tbody>\n  </table>\n</div>  ";
         }, "useData": true });
     templates['home'] = template({ "compiler": [7, ">= 4.0.0"], "main": function main(container, depth0, helpers, partials, data) {
             return "<div>\n  <h2>Home</h2>\n  <p>Welcome to our groups website! You can meet awesome people here.</p>\n  <p>Joining is easy. Just click <a href='/register'>here</a> to go to to the sign up page.</p>\n</div>";
@@ -401,13 +434,13 @@ module.exports = Router;
     templates['nav'] = template({ "1": function _(container, depth0, helpers, partials, data) {
             var stack1;
 
-            return "              <li><a href=# id='profile-button'>" + container.escapeExpression(container.lambda((stack1 = depth0 != null ? depth0.user : depth0) != null ? stack1.username : stack1, depth0)) + "</a></li>\n";
+            return "\n              <li>\n                <a href=# id='profile-button'>\n                  <span class=\"glyphicon glyphicon-user\" aria-hidden=\"true\"></span> " + container.escapeExpression(container.lambda((stack1 = depth0 != null ? depth0.user : depth0) != null ? stack1.username : stack1, depth0)) + "\n                </a>\n                  </li>\n";
         }, "3": function _(container, depth0, helpers, partials, data) {
             return "              <li><a href=# id='login-button'>Sign in</a></li>\n              <li><a href=# id='register-button'>Sign up</a></li>\n";
         }, "compiler": [7, ">= 4.0.0"], "main": function main(container, depth0, helpers, partials, data) {
             var stack1;
 
-            return "<div>\n <nav class=\"navbar navbar-default\" role=\"navigation\">\n  \n      <div class=\"container\">\n        <div class=\"navbar-header\">\n          <button type=\"button\" class=\"navbar-toggle collapsed\" data-toggle=\"collapse\" data-target=\"#navbar\" aria-expanded=\"false\" aria-controls=\"navbar\">\n            <span class=\"sr-only\">Toggle navigation</span>\n            <span class=\"icon-bar\"></span>\n            <span class=\"icon-bar\"></span>\n            <span class=\"icon-bar\"></span>\n          </button>\n          <a class=\"navbar-brand\" href=\"#\" id='home-button'>Roadmap - Backbone</a>\n        </div>\n        <div id=\"navbar\" class=\"navbar-collapse collapse\">\n          <ul class=\"nav navbar-nav\">\n\n          </ul>\n\n          <ul class=\"nav navbar-nav navbar-right\">\n" + ((stack1 = helpers["if"].call(depth0 != null ? depth0 : {}, (stack1 = depth0 != null ? depth0.user : depth0) != null ? stack1.jwt : stack1, { "name": "if", "hash": {}, "fn": container.program(1, data, 0), "inverse": container.program(3, data, 0), "data": data })) != null ? stack1 : "") + "      </ul>\n        </div>\n  \n      </div>\n    </nav>\n</div>";
+            return "<div>\n <nav class=\"navbar navbar-inverse navbar-fixed-top\" role=\"navigation\">\n  \n      <div class=\"container\">\n        <div class=\"navbar-header\">\n          <button type=\"button\" class=\"navbar-toggle collapsed\" data-toggle=\"collapse\" data-target=\"#navbar\" aria-expanded=\"false\" aria-controls=\"navbar\">\n            <span class=\"sr-only\">Toggle navigation</span>\n            <span class=\"icon-bar\"></span>\n            <span class=\"icon-bar\"></span>\n            <span class=\"icon-bar\"></span>\n          </button>\n          <a class=\"navbar-brand\" href=\"#\" id='home-button'>Roadmap - Backbone</a>\n        </div>\n        <div id=\"navbar\" class=\"navbar-collapse collapse\">\n          <ul class=\"nav navbar-nav\">\n\n          </ul>\n\n          <ul class=\"nav navbar-nav navbar-right\">\n" + ((stack1 = helpers["if"].call(depth0 != null ? depth0 : {}, (stack1 = depth0 != null ? depth0.user : depth0) != null ? stack1.is_auth : stack1, { "name": "if", "hash": {}, "fn": container.program(1, data, 0), "inverse": container.program(3, data, 0), "data": data })) != null ? stack1 : "") + "      </ul>\n        </div>\n  \n      </div>\n    </nav>\n\n    \n</div>";
         }, "useData": true });
     templates['profile'] = template({ "compiler": [7, ">= 4.0.0"], "main": function main(container, depth0, helpers, partials, data) {
             var helper;
@@ -415,7 +448,7 @@ module.exports = Router;
             return "<div>\n  <h2>" + container.escapeExpression((helper = (helper = helpers.username || (depth0 != null ? depth0.username : depth0)) != null ? helper : helpers.helperMissing, typeof helper === "function" ? helper.call(depth0 != null ? depth0 : {}, { "name": "username", "hash": {}, "data": data }) : helper)) + "</h2>\n  \n\n  <a href=# id='logout-button'>Logout</a>\n</div>";
         }, "useData": true });
     templates['register'] = template({ "compiler": [7, ">= 4.0.0"], "main": function main(container, depth0, helpers, partials, data) {
-            return "<div>\n\n\n  <form role=\"form\" id=\"login-form\">\n    <h2>Create an account</h2>\n    <p>Create an account to view and access our groups.</p>\n    <p>We're a happy, growing community! :)</p>\n      <div class=\"form-group\">\n        <input type=\"text\" id=\"username\" placeholder=\"Username\" class=\"form-control\">\n      </div>\n      <div class=\"form-group\">\n        <input type=\"password\" id=\"password\"placeholder=\"Password\" class=\"form-control\">\n      </div>\n      <button type=\"button\" class=\"btn btn-success\" id='login-button'>Sign in</button>\n    </form>\n</div>";
+            return "<div>\n\n\n  <form role=\"form\" id=\"login-form\">\n    <h2>Create an account</h2>\n    <p>Create an account to view and access our groups.</p>\n    <p>We're a happy, growing community! :)</p>\n      <div class=\"form-group\">\n        <input type=\"text\" id=\"username\" placeholder=\"Username\" class=\"form-control\">\n      </div>\n      <div class=\"form-group\">\n        <input type=\"email\" id=\"email\" placeholder=\"Email address\" class=\"form-control\">\n      </div>\n      <div class=\"form-group\">\n        <input type=\"password\" id=\"password\"placeholder=\"Password\" class=\"form-control\">\n      </div>\n      <div class=\"form-group\">\n        <input type=\"password\" id=\"password2\" placeholder=\"Enter your password again\" class=\"form-control\">\n      </div>\n      <button type=\"button\" class=\"btn btn-success\" id='register-button'>Create account</button>\n    </form>\n</div>";
         }, "useData": true });
 })();
 
@@ -444,7 +477,18 @@ var FlashView = Mn.View.extend({
 
 module.exports = FlashView;
 
-},{"../models/flash":"/home/adumitru/coding/roadmap-backbone/app/models/flash.js"}],"/home/adumitru/coding/roadmap-backbone/app/views/home.js":[function(require,module,exports){
+},{"../models/flash":"/home/adumitru/coding/roadmap-backbone/app/models/flash.js"}],"/home/adumitru/coding/roadmap-backbone/app/views/group.js":[function(require,module,exports){
+"use strict";
+
+var template = Hbs.templates.group;
+
+var GroupView = Mn.View.extend({
+  template: template
+});
+
+module.exports = GroupView;
+
+},{}],"/home/adumitru/coding/roadmap-backbone/app/views/home.js":[function(require,module,exports){
 'use strict';
 
 var home = Handlebars.templates.home;
@@ -477,9 +521,11 @@ var FlashView = require('./flash');
 var HomeView = require('./home');
 var ProfileView = require('./profile');
 var LocalUser = require('../models/local.user');
+var GroupView = require('./group');
 var template = Handlebars.templates.layout;
 var auth = require('../auth');
 var Groups = require('../collections/groups');
+var Group = require('../models/group');
 
 // var LocalStorage = require('backbone.localstorage')
 
@@ -581,13 +627,32 @@ var LayoutView = Mn.View.extend({
     auth.doLogout();
     this.onShowHome();
     this.navView.render();
+  },
+
+  onShowGroup: function onShowGroup(group) {
+    var _this3 = this;
+
+    if (!auth.isAuthenticated()) {
+      return this.showHome();
+    }
+
+    var g = new Group({ id: group });
+
+    g.fetch().then(function () {
+
+      _this3.showChildView('mainRegion', new GroupView({ model: g }));
+      Bb.history.navigate('groups/' + group);
+    }).catch(function (err) {
+      _this3.triggerMethod('show:error', JSON.stringify(err));
+      _this3.onShowHome();
+    });
   }
 
 });
 
 module.exports = LayoutView;
 
-},{"../auth":"/home/adumitru/coding/roadmap-backbone/app/auth.js","../collections/groups":"/home/adumitru/coding/roadmap-backbone/app/collections/groups.js","../models/local.user":"/home/adumitru/coding/roadmap-backbone/app/models/local.user.js","./flash":"/home/adumitru/coding/roadmap-backbone/app/views/flash.js","./home":"/home/adumitru/coding/roadmap-backbone/app/views/home.js","./login":"/home/adumitru/coding/roadmap-backbone/app/views/login.js","./nav":"/home/adumitru/coding/roadmap-backbone/app/views/nav.js","./profile":"/home/adumitru/coding/roadmap-backbone/app/views/profile.js","./register":"/home/adumitru/coding/roadmap-backbone/app/views/register.js"}],"/home/adumitru/coding/roadmap-backbone/app/views/login.js":[function(require,module,exports){
+},{"../auth":"/home/adumitru/coding/roadmap-backbone/app/auth.js","../collections/groups":"/home/adumitru/coding/roadmap-backbone/app/collections/groups.js","../models/group":"/home/adumitru/coding/roadmap-backbone/app/models/group.js","../models/local.user":"/home/adumitru/coding/roadmap-backbone/app/models/local.user.js","./flash":"/home/adumitru/coding/roadmap-backbone/app/views/flash.js","./group":"/home/adumitru/coding/roadmap-backbone/app/views/group.js","./home":"/home/adumitru/coding/roadmap-backbone/app/views/home.js","./login":"/home/adumitru/coding/roadmap-backbone/app/views/login.js","./nav":"/home/adumitru/coding/roadmap-backbone/app/views/nav.js","./profile":"/home/adumitru/coding/roadmap-backbone/app/views/profile.js","./register":"/home/adumitru/coding/roadmap-backbone/app/views/register.js"}],"/home/adumitru/coding/roadmap-backbone/app/views/login.js":[function(require,module,exports){
 "use strict";
 
 var template = Handlebars.templates.login;

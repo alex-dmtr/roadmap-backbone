@@ -1,5 +1,5 @@
 <div>
- <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+ <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   
       <div class="container">
         <div class="navbar-header">
@@ -17,8 +17,13 @@
           </ul>
 
           <ul class="nav navbar-nav navbar-right">
-            {{#if user.jwt}}
-              <li><a href=# id='profile-button'>{{user.username}}</a></li>
+            {{#if user.is_auth}}
+
+              <li>
+                <a href=# id='profile-button'>
+                  <span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{user.username}}
+                </a>
+                  </li>
             {{else}}
               <li><a href=# id='login-button'>Sign in</a></li>
               <li><a href=# id='register-button'>Sign up</a></li>
@@ -28,4 +33,6 @@
   
       </div>
     </nav>
+
+    
 </div>
