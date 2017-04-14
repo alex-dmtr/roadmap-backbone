@@ -11,7 +11,9 @@
       <p>Group owner: <strong>{{owner.username}}</strong>
       <p>Members:</p>
       <ul>
-        
+        {{#each members}}
+          <li>{{this.username}}</li>
+        {{/each}}
       </ul>
   </div>
   <div class="col-xs-6">

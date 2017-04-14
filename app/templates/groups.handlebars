@@ -12,10 +12,17 @@
     </div>
 
     <div class="col-xs-8">
+        {{#if this.is_member}}
       <h2>
       <a href="/groups/{{this.id}}">{{this.name}}</a> </h2>
+        {{else}}
+        <h2>{{this.name}}</h2>
+        {{/if}}
       <p>{{this.description}}</p>
-      <a>Join group</a>
+      <p><em>{{this.num_members}} members</em></p>
+      {{#unless this.is_member}}
+      <a class='join-button' data-group={{this.id}}>Join group</a>
+      {{/unless}}
       
       <p>Created by: <strong>{{this.owner.username}}</strong></p>
 

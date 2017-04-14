@@ -4,9 +4,9 @@ var Group = Bb.Model.extend({
   defaults: {
     name: 'name',
     owner: null,
+    members: null,
     description: 'desc',
     avatarUrl: 'avatarUrl',
-    memberIds: []
   },
 
   initialize: function() {

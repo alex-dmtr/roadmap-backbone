@@ -29,18 +29,19 @@ var LayoutView = Mn.View.extend({
     'do:login': 'onDoLogin',
     'do:logout': 'onDoLogout',
     'do:register': 'onDoRegister',
-    'show:profile': 'onShowProfile'
+    'show:profile': 'onShowProfile',
+    'do:joingroup': 'onDoJoinGroup',
   },
 
 
 
   onRender: function() {
-    this.showChildView('navRegion', this.navView)    
+    this.showChildView('navRegion', this.navView)
     // this.triggerMethod('show:login')
   },
 
   initialize: function() {
-    
+
     this.navView = new NavView()
   },
 
@@ -64,7 +65,7 @@ var LayoutView = Mn.View.extend({
       this.showChildView('mainRegion', this.homeView)
       Bb.history.navigate('')
     }
-  
+
   },
 
   onShowLogin: function(args) {
@@ -91,7 +92,7 @@ var LayoutView = Mn.View.extend({
   onShowInfo(args) {
     this.flashView = new FlashView({info: args})
     this.showChildView('flashRegion', this.flashView)
-  
+
   },
 
   onDoLogin: function(user) {
@@ -104,6 +105,7 @@ var LayoutView = Mn.View.extend({
 
         var status = err.status
 
+  
         if (status == 401)
           this.triggerMethod('show:error', "Username and password combination not recognised")
         else
@@ -152,12 +154,16 @@ var LayoutView = Mn.View.extend({
 
       this.showChildView('mainRegion', new GroupView({model: g}))
       Bb.history.navigate(`groups/${group}`)
-      
+
     })
     .catch((err) => {
       this.triggerMethod('show:error', JSON.stringify(err))
       this.onShowHome()
     })
+  },
+
+  onDoJoinGroup(args) {
+    console.log($(args))
   }
 
 })

@@ -21,7 +21,11 @@ templates['flash'] = template({"1":function(container,depth0,helpers,partials,da
     + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.info : depth0),{"name":"if","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "\n</div>";
 },"useData":true});
-templates['group'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+templates['group'] = template({"1":function(container,depth0,helpers,partials,data) {
+    return "          <li>"
+    + container.escapeExpression(container.lambda((depth0 != null ? depth0.username : depth0), depth0))
+    + "</li>\n";
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1, helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
 
   return "\n <div>\n\n  <div class=\"col-xs-6\">\n\n    \n    <h1>"
@@ -30,24 +34,44 @@ templates['group'] = template({"compiler":[7,">= 4.0.0"],"main":function(contain
     + alias4(((helper = (helper = helpers.description || (depth0 != null ? depth0.description : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"description","hash":{},"data":data}) : helper)))
     + "</p>\n      <a>Join group</a>\n\n      <p>Group owner: <strong>"
     + alias4(container.lambda(((stack1 = (depth0 != null ? depth0.owner : depth0)) != null ? stack1.username : stack1), depth0))
-    + "</strong>\n      <p>Members:</p>\n      <ul>\n        \n      </ul>\n  </div>\n  <div class=\"col-xs-6\">\n    <img src='"
+    + "</strong>\n      <p>Members:</p>\n      <ul>\n"
+    + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.members : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + "      </ul>\n  </div>\n  <div class=\"col-xs-6\">\n    <img src='"
     + alias4(((helper = (helper = helpers.avatarUrl || (depth0 != null ? depth0.avatarUrl : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"avatarUrl","hash":{},"data":data}) : helper)))
     + "' class=\"img img-responsive img-thumbnail\"></img>\n  </div>\n</div>";
 },"useData":true});
 templates['groups'] = template({"1":function(container,depth0,helpers,partials,data) {
-    var stack1, alias1=container.lambda, alias2=container.escapeExpression;
+    var stack1, alias1=container.lambda, alias2=container.escapeExpression, alias3=depth0 != null ? depth0 : {};
 
   return "  <tr >\n \n    <div class=\"row\">\n    <div class=\"col-xs-4\">\n      <img src=\""
     + alias2(alias1((depth0 != null ? depth0.avatarUrl : depth0), depth0))
-    + "\" class=\"img img-responsive\"></img>\n\n    </div>\n\n    <div class=\"col-xs-8\">\n      <h2>\n      <a href=\"/groups/"
+    + "\" class=\"img img-responsive\"></img>\n\n    </div>\n\n    <div class=\"col-xs-8\">\n"
+    + ((stack1 = helpers["if"].call(alias3,(depth0 != null ? depth0.is_member : depth0),{"name":"if","hash":{},"fn":container.program(2, data, 0),"inverse":container.program(4, data, 0),"data":data})) != null ? stack1 : "")
+    + "      <p>"
+    + alias2(alias1((depth0 != null ? depth0.description : depth0), depth0))
+    + "</p>\n      <p><em>"
+    + alias2(alias1((depth0 != null ? depth0.num_members : depth0), depth0))
+    + " members</em></p>\n"
+    + ((stack1 = helpers.unless.call(alias3,(depth0 != null ? depth0.is_member : depth0),{"name":"unless","hash":{},"fn":container.program(6, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + "      \n      <p>Created by: <strong>"
+    + alias2(alias1(((stack1 = (depth0 != null ? depth0.owner : depth0)) != null ? stack1.username : stack1), depth0))
+    + "</strong></p>\n\n  \n    </div>\n    </div>\n  </tr>\n";
+},"2":function(container,depth0,helpers,partials,data) {
+    var alias1=container.lambda, alias2=container.escapeExpression;
+
+  return "      <h2>\n      <a href=\"/groups/"
     + alias2(alias1((depth0 != null ? depth0.id : depth0), depth0))
     + "\">"
     + alias2(alias1((depth0 != null ? depth0.name : depth0), depth0))
-    + "</a> </h2>\n      <p>"
-    + alias2(alias1((depth0 != null ? depth0.description : depth0), depth0))
-    + "</p>\n      <a>Join group</a>\n      \n      <p>Created by: <strong>"
-    + alias2(alias1(((stack1 = (depth0 != null ? depth0.owner : depth0)) != null ? stack1.username : stack1), depth0))
-    + "</strong></p>\n\n  \n    </div>\n    </div>\n  </tr>\n";
+    + "</a> </h2>\n";
+},"4":function(container,depth0,helpers,partials,data) {
+    return "        <h2>"
+    + container.escapeExpression(container.lambda((depth0 != null ? depth0.name : depth0), depth0))
+    + "</h2>\n";
+},"6":function(container,depth0,helpers,partials,data) {
+    return "      <a class='join-button' data-group="
+    + container.escapeExpression(container.lambda((depth0 != null ? depth0.id : depth0), depth0))
+    + ">Join group</a>\n";
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1;
 

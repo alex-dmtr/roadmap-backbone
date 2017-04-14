@@ -15,8 +15,10 @@ var Home = Mn.View.extend({
   },
 
   triggers: {
-    'click #register-button': 'show:register'
-  }
+    'click #register-button': 'show:register',
+    'click .join-button': 'do:joingroup'
+  },
+
 })
 
 module.exports = Home

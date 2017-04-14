@@ -174,18 +174,28 @@ $.ajaxPrefilter(function (options) {
   };
 });
 
-// add loading spinner
-// https://api.jquery.com/ajaxStart/
-$(document).ajaxStart(function () {
-  $("#loader").show();
-  // $("#main-region").hide()
-});
+(function () {
+  var spinner_threshold = 500;
+  var isAJAX = false;
+  // add loading spinner
+  // https://api.jquery.com/ajaxStart/
+  $(document).ajaxStart(function () {
+    isAJAX = true;
+    setTimeout(showLoader, spinner_threshold);
+    // $("#main-region").hide()
+  });
 
-// https://api.jquery.com/ajaxStop/
-$(document).ajaxStop(function () {
-  $("#loader").hide();
-  // $("#main-region").show()
-});
+  function showLoader() {
+    if (isAJAX) $("#loader").show();
+  }
+
+  // https://api.jquery.com/ajaxStop/
+  $(document).ajaxStop(function () {
+    isAJAX = false;
+    $("#loader").hide();
+    // $("#main-region").show()
+  });
+})();
 
 // $.ajax({
 //   url:"https://localhost:3000/api/groups", 
@@ -329,17 +339,18 @@ function validateEmail(email) {
 function validatePassword(password) {
   if (password.length == 0) return "Password can't be empty";
 
-  if (!(password.length >= 6 && password.length <= 12)) return "Password must be between 6 and 12 characters";
+  if (!(password.length >= 3 && password.length <= 12)) return "Password must be between 3 and 12 characters";
 
   return null;
 }
 var RegisterUser = Bb.Model.extend({
   validate: function validate(attrs, options) {
     if (attrs.username == "") return "Username can't be empty.";
+    if (!validateEmail(attrs.email)) return "Email not valid.";
+
     var passError = validatePassword(attrs.password);
     if (passError) return passError;
     if (attrs.password !== attrs.password2) return "Passwords don't match";
-    if (!validateEmail(attrs.email)) return "Email not valid.";
   }
 });
 
@@ -474,7 +485,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
             return "<div>\n  <h2>Home</h2>\n  <p>Welcome to our groups website! You can meet awesome people here.</p>\n  <p>Joining is easy. Just click <a href='/register'>here</a> to go to to the sign up page.</p>\n</div>";
         }, "useData": true });
     templates['layout'] = template({ "compiler": [7, ">= 4.0.0"], "main": function main(container, depth0, helpers, partials, data) {
-            return "<div id='nav-region'>\n\n</div>\n<div id='flash-region' class='container'>\n\n</div>\n\n<div id=\"loader\"></div>\n<div id='main-region' class='container animate-bottom'>\n\n</div>";
+            return "<div id='nav-region'>\n\n</div>\n<div id='flash-region' class='container'>\n\n</div>\n\n<div id=\"loader\" style=\"display:none\"></div>\n<div id='main-region' class='container animate-bottom'>\n\n</div>";
         }, "useData": true });
     templates['login'] = template({ "compiler": [7, ">= 4.0.0"], "main": function main(container, depth0, helpers, partials, data) {
             return "<div>\n\n  <form role=\"form\" id=\"login-form\">\n      <h2>Sign in</h2>\n  <p>Sign in to view and access our groups! :)</p>\n  <a href=# id='register-button'>Don't have an account yet?</a>\n    <div class=\"form-group\">\n      <input type=\"text\" id=\"username\" placeholder=\"Username\" class=\"form-control\" required>\n    </div>\n    <div class=\"form-group\">\n      <input type=\"password\" id=\"password\"placeholder=\"Password\" class=\"form-control\" required>\n    </div>\n    <div class=\"text-danger\" id=\"validation-error\">\n\n    </div>\n    <input type=\"submit\" class=\"btn btn-success\" id='login-button' value='Sign in'></input>\n  </form>\n</div>";
@@ -692,7 +703,8 @@ var LayoutView = Mn.View.extend({
       return auth.doLogin(user);
     }).then(function () {
       _this3.onShowHome();
-      _this3.triggerMethod('show:info', 'Welcome, ' + user.username + '!');
+      _this3.triggerMethod('show:info', 'Welcome, ' + user.get('username') + '!');
+      _this3.navView.render();
     }).catch(function (error) {
       _this3.triggerMethod('show:error', error);
     });
@@ -815,7 +827,7 @@ var Register = Mn.View.extend({
   model: new RegisterUser(),
 
   triggers: {
-    '#register-button click': 'send:register'
+    'click #register-button': 'send:register'
   },
 
   onSendRegister: function onSendRegister() {
