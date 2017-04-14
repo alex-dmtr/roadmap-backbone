@@ -10,8 +10,9 @@ var FlashView = Mn.View.extend({
 
   model: new Flash(),
 
-  initialize: function({error}) {
+  initialize: function({error, info}) {
     this.model.set('error', error)
+    this.model.set('info', info)
   }
 
 })

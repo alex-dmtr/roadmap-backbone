@@ -20,18 +20,30 @@ $.ajaxPrefilter(function( options ) {
     }
   });
 
-// add loading spinner
-// https://api.jquery.com/ajaxStart/
-$(document).ajaxStart(function() {
-  $("#loader").show()
-  // $("#main-region").hide()
-})
+(function() {
+  const spinner_threshold = 500
+  let isAJAX = false
+  // add loading spinner
+  // https://api.jquery.com/ajaxStart/
+  $(document).ajaxStart(function() {
+    isAJAX = true
+    setTimeout(showLoader, spinner_threshold)
+    // $("#main-region").hide()
+  })
 
-// https://api.jquery.com/ajaxStop/
-$(document).ajaxStop(function() {
-  $("#loader").hide()
-  // $("#main-region").show()
-})
+  function showLoader() {
+    if (isAJAX)
+      $("#loader").show()
+  }
+
+  // https://api.jquery.com/ajaxStop/
+  $(document).ajaxStop(function() {
+    isAJAX = false
+    $("#loader").hide()
+    // $("#main-region").show()
+  })
+
+}())
 
 // $.ajax({
 //   url:"https://localhost:3000/api/groups", 

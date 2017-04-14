@@ -28,6 +28,7 @@ var LayoutView = Mn.View.extend({
     'show:home': 'onShowHome',
     'do:login': 'onDoLogin',
     'do:logout': 'onDoLogout',
+    'do:register': 'onDoRegister',
     'show:profile': 'onShowProfile'
   },
 
@@ -85,7 +86,12 @@ var LayoutView = Mn.View.extend({
     // console.log(this.flashView.model.toJSON())
 
     this.showChildView('flashRegion', this.flashView)
-    console.log(args)
+  },
+
+  onShowInfo(args) {
+    this.flashView = new FlashView({info: args})
+    this.showChildView('flashRegion', this.flashView)
+  
   },
 
   onDoLogin: function(user) {
@@ -118,6 +124,21 @@ var LayoutView = Mn.View.extend({
     auth.doLogout()
     this.onShowHome()
     this.navView.render()
+  },
+
+  onDoRegister(user) {
+    auth.doRegister(user)
+      .then(() => {
+        return auth.doLogin(user)
+      })
+      .then(() => {
+        this.onShowHome()
+        this.triggerMethod('show:info', `Welcome, ${user.get('username')}!`)
+        this.navView.render()
+      })
+      .catch((error) => {
+        this.triggerMethod('show:error', error)
+      })
   },
 
   onShowGroup: function(group) {

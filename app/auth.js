@@ -55,6 +55,25 @@ class AuthClass {
     this.user.unset('id')
   }
 
+  doRegister(user) {
+    return new Promise(function(resolve, reject) {
+      $.post({
+        url: `https://localhost:3000/api/users`,
+        data: {
+          username: user.get('username'),
+          password: user.get('password'),
+          email: user.get('email')
+        },
+        success: function() {
+          resolve()
+        },
+        error: function(err) {
+          reject(err)
+        }
+      })
+    })
+  }
+
 
 }
 

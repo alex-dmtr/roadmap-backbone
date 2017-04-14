@@ -110,6 +110,26 @@ var AuthClass = function () {
       this.user.unset('jwt');
       this.user.unset('id');
     }
+  }, {
+    key: 'doRegister',
+    value: function doRegister(user) {
+      return new Promise(function (resolve, reject) {
+        $.post({
+          url: 'https://localhost:3000/api/users',
+          data: {
+            username: user.get('username'),
+            password: user.get('password'),
+            email: user.get('email')
+          },
+          success: function success() {
+            resolve();
+          },
+          error: function error(err) {
+            reject(err);
+          }
+        });
+      });
+    }
   }]);
 
   return AuthClass;
@@ -157,12 +177,14 @@ $.ajaxPrefilter(function (options) {
 // add loading spinner
 // https://api.jquery.com/ajaxStart/
 $(document).ajaxStart(function () {
-  $("#loading").show();
+  $("#loader").show();
+  // $("#main-region").hide()
 });
 
 // https://api.jquery.com/ajaxStop/
 $(document).ajaxStop(function () {
-  $("#loading").hide();
+  $("#loader").hide();
+  // $("#main-region").show()
 });
 
 // $.ajax({
@@ -258,11 +280,6 @@ module.exports = LocalUser;
 },{}],"/home/adumitru/coding/roadmap-backbone/app/models/login.user.js":[function(require,module,exports){
 'use strict';
 
-function validateEmail(email) {
-  var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  return re.test(email);
-}
-
 var LoginUser = Bb.Model.extend({
 
   defaults: {
@@ -273,7 +290,6 @@ var LoginUser = Bb.Model.extend({
   validate: function validate(attrs, options) {
     if (attrs.username == "") return "Username can't be null.";
     if (attrs.password == "") return "Password can't be null.";
-    // if (attrs.email!=="" && !validateEmail(attrs.email)) return "Email not valid."
   },
 
   initialize: function initialize() {
@@ -301,6 +317,33 @@ var Post = Bb.Model.extend({
 });
 
 module.exports = Post;
+
+},{}],"/home/adumitru/coding/roadmap-backbone/app/models/register.user.js":[function(require,module,exports){
+"use strict";
+
+function validateEmail(email) {
+  var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return re.test(email);
+}
+
+function validatePassword(password) {
+  if (password.length == 0) return "Password can't be empty";
+
+  if (!(password.length >= 6 && password.length <= 12)) return "Password must be between 6 and 12 characters";
+
+  return null;
+}
+var RegisterUser = Bb.Model.extend({
+  validate: function validate(attrs, options) {
+    if (attrs.username == "") return "Username can't be empty.";
+    var passError = validatePassword(attrs.password);
+    if (passError) return passError;
+    if (attrs.password !== attrs.password2) return "Passwords don't match";
+    if (!validateEmail(attrs.email)) return "Email not valid.";
+  }
+});
+
+module.exports = RegisterUser;
 
 },{}],"/home/adumitru/coding/roadmap-backbone/app/router.js":[function(require,module,exports){
 'use strict';
@@ -396,10 +439,15 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
             var helper;
 
             return "  <div class=\"alert alert-danger\">\n  <strong>Error</strong>\n    \n      <p>" + container.escapeExpression((helper = (helper = helpers.error || (depth0 != null ? depth0.error : depth0)) != null ? helper : helpers.helperMissing, typeof helper === "function" ? helper.call(depth0 != null ? depth0 : {}, { "name": "error", "hash": {}, "data": data }) : helper)) + "</p>\n  </div>\n";
-        }, "compiler": [7, ">= 4.0.0"], "main": function main(container, depth0, helpers, partials, data) {
-            var stack1;
+        }, "3": function _(container, depth0, helpers, partials, data) {
+            var helper;
 
-            return "<div>\n" + ((stack1 = helpers["if"].call(depth0 != null ? depth0 : {}, depth0 != null ? depth0.error : depth0, { "name": "if", "hash": {}, "fn": container.program(1, data, 0), "inverse": container.noop, "data": data })) != null ? stack1 : "") + "\n</div>";
+            return "  <div class=\"alert alert-info\">\n    <strong>Info</strong>\n    <p>" + container.escapeExpression((helper = (helper = helpers.info || (depth0 != null ? depth0.info : depth0)) != null ? helper : helpers.helperMissing, typeof helper === "function" ? helper.call(depth0 != null ? depth0 : {}, { "name": "info", "hash": {}, "data": data }) : helper)) + "\n  </div>\n";
+        }, "compiler": [7, ">= 4.0.0"], "main": function main(container, depth0, helpers, partials, data) {
+            var stack1,
+                alias1 = depth0 != null ? depth0 : {};
+
+            return "<div>\n" + ((stack1 = helpers["if"].call(alias1, depth0 != null ? depth0.error : depth0, { "name": "if", "hash": {}, "fn": container.program(1, data, 0), "inverse": container.noop, "data": data })) != null ? stack1 : "") + "\n" + ((stack1 = helpers["if"].call(alias1, depth0 != null ? depth0.info : depth0, { "name": "if", "hash": {}, "fn": container.program(3, data, 0), "inverse": container.noop, "data": data })) != null ? stack1 : "") + "\n</div>";
         }, "useData": true });
     templates['group'] = template({ "compiler": [7, ">= 4.0.0"], "main": function main(container, depth0, helpers, partials, data) {
             var stack1,
@@ -426,7 +474,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
             return "<div>\n  <h2>Home</h2>\n  <p>Welcome to our groups website! You can meet awesome people here.</p>\n  <p>Joining is easy. Just click <a href='/register'>here</a> to go to to the sign up page.</p>\n</div>";
         }, "useData": true });
     templates['layout'] = template({ "compiler": [7, ">= 4.0.0"], "main": function main(container, depth0, helpers, partials, data) {
-            return "<div id='nav-region'>\n\n</div>\n<div id='flash-region' class='container'>\n\n</div>\n<div id='main-region' class='container'>\n\n</div>";
+            return "<div id='nav-region'>\n\n</div>\n<div id='flash-region' class='container'>\n\n</div>\n\n<div id=\"loader\"></div>\n<div id='main-region' class='container animate-bottom'>\n\n</div>";
         }, "useData": true });
     templates['login'] = template({ "compiler": [7, ">= 4.0.0"], "main": function main(container, depth0, helpers, partials, data) {
             return "<div>\n\n  <form role=\"form\" id=\"login-form\">\n      <h2>Sign in</h2>\n  <p>Sign in to view and access our groups! :)</p>\n  <a href=# id='register-button'>Don't have an account yet?</a>\n    <div class=\"form-group\">\n      <input type=\"text\" id=\"username\" placeholder=\"Username\" class=\"form-control\" required>\n    </div>\n    <div class=\"form-group\">\n      <input type=\"password\" id=\"password\"placeholder=\"Password\" class=\"form-control\" required>\n    </div>\n    <div class=\"text-danger\" id=\"validation-error\">\n\n    </div>\n    <input type=\"submit\" class=\"btn btn-success\" id='login-button' value='Sign in'></input>\n  </form>\n</div>";
@@ -448,7 +496,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
             return "<div>\n  <h2>" + container.escapeExpression((helper = (helper = helpers.username || (depth0 != null ? depth0.username : depth0)) != null ? helper : helpers.helperMissing, typeof helper === "function" ? helper.call(depth0 != null ? depth0 : {}, { "name": "username", "hash": {}, "data": data }) : helper)) + "</h2>\n  \n\n  <a href=# id='logout-button'>Logout</a>\n</div>";
         }, "useData": true });
     templates['register'] = template({ "compiler": [7, ">= 4.0.0"], "main": function main(container, depth0, helpers, partials, data) {
-            return "<div>\n\n\n  <form role=\"form\" id=\"login-form\">\n    <h2>Create an account</h2>\n    <p>Create an account to view and access our groups.</p>\n    <p>We're a happy, growing community! :)</p>\n      <div class=\"form-group\">\n        <input type=\"text\" id=\"username\" placeholder=\"Username\" class=\"form-control\">\n      </div>\n      <div class=\"form-group\">\n        <input type=\"email\" id=\"email\" placeholder=\"Email address\" class=\"form-control\">\n      </div>\n      <div class=\"form-group\">\n        <input type=\"password\" id=\"password\"placeholder=\"Password\" class=\"form-control\">\n      </div>\n      <div class=\"form-group\">\n        <input type=\"password\" id=\"password2\" placeholder=\"Enter your password again\" class=\"form-control\">\n      </div>\n      <button type=\"button\" class=\"btn btn-success\" id='register-button'>Create account</button>\n    </form>\n</div>";
+            return "<div>\n\n\n  <form role=\"form\" id=\"login-form\">\n    <h2>Create an account</h2>\n    <p>Create an account to view and access our groups.</p>\n    <p>We're a happy, growing community! :)</p>\n      <div class=\"form-group\">\n        <input type=\"text\" id=\"username\" placeholder=\"Username\" class=\"form-control\">\n      </div>\n      <div class=\"form-group\">\n        <input type=\"email\" id=\"email\" placeholder=\"Email address\" class=\"form-control\">\n      </div>\n      <div class=\"form-group\">\n        <input type=\"password\" id=\"password\"placeholder=\"Password\" class=\"form-control\">\n      </div>\n      <div class=\"form-group\">\n        <input type=\"password\" id=\"password2\" placeholder=\"Enter your password again\" class=\"form-control\">\n      </div>\n      <div class=\"text-danger\" id=\"validation-error\">\n\n      </div>\n      <button type=\"button\" class=\"btn btn-success\" id='register-button'>Create account</button>\n    </form>\n</div>";
         }, "useData": true });
 })();
 
@@ -468,9 +516,11 @@ var FlashView = Mn.View.extend({
   model: new Flash(),
 
   initialize: function initialize(_ref) {
-    var error = _ref.error;
+    var error = _ref.error,
+        info = _ref.info;
 
     this.model.set('error', error);
+    this.model.set('info', info);
   }
 
 });
@@ -544,6 +594,7 @@ var LayoutView = Mn.View.extend({
     'show:home': 'onShowHome',
     'do:login': 'onDoLogin',
     'do:logout': 'onDoLogout',
+    'do:register': 'onDoRegister',
     'show:profile': 'onShowProfile'
   },
 
@@ -597,8 +648,13 @@ var LayoutView = Mn.View.extend({
     // console.log(this.flashView.model.toJSON())
 
     this.showChildView('flashRegion', this.flashView);
-    console.log(args);
   },
+
+  onShowInfo: function onShowInfo(args) {
+    this.flashView = new FlashView({ info: args });
+    this.showChildView('flashRegion', this.flashView);
+  },
+
 
   onDoLogin: function onDoLogin(user) {
     var _this2 = this;
@@ -629,8 +685,22 @@ var LayoutView = Mn.View.extend({
     this.navView.render();
   },
 
-  onShowGroup: function onShowGroup(group) {
+  onDoRegister: function onDoRegister(user) {
     var _this3 = this;
+
+    auth.doRegister(user).then(function () {
+      return auth.doLogin(user);
+    }).then(function () {
+      _this3.onShowHome();
+      _this3.triggerMethod('show:info', 'Welcome, ' + user.username + '!');
+    }).catch(function (error) {
+      _this3.triggerMethod('show:error', error);
+    });
+  },
+
+
+  onShowGroup: function onShowGroup(group) {
+    var _this4 = this;
 
     if (!auth.isAuthenticated()) {
       return this.showHome();
@@ -640,11 +710,11 @@ var LayoutView = Mn.View.extend({
 
     g.fetch().then(function () {
 
-      _this3.showChildView('mainRegion', new GroupView({ model: g }));
+      _this4.showChildView('mainRegion', new GroupView({ model: g }));
       Bb.history.navigate('groups/' + group);
     }).catch(function (err) {
-      _this3.triggerMethod('show:error', JSON.stringify(err));
-      _this3.onShowHome();
+      _this4.triggerMethod('show:error', JSON.stringify(err));
+      _this4.onShowHome();
     });
   }
 
@@ -733,15 +803,35 @@ var ProfileView = Mn.View.extend({
 module.exports = ProfileView;
 
 },{}],"/home/adumitru/coding/roadmap-backbone/app/views/register.js":[function(require,module,exports){
-"use strict";
+'use strict';
 
 var template = Handlebars.templates.register;
+var RegisterUser = require('../models/register.user');
 
 var Register = Mn.View.extend({
   // tagName: 'div',
-  template: template
+  template: template,
+
+  model: new RegisterUser(),
+
+  triggers: {
+    '#register-button click': 'send:register'
+  },
+
+  onSendRegister: function onSendRegister() {
+    this.model.set('username', $("#username").val());
+    this.model.set('password', $("#password").val());
+    this.model.set('password2', $("#password2").val());
+    this.model.set('email', $("#email").val());
+
+    if (!this.model.isValid()) {
+      $('#validation-error').text(this.model.validationError);
+    } else {
+      this.triggerMethod('do:register', this.model);
+    }
+  }
 });
 
 module.exports = Register;
 
-},{}]},{},["/home/adumitru/coding/roadmap-backbone/app/main.js"]);
+},{"../models/register.user":"/home/adumitru/coding/roadmap-backbone/app/models/register.user.js"}]},{},["/home/adumitru/coding/roadmap-backbone/app/main.js"]);
