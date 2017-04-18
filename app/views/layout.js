@@ -35,22 +35,20 @@ var LayoutView = Mn.View.extend({
 
 
 
-  onRender: function() {
+  onRender() {
     this.showChildView('navRegion', this.navView)
     // this.triggerMethod('show:login')
   },
 
-  initialize: function() {
+  initialize() {
 
     this.navView = new NavView()
   },
 
-  onShowHome: function(args) {
+  onShowHome(args) {
     if (auth.isAuthenticated()) {
       let groups = new Groups()
       groups.fetch().then(() => {
-
-        console.log(groups.models)
 
         this.homeView = new HomeView({collection: groups})
 
@@ -68,20 +66,20 @@ var LayoutView = Mn.View.extend({
 
   },
 
-  onShowLogin: function(args) {
+  onShowLogin(args) {
     this.loginView = new LoginView()
 
     this.showChildView('mainRegion', this.loginView)
     Bb.history.navigate('login')
   },
 
-  onShowRegister: function(args) {
+  onShowRegister(args) {
     this.registerView = new RegisterView()
     this.showChildView('mainRegion', this.registerView)
     Bb.history.navigate('register')
   },
 
-  onShowError: function(args) {
+  onShowError(args) {
     this.flashView = new FlashView({error: args})
 
     // console.log(this.flashView.model.toJSON())
@@ -95,7 +93,7 @@ var LayoutView = Mn.View.extend({
 
   },
 
-  onDoLogin: function(user) {
+  onDoLogin(user) {
     auth.doLogin(user)
       .then(() => {
         this.onShowHome()
@@ -113,7 +111,7 @@ var LayoutView = Mn.View.extend({
       })
   },
 
-  onShowProfile: function() {
+  onShowProfile() {
     if (!auth.isAuthenticated()) {
       return this.onShowHome()
     }
@@ -122,7 +120,7 @@ var LayoutView = Mn.View.extend({
     this.showChildView('mainRegion', this.profileView)
     Bb.history.navigate('profile')
   },
-  onDoLogout: function() {
+  onDoLogout() {
     auth.doLogout()
     this.onShowHome()
     this.navView.render()
@@ -143,18 +141,17 @@ var LayoutView = Mn.View.extend({
       })
   },
 
-  onShowGroup: function(group) {
+  onShowGroup(group) {
     if (!auth.isAuthenticated()) {
       return this.showHome()
     }
 
     let g = new Group({id: group})
 
-    g.fetch().then(() => {
-
+    g.fetch()
+    .then(() => {
       this.showChildView('mainRegion', new GroupView({model: g}))
       Bb.history.navigate(`groups/${group}`)
-
     })
     .catch((err) => {
       this.triggerMethod('show:error', JSON.stringify(err))
@@ -162,8 +159,25 @@ var LayoutView = Mn.View.extend({
     })
   },
 
-  onDoJoinGroup(args) {
-    console.log($(args))
+  onDoJoinGroup(group) {
+    if (!auth.isAuthenticated()) {
+      return this.showHome()
+    };
+
+    $.ajax({
+      url: `https://localhost:3000/api/group/${group}/add/${auth.user.get('id')}`,
+      method: 'PUT',
+      success: (data) => {
+        console.log(data);
+
+        this.triggerMethod('show:info', "Join successful!");
+        this.onShowHome();
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    })
+    // console.log($(args).data("group"))
   }
 
 })

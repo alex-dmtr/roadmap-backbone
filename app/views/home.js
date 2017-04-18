@@ -16,8 +16,20 @@ var Home = Mn.View.extend({
 
   triggers: {
     'click #register-button': 'show:register',
-    'click .join-button': 'do:joingroup'
+    // 'click .join-button': 'do:joingroup'
   },
+
+  events: {
+    'click .join-button': 'joinGroup'
+  },
+
+  joinGroup(dom) {
+    let link = dom.target;
+    let group = $(link).data('group');
+    // console.log($(link).data('group'));
+
+    this.triggerMethod('do:joingroup', group);
+  } 
 
 })
 
