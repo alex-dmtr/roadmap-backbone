@@ -249,10 +249,11 @@ module.exports = {
   LocalUser: require('./local.user'),
   LoginUser: require('./login.user'),
   Group: require('./group'),
-  Post: require('./post')
+  Post: require('./post'),
+  User: require('./user')
 };
 
-},{"./group":"/home/adumitru/coding/roadmap-backbone/app/models/group.js","./local.user":"/home/adumitru/coding/roadmap-backbone/app/models/local.user.js","./login.user":"/home/adumitru/coding/roadmap-backbone/app/models/login.user.js","./post":"/home/adumitru/coding/roadmap-backbone/app/models/post.js"}],"/home/adumitru/coding/roadmap-backbone/app/models/local.user.js":[function(require,module,exports){
+},{"./group":"/home/adumitru/coding/roadmap-backbone/app/models/group.js","./local.user":"/home/adumitru/coding/roadmap-backbone/app/models/local.user.js","./login.user":"/home/adumitru/coding/roadmap-backbone/app/models/login.user.js","./post":"/home/adumitru/coding/roadmap-backbone/app/models/post.js","./user":"/home/adumitru/coding/roadmap-backbone/app/models/user.js"}],"/home/adumitru/coding/roadmap-backbone/app/models/local.user.js":[function(require,module,exports){
 'use strict';
 
 // import {LocalStorage} from 'backbone.localstorage'
@@ -355,6 +356,15 @@ var RegisterUser = Bb.Model.extend({
 });
 
 module.exports = RegisterUser;
+
+},{}],"/home/adumitru/coding/roadmap-backbone/app/models/user.js":[function(require,module,exports){
+'use strict';
+
+var User = Bb.Model.extend({
+  urlRoot: 'https://localhost:3000/api/users/'
+});
+
+module.exports = User;
 
 },{}],"/home/adumitru/coding/roadmap-backbone/app/router.js":[function(require,module,exports){
 'use strict';
@@ -462,6 +472,12 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         }, "useData": true });
     templates['group'] = template({ "1": function _(container, depth0, helpers, partials, data) {
             return "          <li>" + container.escapeExpression(container.lambda(depth0 != null ? depth0.username : depth0, depth0)) + "</li>\n";
+        }, "3": function _(container, depth0, helpers, partials, data) {
+            var stack1,
+                alias1 = container.lambda,
+                alias2 = container.escapeExpression;
+
+            return "          <strong>" + alias2(alias1((stack1 = depth0 != null ? depth0.owner : depth0) != null ? stack1.username : stack1, depth0)) + "</strong>\n          <li>" + alias2(alias1(depth0 != null ? depth0.message : depth0, depth0)) + "</li>\n";
         }, "compiler": [7, ">= 4.0.0"], "main": function main(container, depth0, helpers, partials, data) {
             var stack1,
                 helper,
@@ -470,7 +486,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
                 alias3 = "function",
                 alias4 = container.escapeExpression;
 
-            return "\n <div>\n\n  <div class=\"col-xs-6\">\n\n    \n    <h1>" + alias4((helper = (helper = helpers.name || (depth0 != null ? depth0.name : depth0)) != null ? helper : alias2, (typeof helper === "undefined" ? "undefined" : _typeof(helper)) === alias3 ? helper.call(alias1, { "name": "name", "hash": {}, "data": data }) : helper)) + " </h1>\n      <p>" + alias4((helper = (helper = helpers.description || (depth0 != null ? depth0.description : depth0)) != null ? helper : alias2, (typeof helper === "undefined" ? "undefined" : _typeof(helper)) === alias3 ? helper.call(alias1, { "name": "description", "hash": {}, "data": data }) : helper)) + "</p>\n      <a>Join group</a>\n\n      <p>Group owner: <strong>" + alias4(container.lambda((stack1 = depth0 != null ? depth0.owner : depth0) != null ? stack1.username : stack1, depth0)) + "</strong>\n      <p>Members:</p>\n      <ul>\n" + ((stack1 = helpers.each.call(alias1, depth0 != null ? depth0.members : depth0, { "name": "each", "hash": {}, "fn": container.program(1, data, 0), "inverse": container.noop, "data": data })) != null ? stack1 : "") + "      </ul>\n  </div>\n  <div class=\"col-xs-6\">\n    <img src='" + alias4((helper = (helper = helpers.avatarUrl || (depth0 != null ? depth0.avatarUrl : depth0)) != null ? helper : alias2, (typeof helper === "undefined" ? "undefined" : _typeof(helper)) === alias3 ? helper.call(alias1, { "name": "avatarUrl", "hash": {}, "data": data }) : helper)) + "' class=\"img img-responsive img-thumbnail\"></img>\n  </div>\n</div>";
+            return "\n <div>\n\n  <div class=\"col-xs-6\">\n\n    \n    <h1>" + alias4((helper = (helper = helpers.name || (depth0 != null ? depth0.name : depth0)) != null ? helper : alias2, (typeof helper === "undefined" ? "undefined" : _typeof(helper)) === alias3 ? helper.call(alias1, { "name": "name", "hash": {}, "data": data }) : helper)) + " </h1>\n      <p>" + alias4((helper = (helper = helpers.description || (depth0 != null ? depth0.description : depth0)) != null ? helper : alias2, (typeof helper === "undefined" ? "undefined" : _typeof(helper)) === alias3 ? helper.call(alias1, { "name": "description", "hash": {}, "data": data }) : helper)) + "</p>\n\n      <p>Group owner: <strong>" + alias4(container.lambda((stack1 = depth0 != null ? depth0.owner : depth0) != null ? stack1.username : stack1, depth0)) + "</strong>\n      <p>Members:</p>\n      <ul>\n" + ((stack1 = helpers.each.call(alias1, depth0 != null ? depth0.members : depth0, { "name": "each", "hash": {}, "fn": container.program(1, data, 0), "inverse": container.noop, "data": data })) != null ? stack1 : "") + "      </ul>\n\n      <h3>Posts</h3>\n      <ul>\n" + ((stack1 = helpers.each.call(alias1, depth0 != null ? depth0.posts : depth0, { "name": "each", "hash": {}, "fn": container.program(3, data, 0), "inverse": container.noop, "data": data })) != null ? stack1 : "") + "      </ul>\n  </div>\n  <div class=\"col-xs-6\">\n    <img src='" + alias4((helper = (helper = helpers.avatarUrl || (depth0 != null ? depth0.avatarUrl : depth0)) != null ? helper : alias2, (typeof helper === "undefined" ? "undefined" : _typeof(helper)) === alias3 ? helper.call(alias1, { "name": "avatarUrl", "hash": {}, "data": data }) : helper)) + "' class=\"img img-responsive img-thumbnail\"></img>\n  </div>\n</div>";
         }, "useData": true });
     templates['groups'] = template({ "1": function _(container, depth0, helpers, partials, data) {
             var stack1,
@@ -505,7 +521,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     templates['nav'] = template({ "1": function _(container, depth0, helpers, partials, data) {
             var stack1;
 
-            return "\n              <li>\n                <a href=# id='profile-button'>\n                  <span class=\"glyphicon glyphicon-user\" aria-hidden=\"true\"></span> " + container.escapeExpression(container.lambda((stack1 = depth0 != null ? depth0.user : depth0) != null ? stack1.username : stack1, depth0)) + "\n                </a>\n                  </li>\n";
+            return "\n              <li>\n                <a href=# id='profile-button'>\n                  <span class=\"glyphicon glyphicon-user\" aria-hidden=\"true\"></span> " + container.escapeExpression(container.lambda((stack1 = depth0 != null ? depth0.user : depth0) != null ? stack1.username : stack1, depth0)) + "\n                </a>\n              </li>\n              <li>\n                <a href=# id='logout-button'>\n                  Logout\n                </a>\n              </li>\n";
         }, "3": function _(container, depth0, helpers, partials, data) {
             return "              <li><a href=# id='login-button'>Sign in</a></li>\n              <li><a href=# id='register-button'>Sign up</a></li>\n";
         }, "compiler": [7, ">= 4.0.0"], "main": function main(container, depth0, helpers, partials, data) {
@@ -514,12 +530,16 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
             return "<div>\n <nav class=\"navbar navbar-inverse navbar-fixed-top\" role=\"navigation\">\n  \n      <div class=\"container\">\n        <div class=\"navbar-header\">\n          <button type=\"button\" class=\"navbar-toggle collapsed\" data-toggle=\"collapse\" data-target=\"#navbar\" aria-expanded=\"false\" aria-controls=\"navbar\">\n            <span class=\"sr-only\">Toggle navigation</span>\n            <span class=\"icon-bar\"></span>\n            <span class=\"icon-bar\"></span>\n            <span class=\"icon-bar\"></span>\n          </button>\n          <a class=\"navbar-brand\" href=\"#\" id='home-button'>Roadmap - Backbone</a>\n        </div>\n        <div id=\"navbar\" class=\"navbar-collapse collapse\">\n          <ul class=\"nav navbar-nav\">\n\n          </ul>\n\n          <ul class=\"nav navbar-nav navbar-right\">\n" + ((stack1 = helpers["if"].call(depth0 != null ? depth0 : {}, (stack1 = depth0 != null ? depth0.user : depth0) != null ? stack1.is_auth : stack1, { "name": "if", "hash": {}, "fn": container.program(1, data, 0), "inverse": container.program(3, data, 0), "data": data })) != null ? stack1 : "") + "      </ul>\n        </div>\n  \n      </div>\n    </nav>\n\n    \n</div>";
         }, "useData": true });
     templates['profile'] = template({ "compiler": [7, ">= 4.0.0"], "main": function main(container, depth0, helpers, partials, data) {
-            var helper;
+            var helper,
+                alias1 = depth0 != null ? depth0 : {},
+                alias2 = helpers.helperMissing,
+                alias3 = "function",
+                alias4 = container.escapeExpression;
 
-            return "<div>\n  <h2>" + container.escapeExpression((helper = (helper = helpers.username || (depth0 != null ? depth0.username : depth0)) != null ? helper : helpers.helperMissing, typeof helper === "function" ? helper.call(depth0 != null ? depth0 : {}, { "name": "username", "hash": {}, "data": data }) : helper)) + "</h2>\n  \n\n  <a href=# id='logout-button'>Logout</a>\n</div>";
+            return "<div>\n  <h2>" + alias4((helper = (helper = helpers.username || (depth0 != null ? depth0.username : depth0)) != null ? helper : alias2, (typeof helper === "undefined" ? "undefined" : _typeof(helper)) === alias3 ? helper.call(alias1, { "name": "username", "hash": {}, "data": data }) : helper)) + "</h2>\n  \n  <p>" + alias4((helper = (helper = helpers.description || (depth0 != null ? depth0.description : depth0)) != null ? helper : alias2, (typeof helper === "undefined" ? "undefined" : _typeof(helper)) === alias3 ? helper.call(alias1, { "name": "description", "hash": {}, "data": data }) : helper)) + "</p>\n\n\n  <a href=# id='logout-button'>Logout</a>\n</div>\n\n<!-- \nId, primary key,AI(auto incremented)  - unique \nusername - string,not null, 256(length)\nemail - string,not null, 256(length)\ndescription - string, nullable, 500(length)\npassword - string - plain- for the moment, no encryption needed, not null, 256(length)\navatarUrl - string, nullable, 500(length)\nage - integer,nullable, \ncurrentProject that he/she works on - string,nullable, 500(length)\nagency ( Brasov, Iasi, Cluj, Bucharest, Chisinau) - string,nullable, 500(length)\n\n  -->";
         }, "useData": true });
     templates['register'] = template({ "compiler": [7, ">= 4.0.0"], "main": function main(container, depth0, helpers, partials, data) {
-            return "<div>\n\n\n  <form role=\"form\" id=\"login-form\">\n    <h2>Create an account</h2>\n    <p>Create an account to view and access our groups.</p>\n    <p>We're a happy, growing community! :)</p>\n      <div class=\"form-group\">\n        <input type=\"text\" id=\"username\" placeholder=\"Username\" class=\"form-control\">\n      </div>\n      <div class=\"form-group\">\n        <input type=\"email\" id=\"email\" placeholder=\"Email address\" class=\"form-control\">\n      </div>\n      <div class=\"form-group\">\n        <input type=\"password\" id=\"password\"placeholder=\"Password\" class=\"form-control\">\n      </div>\n      <div class=\"form-group\">\n        <input type=\"password\" id=\"password2\" placeholder=\"Enter your password again\" class=\"form-control\">\n      </div>\n      <div class=\"text-danger\" id=\"validation-error\">\n\n      </div>\n      <button type=\"button\" class=\"btn btn-success\" id='register-button'>Create account</button>\n    </form>\n</div>";
+            return "<div>\n\n\n  <form role=\"form\" id=\"login-form\">\n    <h2>Create an account</h2>\n    <p>Create an account to view and access our groups.</p>\n    <p>We're a happy, growing community! :)</p>\n      <div class=\"form-group\">\n        <input type=\"text\" id=\"username\" placeholder=\"Username\" class=\"form-control\">\n      </div>\n      <div class=\"form-group\">\n        <input type=\"email\" id=\"email\" placeholder=\"Email address\" class=\"form-control\">\n      </div>\n      <div class=\"form-group\">\n        <input type=\"password\" id=\"password\"placeholder=\"Password\" class=\"form-control\">\n      </div>\n      <div class=\"form-group\">\n        <input type=\"password\" id=\"password2\" placeholder=\"Enter your password again\" class=\"form-control\">\n      </div>\n      <div class=\"text-danger\" id=\"validation-error\">\n\n      </div>\n          <input type=\"submit\" class=\"btn btn-success\" id='register-button' value='Create account'></input>\n    </form>\n</div>";
         }, "useData": true });
 })();
 
@@ -578,10 +598,20 @@ var Home = Mn.View.extend({
   },
 
   triggers: {
-    'click #register-button': 'show:register',
-    'click .join-button': 'do:joingroup'
-  }
+    'click #register-button': 'show:register'
+  },
 
+  events: {
+    'click .join-button': 'joinGroup'
+  },
+
+  joinGroup: function joinGroup(dom) {
+    var link = dom.target;
+    var group = $(link).data('group');
+    // console.log($(link).data('group'));
+
+    this.triggerMethod('do:joingroup', group);
+  }
 });
 
 module.exports = Home;
@@ -598,6 +628,7 @@ var ProfileView = require('./profile');
 var LocalUser = require('../models/local.user');
 var GroupView = require('./group');
 var template = Handlebars.templates.layout;
+var User = require('../models/user');
 var auth = require('../auth');
 var Groups = require('../collections/groups');
 var Group = require('../models/group');
@@ -628,20 +659,16 @@ var LayoutView = Mn.View.extend({
     this.showChildView('navRegion', this.navView);
     // this.triggerMethod('show:login')
   },
-
   initialize: function initialize() {
 
     this.navView = new NavView();
   },
-
   onShowHome: function onShowHome(args) {
     var _this = this;
 
     if (auth.isAuthenticated()) {
       var groups = new Groups();
       groups.fetch().then(function () {
-
-        console.log(groups.models);
 
         _this.homeView = new HomeView({ collection: groups });
 
@@ -654,20 +681,17 @@ var LayoutView = Mn.View.extend({
       Bb.history.navigate('');
     }
   },
-
   onShowLogin: function onShowLogin(args) {
     this.loginView = new LoginView();
 
     this.showChildView('mainRegion', this.loginView);
     Bb.history.navigate('login');
   },
-
   onShowRegister: function onShowRegister(args) {
     this.registerView = new RegisterView();
     this.showChildView('mainRegion', this.registerView);
     Bb.history.navigate('register');
   },
-
   onShowError: function onShowError(args) {
     this.flashView = new FlashView({ error: args });
 
@@ -675,13 +699,10 @@ var LayoutView = Mn.View.extend({
 
     this.showChildView('flashRegion', this.flashView);
   },
-
   onShowInfo: function onShowInfo(args) {
     this.flashView = new FlashView({ info: args });
     this.showChildView('flashRegion', this.flashView);
   },
-
-
   onDoLogin: function onDoLogin(user) {
     var _this2 = this;
 
@@ -695,39 +716,42 @@ var LayoutView = Mn.View.extend({
       if (status == 401) _this2.triggerMethod('show:error', "Username and password combination not recognised");else _this2.triggerMethod('show:error', "Server error");
     });
   },
-
   onShowProfile: function onShowProfile() {
+    var _this3 = this;
+
     if (!auth.isAuthenticated()) {
       return this.onShowHome();
     }
 
-    this.profileView = new ProfileView({ model: auth.user });
-    this.showChildView('mainRegion', this.profileView);
-    Bb.history.navigate('profile');
+    var user = new User();
+    user.set('id', auth.user.get('id'));
+    user.fetch().then(function () {
+
+      _this3.profileView = new ProfileView({ model: user });
+      _this3.showChildView('mainRegion', _this3.profileView);
+      Bb.history.navigate('profile');
+    });
   },
   onDoLogout: function onDoLogout() {
     auth.doLogout();
     this.onShowHome();
     this.navView.render();
   },
-
   onDoRegister: function onDoRegister(user) {
-    var _this3 = this;
+    var _this4 = this;
 
     auth.doRegister(user).then(function () {
       return auth.doLogin(user);
     }).then(function () {
-      _this3.onShowHome();
-      _this3.triggerMethod('show:info', 'Welcome, ' + user.get('username') + '!');
-      _this3.navView.render();
+      _this4.onShowProfile();
+      _this4.triggerMethod('show:info', 'Welcome, ' + user.get('username') + '!');
+      _this4.navView.render();
     }).catch(function (error) {
-      _this3.triggerMethod('show:error', error);
+      _this4.triggerMethod('show:error', error);
     });
   },
-
-
   onShowGroup: function onShowGroup(group) {
-    var _this4 = this;
+    var _this5 = this;
 
     if (!auth.isAuthenticated()) {
       return this.showHome();
@@ -736,23 +760,40 @@ var LayoutView = Mn.View.extend({
     var g = new Group({ id: group });
 
     g.fetch().then(function () {
-
-      _this4.showChildView('mainRegion', new GroupView({ model: g }));
+      _this5.showChildView('mainRegion', new GroupView({ model: g }));
       Bb.history.navigate('groups/' + group);
     }).catch(function (err) {
-      _this4.triggerMethod('show:error', JSON.stringify(err));
-      _this4.onShowHome();
+      _this5.triggerMethod('show:error', JSON.stringify(err));
+      _this5.onShowHome();
     });
   },
+  onDoJoinGroup: function onDoJoinGroup(group) {
+    var _this6 = this;
 
-  onDoJoinGroup: function onDoJoinGroup(args) {
-    console.log($(args));
+    if (!auth.isAuthenticated()) {
+      return this.showHome();
+    };
+
+    $.ajax({
+      url: 'https://localhost:3000/api/group/' + group + '/add/' + auth.user.get('id'),
+      method: 'PUT',
+      success: function success(data) {
+        console.log(data);
+
+        _this6.triggerMethod('show:info', "Join successful!");
+        _this6.onShowHome();
+      },
+      error: function error(err) {
+        console.log(err);
+      }
+    });
+    // console.log($(args).data("group"))
   }
 });
 
 module.exports = LayoutView;
 
-},{"../auth":"/home/adumitru/coding/roadmap-backbone/app/auth.js","../collections/groups":"/home/adumitru/coding/roadmap-backbone/app/collections/groups.js","../models/group":"/home/adumitru/coding/roadmap-backbone/app/models/group.js","../models/local.user":"/home/adumitru/coding/roadmap-backbone/app/models/local.user.js","./flash":"/home/adumitru/coding/roadmap-backbone/app/views/flash.js","./group":"/home/adumitru/coding/roadmap-backbone/app/views/group.js","./home":"/home/adumitru/coding/roadmap-backbone/app/views/home.js","./login":"/home/adumitru/coding/roadmap-backbone/app/views/login.js","./nav":"/home/adumitru/coding/roadmap-backbone/app/views/nav.js","./profile":"/home/adumitru/coding/roadmap-backbone/app/views/profile.js","./register":"/home/adumitru/coding/roadmap-backbone/app/views/register.js"}],"/home/adumitru/coding/roadmap-backbone/app/views/login.js":[function(require,module,exports){
+},{"../auth":"/home/adumitru/coding/roadmap-backbone/app/auth.js","../collections/groups":"/home/adumitru/coding/roadmap-backbone/app/collections/groups.js","../models/group":"/home/adumitru/coding/roadmap-backbone/app/models/group.js","../models/local.user":"/home/adumitru/coding/roadmap-backbone/app/models/local.user.js","../models/user":"/home/adumitru/coding/roadmap-backbone/app/models/user.js","./flash":"/home/adumitru/coding/roadmap-backbone/app/views/flash.js","./group":"/home/adumitru/coding/roadmap-backbone/app/views/group.js","./home":"/home/adumitru/coding/roadmap-backbone/app/views/home.js","./login":"/home/adumitru/coding/roadmap-backbone/app/views/login.js","./nav":"/home/adumitru/coding/roadmap-backbone/app/views/nav.js","./profile":"/home/adumitru/coding/roadmap-backbone/app/views/profile.js","./register":"/home/adumitru/coding/roadmap-backbone/app/views/register.js"}],"/home/adumitru/coding/roadmap-backbone/app/views/login.js":[function(require,module,exports){
 "use strict";
 
 var template = Handlebars.templates.login;
@@ -799,18 +840,19 @@ var template = Handlebars.templates.nav;
 var auth = require('../auth');
 
 var NavView = Mn.View.extend({
-
   getTemplate: function getTemplate() {
     return template({
       user: auth.isAuthenticated() ? auth.user.toJSON() : null
     });
   },
 
+
   triggers: {
     "click #home-button": "show:home",
     "click #login-button": "show:login",
     "click #register-button": "show:register",
-    "click #profile-button": "show:profile"
+    "click #profile-button": "show:profile",
+    "click #logout-button": "do:logout"
   }
 
 });
@@ -821,6 +863,8 @@ module.exports = NavView;
 'use strict';
 
 var template = Hbs.templates.profile;
+var User = require('../models/user');
+var auth = require('../auth');
 
 var ProfileView = Mn.View.extend({
   template: template,
@@ -828,11 +872,12 @@ var ProfileView = Mn.View.extend({
   triggers: {
     'click #logout-button': 'do:logout'
   }
+
 });
 
 module.exports = ProfileView;
 
-},{}],"/home/adumitru/coding/roadmap-backbone/app/views/register.js":[function(require,module,exports){
+},{"../auth":"/home/adumitru/coding/roadmap-backbone/app/auth.js","../models/user":"/home/adumitru/coding/roadmap-backbone/app/models/user.js"}],"/home/adumitru/coding/roadmap-backbone/app/views/register.js":[function(require,module,exports){
 'use strict';
 
 var template = Handlebars.templates.register;
