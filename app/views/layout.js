@@ -7,6 +7,7 @@ var ProfileView = require('./profile')
 var LocalUser = require('../models/local.user')
 var GroupView = require('./group')
 var template = Handlebars.templates.layout
+var User = require('../models/user');
 var auth = require('../auth')
 var Groups = require('../collections/groups')
 var Group = require('../models/group')
@@ -116,9 +117,15 @@ var LayoutView = Mn.View.extend({
       return this.onShowHome()
     }
 
-    this.profileView = new ProfileView({model:auth.user})
-    this.showChildView('mainRegion', this.profileView)
-    Bb.history.navigate('profile')
+    let user = new User();
+    user.set('id', auth.user.get('id'));
+    user.fetch()
+      .then(() => {
+
+        this.profileView = new ProfileView({model:user})
+        this.showChildView('mainRegion', this.profileView)
+        Bb.history.navigate('profile')
+      })
   },
   onDoLogout() {
     auth.doLogout()
@@ -132,9 +139,9 @@ var LayoutView = Mn.View.extend({
         return auth.doLogin(user)
       })
       .then(() => {
-        this.onShowHome()
-        this.triggerMethod('show:info', `Welcome, ${user.get('username')}!`)
-        this.navView.render()
+        this.onShowProfile();
+        this.triggerMethod('show:info', `Welcome, ${user.get('username')}!`);
+        this.navView.render();
       })
       .catch((error) => {
         this.triggerMethod('show:error', error)

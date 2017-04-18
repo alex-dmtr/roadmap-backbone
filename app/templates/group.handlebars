@@ -6,13 +6,20 @@
     
     <h1>{{name}} </h1>
       <p>{{description}}</p>
-      <a>Join group</a>
 
       <p>Group owner: <strong>{{owner.username}}</strong>
       <p>Members:</p>
       <ul>
         {{#each members}}
           <li>{{this.username}}</li>
+        {{/each}}
+      </ul>
+
+      <h3>Posts</h3>
+      <ul>
+        {{#each posts}}
+          <strong>{{this.owner.username}}</strong>
+          <li>{{this.message}}</li>
         {{/each}}
       </ul>
   </div>
