@@ -4,6 +4,7 @@ var RegisterView = require('./register')
 var FlashView = require('./flash')
 var HomeView = require('./home')
 var ProfileView = require('./profile')
+var ProfileEditView = require('./profile.edit');
 var LocalUser = require('../models/local.user')
 var GroupView = require('./group')
 var template = Handlebars.templates.layout
@@ -51,15 +52,16 @@ var LayoutView = Mn.View.extend({
       let groups = new Groups()
       groups.fetch().then(() => {
 
-        this.homeView = new HomeView({collection: groups})
+        this.homeView = new HomeView({
+          collection: groups
+        })
 
 
         this.showChildView('mainRegion', this.homeView)
         Bb.history.navigate('')
       })
 
-    }
-    else {
+    } else {
       this.homeView = new HomeView()
       this.showChildView('mainRegion', this.homeView)
       Bb.history.navigate('')
@@ -81,7 +83,9 @@ var LayoutView = Mn.View.extend({
   },
 
   onShowError(args) {
-    this.flashView = new FlashView({error: args})
+    this.flashView = new FlashView({
+      error: args
+    })
 
     // console.log(this.flashView.model.toJSON())
 
@@ -89,7 +93,9 @@ var LayoutView = Mn.View.extend({
   },
 
   onShowInfo(args) {
-    this.flashView = new FlashView({info: args})
+    this.flashView = new FlashView({
+      info: args
+    })
     this.showChildView('flashRegion', this.flashView)
 
   },
@@ -104,7 +110,7 @@ var LayoutView = Mn.View.extend({
 
         var status = err.status
 
-  
+
         if (status == 401)
           this.triggerMethod('show:error', "Username and password combination not recognised")
         else
@@ -122,11 +128,31 @@ var LayoutView = Mn.View.extend({
     user.fetch()
       .then(() => {
 
-        this.profileView = new ProfileView({model:user})
+        this.profileView = new ProfileView({
+          model: user
+        })
         this.showChildView('mainRegion', this.profileView)
         Bb.history.navigate('profile')
       })
   },
+
+  onShowProfileEdit() {
+    if (!auth.isAuthenticated())
+      return this.onShowHome();
+
+    let user = new User();
+    user.set('id', auth.user.get('id'));
+    user.fetch()
+      .then(() => {
+        this.showChildView('mainRegion', new ProfileEditView({
+          model: user
+        }));
+        Bb.history.navigate('profile/edit');
+      })
+
+  },
+
+
   onDoLogout() {
     auth.doLogout()
     this.onShowHome()
@@ -153,17 +179,21 @@ var LayoutView = Mn.View.extend({
       return this.showHome()
     }
 
-    let g = new Group({id: group})
+    let g = new Group({
+      id: group
+    })
 
     g.fetch()
-    .then(() => {
-      this.showChildView('mainRegion', new GroupView({model: g}))
-      Bb.history.navigate(`groups/${group}`)
-    })
-    .catch((err) => {
-      this.triggerMethod('show:error', JSON.stringify(err))
-      this.onShowHome()
-    })
+      .then(() => {
+        this.showChildView('mainRegion', new GroupView({
+          model: g
+        }))
+        Bb.history.navigate(`groups/${group}`)
+      })
+      .catch((err) => {
+        this.triggerMethod('show:error', JSON.stringify(err))
+        this.onShowHome()
+      })
   },
 
   onDoJoinGroup(group) {

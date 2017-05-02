@@ -16,7 +16,7 @@ var LayoutView = require('./views/layout')
 //   },
 
 //   index: function() {
-    
+
 //     alert(this.$el)
 //     var layout = this.getOption('layout')
 //     layout.triggerMethod('show:index')
@@ -37,43 +37,49 @@ var Router = Mn.AppRouter.extend({
     'login': 'login',
     'register': 'register',
     'profile': 'profile',
+    'profile/edit': 'profileEdit',
     'groups/:group': 'showGroup'
   },
 
-  initialize: function(options) {
+  initialize: function (options) {
     this.options = options
     // this.controller = new Controller ({
     //   initialData: this.getOption('initialData')
     // })
   },
 
-  home: function() {
+  home() {
     var layout = this.options.layoutView
     layout.triggerMethod('show:home')
   },
 
-  login: function() {
+  login() {
     var layout = this.options.layoutView
     layout.triggerMethod('show:login')
   },
 
-  register: function() {
+  register() {
     var layout = this.options.layoutView
 
     layout.triggerMethod('show:register')
   },
 
-  profile: function() {
+  profile() {
     var layout = this.options.layoutView
 
     layout.triggerMethod('show:profile')
   },
 
-  showGroup: function(group) {
+  showGroup(group) {
     var layout = this.options.layoutView
 
     // console.log(group)
     layout.triggerMethod('show:group', group)
+  },
+
+  profileEdit() {
+    var layout = this.options.layoutView;
+    layout.triggerMethod('show:profileEdit');
   }
 })
 
