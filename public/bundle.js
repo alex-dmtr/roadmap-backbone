@@ -1,14 +1,15 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"/home/adumitru/coding/roadmap-backbone/app/app.js":[function(require,module,exports){
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"D:\\home\\coding\\roadmap-backbone\\app\\app.js":[function(require,module,exports){
 'use strict';
 
 window.Bb = Backbone;
 window.Mn = Marionette = Backbone.Marionette;
 window.Hbs = Handlebars;
 if (window.__agent) {
-  window.__agent.start(Backbone, Marionette);
+    window.__agent.start(Backbone, Marionette);
 }
 
-require('./templates');
+// require('./templates')
+
 
 var models = require('./models');
 var Router = require('./router');
@@ -17,35 +18,35 @@ var Groups = require('./collections/groups');
 
 var LayoutView = require('./views/layout');
 var App = Mn.Application.extend({
-  region: '#app-hook',
-  onStart: function onStart() {
-    this.auth = Auth;
-    this.groups = Groups;
-    // console.log(this.options.layoutView)
+    region: '#app-hook',
+    onStart: function onStart() {
+        this.auth = Auth;
+        this.groups = Groups;
+        // console.log(this.options.layoutView)
 
-    /** Starts the URL handling framework */
+        /** Starts the URL handling framework */
 
-    // this.showView(new RootView())
-    // (new NavView()).render()
+        // this.showView(new RootView())
+        // (new NavView()).render()
 
-    var router = new Router(this.options);
+        var router = new Router(this.options);
 
-    this.showView(this.options.layoutView);
-    // (new NavView()).render()
+        this.showView(this.options.layoutView);
+        // (new NavView()).render()
 
-    if (!Bb.history.started) Bb.history.start({ pushState: true, root: "/" });
-  }
+        if (!Bb.history.started) Bb.history.start({ pushState: true, root: "/" });
+    }
 });
 
 var myApp = new App({
-  layoutView: new LayoutView()
+    layoutView: new LayoutView()
 });
 
 module.exports = myApp;
 
 // $.ajax({url: "https://localhost:3000/api/users", method: "GET", success: console.log, error: console.log})
 
-},{"./auth":"/home/adumitru/coding/roadmap-backbone/app/auth.js","./collections/groups":"/home/adumitru/coding/roadmap-backbone/app/collections/groups.js","./models":"/home/adumitru/coding/roadmap-backbone/app/models/index.js","./router":"/home/adumitru/coding/roadmap-backbone/app/router.js","./templates":"/home/adumitru/coding/roadmap-backbone/app/templates/index.js","./views/layout":"/home/adumitru/coding/roadmap-backbone/app/views/layout.js"}],"/home/adumitru/coding/roadmap-backbone/app/auth.js":[function(require,module,exports){
+},{"./auth":"D:\\home\\coding\\roadmap-backbone\\app\\auth.js","./collections/groups":"D:\\home\\coding\\roadmap-backbone\\app\\collections\\groups.js","./models":"D:\\home\\coding\\roadmap-backbone\\app\\models\\index.js","./router":"D:\\home\\coding\\roadmap-backbone\\app\\router.js","./views/layout":"D:\\home\\coding\\roadmap-backbone\\app\\views\\layout.js"}],"D:\\home\\coding\\roadmap-backbone\\app\\auth.js":[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -139,7 +140,7 @@ var Auth = new AuthClass();
 
 module.exports = Auth;
 
-},{"./models/local.user":"/home/adumitru/coding/roadmap-backbone/app/models/local.user.js"}],"/home/adumitru/coding/roadmap-backbone/app/collections/groups.js":[function(require,module,exports){
+},{"./models/local.user":"D:\\home\\coding\\roadmap-backbone\\app\\models\\local.user.js"}],"D:\\home\\coding\\roadmap-backbone\\app\\collections\\groups.js":[function(require,module,exports){
 "use strict";
 
 var Group = require('../models/group');
@@ -150,7 +151,7 @@ var Groups = Bb.Collection.extend({
 
 module.exports = Groups;
 
-},{"../models/group":"/home/adumitru/coding/roadmap-backbone/app/models/group.js"}],"/home/adumitru/coding/roadmap-backbone/app/main.js":[function(require,module,exports){
+},{"../models/group":"D:\\home\\coding\\roadmap-backbone\\app\\models\\group.js"}],"D:\\home\\coding\\roadmap-backbone\\app\\main.js":[function(require,module,exports){
 'use strict';
 
 var App = require('./app');
@@ -212,7 +213,7 @@ $(function () {
   App.start();
 });
 
-},{"./app":"/home/adumitru/coding/roadmap-backbone/app/app.js","./auth":"/home/adumitru/coding/roadmap-backbone/app/auth.js"}],"/home/adumitru/coding/roadmap-backbone/app/models/flash.js":[function(require,module,exports){
+},{"./app":"D:\\home\\coding\\roadmap-backbone\\app\\app.js","./auth":"D:\\home\\coding\\roadmap-backbone\\app\\auth.js"}],"D:\\home\\coding\\roadmap-backbone\\app\\models\\flash.js":[function(require,module,exports){
 'use strict';
 
 var Flash = Bb.Model.extend({
@@ -223,7 +224,7 @@ var Flash = Bb.Model.extend({
 
 module.exports = Flash;
 
-},{}],"/home/adumitru/coding/roadmap-backbone/app/models/group.js":[function(require,module,exports){
+},{}],"D:\\home\\coding\\roadmap-backbone\\app\\models\\group.js":[function(require,module,exports){
 'use strict';
 
 var Group = Bb.Model.extend({
@@ -232,9 +233,9 @@ var Group = Bb.Model.extend({
   defaults: {
     name: 'name',
     owner: null,
+    members: null,
     description: 'desc',
-    avatarUrl: 'avatarUrl',
-    memberIds: []
+    avatarUrl: 'avatarUrl'
   },
 
   initialize: function initialize() {}
@@ -242,7 +243,7 @@ var Group = Bb.Model.extend({
 
 module.exports = Group;
 
-},{}],"/home/adumitru/coding/roadmap-backbone/app/models/index.js":[function(require,module,exports){
+},{}],"D:\\home\\coding\\roadmap-backbone\\app\\models\\index.js":[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -252,42 +253,42 @@ module.exports = {
   Post: require('./post')
 };
 
-},{"./group":"/home/adumitru/coding/roadmap-backbone/app/models/group.js","./local.user":"/home/adumitru/coding/roadmap-backbone/app/models/local.user.js","./login.user":"/home/adumitru/coding/roadmap-backbone/app/models/login.user.js","./post":"/home/adumitru/coding/roadmap-backbone/app/models/post.js"}],"/home/adumitru/coding/roadmap-backbone/app/models/local.user.js":[function(require,module,exports){
+},{"./group":"D:\\home\\coding\\roadmap-backbone\\app\\models\\group.js","./local.user":"D:\\home\\coding\\roadmap-backbone\\app\\models\\local.user.js","./login.user":"D:\\home\\coding\\roadmap-backbone\\app\\models\\login.user.js","./post":"D:\\home\\coding\\roadmap-backbone\\app\\models\\post.js"}],"D:\\home\\coding\\roadmap-backbone\\app\\models\\local.user.js":[function(require,module,exports){
 'use strict';
 
 // import {LocalStorage} from 'backbone.localstorage'
 
 var UID = 'local.user.roadmap';
 var LocalUser = Bb.Model.extend({
-  // localStorage: new LocalStorage('local.user'),
+    // localStorage: new LocalStorage('local.user'),
 
-  defaults: {
-    username: '',
-    id: null,
-    jwt: null,
-    is_auth: false
-  },
+    defaults: {
+        username: '',
+        id: null,
+        jwt: null,
+        is_auth: false
+    },
 
-  fetch: function fetch() {
-    this.set(JSON.parse(localStorage.getItem(UID)));
-  },
+    fetch: function fetch() {
+        this.set(JSON.parse(localStorage.getItem(UID)));
+    },
 
-  destroy: function destroy() {
-    localStorage.removeItem(UID);
-    this.unset('username');
-    this.unset('id');
-    this.unset('jwt');
-    this.set('is_auth', false);
-  },
+    destroy: function destroy() {
+        localStorage.removeItem(UID);
+        this.unset('username');
+        this.unset('id');
+        this.unset('jwt');
+        this.set('is_auth', false);
+    },
 
-  save: function save() {
-    localStorage.setItem(UID, JSON.stringify(this.toJSON()));
-  }
+    save: function save() {
+        localStorage.setItem(UID, JSON.stringify(this.toJSON()));
+    }
 });
 
 module.exports = LocalUser;
 
-},{}],"/home/adumitru/coding/roadmap-backbone/app/models/login.user.js":[function(require,module,exports){
+},{}],"D:\\home\\coding\\roadmap-backbone\\app\\models\\login.user.js":[function(require,module,exports){
 'use strict';
 
 var LoginUser = Bb.Model.extend({
@@ -313,7 +314,7 @@ var LoginUser = Bb.Model.extend({
 
 module.exports = LoginUser;
 
-},{}],"/home/adumitru/coding/roadmap-backbone/app/models/post.js":[function(require,module,exports){
+},{}],"D:\\home\\coding\\roadmap-backbone\\app\\models\\post.js":[function(require,module,exports){
 "use strict";
 
 var Post = Bb.Model.extend({
@@ -328,7 +329,7 @@ var Post = Bb.Model.extend({
 
 module.exports = Post;
 
-},{}],"/home/adumitru/coding/roadmap-backbone/app/models/register.user.js":[function(require,module,exports){
+},{}],"D:\\home\\coding\\roadmap-backbone\\app\\models\\register.user.js":[function(require,module,exports){
 "use strict";
 
 function validateEmail(email) {
@@ -356,7 +357,7 @@ var RegisterUser = Bb.Model.extend({
 
 module.exports = RegisterUser;
 
-},{}],"/home/adumitru/coding/roadmap-backbone/app/router.js":[function(require,module,exports){
+},{}],"D:\\home\\coding\\roadmap-backbone\\app\\router.js":[function(require,module,exports){
 'use strict';
 
 var LayoutView = require('./views/layout');
@@ -438,80 +439,7 @@ var Router = Mn.AppRouter.extend({
 
 module.exports = Router;
 
-},{"./views/layout":"/home/adumitru/coding/roadmap-backbone/app/views/layout.js"}],"/home/adumitru/coding/roadmap-backbone/app/templates/index.js":[function(require,module,exports){
-"use strict";
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-(function () {
-    var template = Handlebars.template,
-        templates = Handlebars.templates = Handlebars.templates || {};
-    templates['flash'] = template({ "1": function _(container, depth0, helpers, partials, data) {
-            var helper;
-
-            return "  <div class=\"alert alert-danger\">\n  <strong>Error</strong>\n    \n      <p>" + container.escapeExpression((helper = (helper = helpers.error || (depth0 != null ? depth0.error : depth0)) != null ? helper : helpers.helperMissing, typeof helper === "function" ? helper.call(depth0 != null ? depth0 : {}, { "name": "error", "hash": {}, "data": data }) : helper)) + "</p>\n  </div>\n";
-        }, "3": function _(container, depth0, helpers, partials, data) {
-            var helper;
-
-            return "  <div class=\"alert alert-info\">\n    <strong>Info</strong>\n    <p>" + container.escapeExpression((helper = (helper = helpers.info || (depth0 != null ? depth0.info : depth0)) != null ? helper : helpers.helperMissing, typeof helper === "function" ? helper.call(depth0 != null ? depth0 : {}, { "name": "info", "hash": {}, "data": data }) : helper)) + "\n  </div>\n";
-        }, "compiler": [7, ">= 4.0.0"], "main": function main(container, depth0, helpers, partials, data) {
-            var stack1,
-                alias1 = depth0 != null ? depth0 : {};
-
-            return "<div>\n" + ((stack1 = helpers["if"].call(alias1, depth0 != null ? depth0.error : depth0, { "name": "if", "hash": {}, "fn": container.program(1, data, 0), "inverse": container.noop, "data": data })) != null ? stack1 : "") + "\n" + ((stack1 = helpers["if"].call(alias1, depth0 != null ? depth0.info : depth0, { "name": "if", "hash": {}, "fn": container.program(3, data, 0), "inverse": container.noop, "data": data })) != null ? stack1 : "") + "\n</div>";
-        }, "useData": true });
-    templates['group'] = template({ "compiler": [7, ">= 4.0.0"], "main": function main(container, depth0, helpers, partials, data) {
-            var stack1,
-                helper,
-                alias1 = depth0 != null ? depth0 : {},
-                alias2 = helpers.helperMissing,
-                alias3 = "function",
-                alias4 = container.escapeExpression;
-
-            return "\n <div>\n\n  <div class=\"col-xs-6\">\n\n    \n    <h1>" + alias4((helper = (helper = helpers.name || (depth0 != null ? depth0.name : depth0)) != null ? helper : alias2, (typeof helper === "undefined" ? "undefined" : _typeof(helper)) === alias3 ? helper.call(alias1, { "name": "name", "hash": {}, "data": data }) : helper)) + " </h1>\n      <p>" + alias4((helper = (helper = helpers.description || (depth0 != null ? depth0.description : depth0)) != null ? helper : alias2, (typeof helper === "undefined" ? "undefined" : _typeof(helper)) === alias3 ? helper.call(alias1, { "name": "description", "hash": {}, "data": data }) : helper)) + "</p>\n      <a>Join group</a>\n\n      <p>Group owner: <strong>" + alias4(container.lambda((stack1 = depth0 != null ? depth0.owner : depth0) != null ? stack1.username : stack1, depth0)) + "</strong>\n      <p>Members:</p>\n      <ul>\n        \n      </ul>\n  </div>\n  <div class=\"col-xs-6\">\n    <img src='" + alias4((helper = (helper = helpers.avatarUrl || (depth0 != null ? depth0.avatarUrl : depth0)) != null ? helper : alias2, (typeof helper === "undefined" ? "undefined" : _typeof(helper)) === alias3 ? helper.call(alias1, { "name": "avatarUrl", "hash": {}, "data": data }) : helper)) + "' class=\"img img-responsive img-thumbnail\"></img>\n  </div>\n</div>";
-        }, "useData": true });
-    templates['groups'] = template({ "1": function _(container, depth0, helpers, partials, data) {
-            var stack1,
-                alias1 = container.lambda,
-                alias2 = container.escapeExpression;
-
-            return "  <tr >\n \n    <div class=\"row\">\n    <div class=\"col-xs-4\">\n      <img src=\"" + alias2(alias1(depth0 != null ? depth0.avatarUrl : depth0, depth0)) + "\" class=\"img img-responsive\"></img>\n\n    </div>\n\n    <div class=\"col-xs-8\">\n      <h2>\n      <a href=\"/groups/" + alias2(alias1(depth0 != null ? depth0.id : depth0, depth0)) + "\">" + alias2(alias1(depth0 != null ? depth0.name : depth0, depth0)) + "</a> </h2>\n      <p>" + alias2(alias1(depth0 != null ? depth0.description : depth0, depth0)) + "</p>\n      <a>Join group</a>\n      \n      <p>Created by: <strong>" + alias2(alias1((stack1 = depth0 != null ? depth0.owner : depth0) != null ? stack1.username : stack1, depth0)) + "</strong></p>\n\n  \n    </div>\n    </div>\n  </tr>\n";
-        }, "compiler": [7, ">= 4.0.0"], "main": function main(container, depth0, helpers, partials, data) {
-            var stack1;
-
-            return "<div>\n  <h1>Groups in your area</h1>\n  <table>\n    <tbody>\n" + ((stack1 = helpers.each.call(depth0 != null ? depth0 : {}, depth0 != null ? depth0.items : depth0, { "name": "each", "hash": {}, "fn": container.program(1, data, 0), "inverse": container.noop, "data": data })) != null ? stack1 : "") + "\n  </tbody>\n  </table>\n</div>  ";
-        }, "useData": true });
-    templates['home'] = template({ "compiler": [7, ">= 4.0.0"], "main": function main(container, depth0, helpers, partials, data) {
-            return "<div>\n  <h2>Home</h2>\n  <p>Welcome to our groups website! You can meet awesome people here.</p>\n  <p>Joining is easy. Just click <a href='/register'>here</a> to go to to the sign up page.</p>\n</div>";
-        }, "useData": true });
-    templates['layout'] = template({ "compiler": [7, ">= 4.0.0"], "main": function main(container, depth0, helpers, partials, data) {
-            return "<div id='nav-region'>\n\n</div>\n<div id='flash-region' class='container'>\n\n</div>\n\n<div id=\"loader\" style=\"display:none\"></div>\n<div id='main-region' class='container animate-bottom'>\n\n</div>";
-        }, "useData": true });
-    templates['login'] = template({ "compiler": [7, ">= 4.0.0"], "main": function main(container, depth0, helpers, partials, data) {
-            return "<div>\n\n  <form role=\"form\" id=\"login-form\">\n      <h2>Sign in</h2>\n  <p>Sign in to view and access our groups! :)</p>\n  <a href=# id='register-button'>Don't have an account yet?</a>\n    <div class=\"form-group\">\n      <input type=\"text\" id=\"username\" placeholder=\"Username\" class=\"form-control\" required>\n    </div>\n    <div class=\"form-group\">\n      <input type=\"password\" id=\"password\"placeholder=\"Password\" class=\"form-control\" required>\n    </div>\n    <div class=\"text-danger\" id=\"validation-error\">\n\n    </div>\n    <input type=\"submit\" class=\"btn btn-success\" id='login-button' value='Sign in'></input>\n  </form>\n</div>";
-        }, "useData": true });
-    templates['nav'] = template({ "1": function _(container, depth0, helpers, partials, data) {
-            var stack1;
-
-            return "\n              <li>\n                <a href=# id='profile-button'>\n                  <span class=\"glyphicon glyphicon-user\" aria-hidden=\"true\"></span> " + container.escapeExpression(container.lambda((stack1 = depth0 != null ? depth0.user : depth0) != null ? stack1.username : stack1, depth0)) + "\n                </a>\n                  </li>\n";
-        }, "3": function _(container, depth0, helpers, partials, data) {
-            return "              <li><a href=# id='login-button'>Sign in</a></li>\n              <li><a href=# id='register-button'>Sign up</a></li>\n";
-        }, "compiler": [7, ">= 4.0.0"], "main": function main(container, depth0, helpers, partials, data) {
-            var stack1;
-
-            return "<div>\n <nav class=\"navbar navbar-inverse navbar-fixed-top\" role=\"navigation\">\n  \n      <div class=\"container\">\n        <div class=\"navbar-header\">\n          <button type=\"button\" class=\"navbar-toggle collapsed\" data-toggle=\"collapse\" data-target=\"#navbar\" aria-expanded=\"false\" aria-controls=\"navbar\">\n            <span class=\"sr-only\">Toggle navigation</span>\n            <span class=\"icon-bar\"></span>\n            <span class=\"icon-bar\"></span>\n            <span class=\"icon-bar\"></span>\n          </button>\n          <a class=\"navbar-brand\" href=\"#\" id='home-button'>Roadmap - Backbone</a>\n        </div>\n        <div id=\"navbar\" class=\"navbar-collapse collapse\">\n          <ul class=\"nav navbar-nav\">\n\n          </ul>\n\n          <ul class=\"nav navbar-nav navbar-right\">\n" + ((stack1 = helpers["if"].call(depth0 != null ? depth0 : {}, (stack1 = depth0 != null ? depth0.user : depth0) != null ? stack1.is_auth : stack1, { "name": "if", "hash": {}, "fn": container.program(1, data, 0), "inverse": container.program(3, data, 0), "data": data })) != null ? stack1 : "") + "      </ul>\n        </div>\n  \n      </div>\n    </nav>\n\n    \n</div>";
-        }, "useData": true });
-    templates['profile'] = template({ "compiler": [7, ">= 4.0.0"], "main": function main(container, depth0, helpers, partials, data) {
-            var helper;
-
-            return "<div>\n  <h2>" + container.escapeExpression((helper = (helper = helpers.username || (depth0 != null ? depth0.username : depth0)) != null ? helper : helpers.helperMissing, typeof helper === "function" ? helper.call(depth0 != null ? depth0 : {}, { "name": "username", "hash": {}, "data": data }) : helper)) + "</h2>\n  \n\n  <a href=# id='logout-button'>Logout</a>\n</div>";
-        }, "useData": true });
-    templates['register'] = template({ "compiler": [7, ">= 4.0.0"], "main": function main(container, depth0, helpers, partials, data) {
-            return "<div>\n\n\n  <form role=\"form\" id=\"login-form\">\n    <h2>Create an account</h2>\n    <p>Create an account to view and access our groups.</p>\n    <p>We're a happy, growing community! :)</p>\n      <div class=\"form-group\">\n        <input type=\"text\" id=\"username\" placeholder=\"Username\" class=\"form-control\">\n      </div>\n      <div class=\"form-group\">\n        <input type=\"email\" id=\"email\" placeholder=\"Email address\" class=\"form-control\">\n      </div>\n      <div class=\"form-group\">\n        <input type=\"password\" id=\"password\"placeholder=\"Password\" class=\"form-control\">\n      </div>\n      <div class=\"form-group\">\n        <input type=\"password\" id=\"password2\" placeholder=\"Enter your password again\" class=\"form-control\">\n      </div>\n      <div class=\"text-danger\" id=\"validation-error\">\n\n      </div>\n      <button type=\"button\" class=\"btn btn-success\" id='register-button'>Create account</button>\n    </form>\n</div>";
-        }, "useData": true });
-})();
-
-},{}],"/home/adumitru/coding/roadmap-backbone/app/views/flash.js":[function(require,module,exports){
+},{"./views/layout":"D:\\home\\coding\\roadmap-backbone\\app\\views\\layout.js"}],"D:\\home\\coding\\roadmap-backbone\\app\\views\\flash.js":[function(require,module,exports){
 'use strict';
 
 var template = Handlebars.templates.flash;
@@ -538,7 +466,7 @@ var FlashView = Mn.View.extend({
 
 module.exports = FlashView;
 
-},{"../models/flash":"/home/adumitru/coding/roadmap-backbone/app/models/flash.js"}],"/home/adumitru/coding/roadmap-backbone/app/views/group.js":[function(require,module,exports){
+},{"../models/flash":"D:\\home\\coding\\roadmap-backbone\\app\\models\\flash.js"}],"D:\\home\\coding\\roadmap-backbone\\app\\views\\group.js":[function(require,module,exports){
 "use strict";
 
 var template = Hbs.templates.group;
@@ -549,7 +477,7 @@ var GroupView = Mn.View.extend({
 
 module.exports = GroupView;
 
-},{}],"/home/adumitru/coding/roadmap-backbone/app/views/home.js":[function(require,module,exports){
+},{}],"D:\\home\\coding\\roadmap-backbone\\app\\views\\home.js":[function(require,module,exports){
 'use strict';
 
 var home = Handlebars.templates.home;
@@ -566,13 +494,15 @@ var Home = Mn.View.extend({
   },
 
   triggers: {
-    'click #register-button': 'show:register'
+    'click #register-button': 'show:register',
+    'click .join-button': 'do:joingroup'
   }
+
 });
 
 module.exports = Home;
 
-},{"../auth":"/home/adumitru/coding/roadmap-backbone/app/auth.js"}],"/home/adumitru/coding/roadmap-backbone/app/views/layout.js":[function(require,module,exports){
+},{"../auth":"D:\\home\\coding\\roadmap-backbone\\app\\auth.js"}],"D:\\home\\coding\\roadmap-backbone\\app\\views\\layout.js":[function(require,module,exports){
 'use strict';
 
 var NavView = require('./nav');
@@ -606,7 +536,8 @@ var LayoutView = Mn.View.extend({
     'do:login': 'onDoLogin',
     'do:logout': 'onDoLogout',
     'do:register': 'onDoRegister',
-    'show:profile': 'onShowProfile'
+    'show:profile': 'onShowProfile',
+    'do:joingroup': 'onDoJoinGroup'
   },
 
   onRender: function onRender() {
@@ -728,13 +659,16 @@ var LayoutView = Mn.View.extend({
       _this4.triggerMethod('show:error', JSON.stringify(err));
       _this4.onShowHome();
     });
-  }
+  },
 
+  onDoJoinGroup: function onDoJoinGroup(args) {
+    console.log($(args));
+  }
 });
 
 module.exports = LayoutView;
 
-},{"../auth":"/home/adumitru/coding/roadmap-backbone/app/auth.js","../collections/groups":"/home/adumitru/coding/roadmap-backbone/app/collections/groups.js","../models/group":"/home/adumitru/coding/roadmap-backbone/app/models/group.js","../models/local.user":"/home/adumitru/coding/roadmap-backbone/app/models/local.user.js","./flash":"/home/adumitru/coding/roadmap-backbone/app/views/flash.js","./group":"/home/adumitru/coding/roadmap-backbone/app/views/group.js","./home":"/home/adumitru/coding/roadmap-backbone/app/views/home.js","./login":"/home/adumitru/coding/roadmap-backbone/app/views/login.js","./nav":"/home/adumitru/coding/roadmap-backbone/app/views/nav.js","./profile":"/home/adumitru/coding/roadmap-backbone/app/views/profile.js","./register":"/home/adumitru/coding/roadmap-backbone/app/views/register.js"}],"/home/adumitru/coding/roadmap-backbone/app/views/login.js":[function(require,module,exports){
+},{"../auth":"D:\\home\\coding\\roadmap-backbone\\app\\auth.js","../collections/groups":"D:\\home\\coding\\roadmap-backbone\\app\\collections\\groups.js","../models/group":"D:\\home\\coding\\roadmap-backbone\\app\\models\\group.js","../models/local.user":"D:\\home\\coding\\roadmap-backbone\\app\\models\\local.user.js","./flash":"D:\\home\\coding\\roadmap-backbone\\app\\views\\flash.js","./group":"D:\\home\\coding\\roadmap-backbone\\app\\views\\group.js","./home":"D:\\home\\coding\\roadmap-backbone\\app\\views\\home.js","./login":"D:\\home\\coding\\roadmap-backbone\\app\\views\\login.js","./nav":"D:\\home\\coding\\roadmap-backbone\\app\\views\\nav.js","./profile":"D:\\home\\coding\\roadmap-backbone\\app\\views\\profile.js","./register":"D:\\home\\coding\\roadmap-backbone\\app\\views\\register.js"}],"D:\\home\\coding\\roadmap-backbone\\app\\views\\login.js":[function(require,module,exports){
 "use strict";
 
 var template = Handlebars.templates.login;
@@ -774,7 +708,7 @@ var LoginView = Mn.View.extend({
 
 module.exports = LoginView;
 
-},{"../models/login.user":"/home/adumitru/coding/roadmap-backbone/app/models/login.user.js"}],"/home/adumitru/coding/roadmap-backbone/app/views/nav.js":[function(require,module,exports){
+},{"../models/login.user":"D:\\home\\coding\\roadmap-backbone\\app\\models\\login.user.js"}],"D:\\home\\coding\\roadmap-backbone\\app\\views\\nav.js":[function(require,module,exports){
 "use strict";
 
 var template = Handlebars.templates.nav;
@@ -799,7 +733,7 @@ var NavView = Mn.View.extend({
 
 module.exports = NavView;
 
-},{"../auth":"/home/adumitru/coding/roadmap-backbone/app/auth.js"}],"/home/adumitru/coding/roadmap-backbone/app/views/profile.js":[function(require,module,exports){
+},{"../auth":"D:\\home\\coding\\roadmap-backbone\\app\\auth.js"}],"D:\\home\\coding\\roadmap-backbone\\app\\views\\profile.js":[function(require,module,exports){
 'use strict';
 
 var template = Hbs.templates.profile;
@@ -814,7 +748,7 @@ var ProfileView = Mn.View.extend({
 
 module.exports = ProfileView;
 
-},{}],"/home/adumitru/coding/roadmap-backbone/app/views/register.js":[function(require,module,exports){
+},{}],"D:\\home\\coding\\roadmap-backbone\\app\\views\\register.js":[function(require,module,exports){
 'use strict';
 
 var template = Handlebars.templates.register;
@@ -846,4 +780,4 @@ var Register = Mn.View.extend({
 
 module.exports = Register;
 
-},{"../models/register.user":"/home/adumitru/coding/roadmap-backbone/app/models/register.user.js"}]},{},["/home/adumitru/coding/roadmap-backbone/app/main.js"]);
+},{"../models/register.user":"D:\\home\\coding\\roadmap-backbone\\app\\models\\register.user.js"}]},{},["D:\\home\\coding\\roadmap-backbone\\app\\main.js"]);
