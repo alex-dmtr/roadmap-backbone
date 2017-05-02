@@ -5,7 +5,7 @@ if (window.__agent) {
   window.__agent.start(Backbone, Marionette);
 }
 
-require('./templates')
+// require('./templates')
 
 
 var models = require('./models')

@@ -34,9 +34,14 @@
   "devDependencies": {
     "babel-preset-es2015": "^6.24.1",
     "budo": "^9.4.7",
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.1",
     "gulp-copy": "^1.0.0",
+    "gulp-declare": "^0.3.0",
+    "gulp-handlebars": "^4.0.0",
     "gulp-shell": "^0.6.3",
-    "handlebars": "^4.0.6",
+    "gulp-wrap": "^0.13.0",
+    "handlebars": "^4.0.7",
     "hbsfy": "^2.7.0"
   }
 }
