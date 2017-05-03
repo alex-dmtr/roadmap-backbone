@@ -1,5 +1,5 @@
 var Post = Bb.Model.extend({
-  // idAttribute: "_id",
+
   defaults: {
     message: "msg",
     createdAt: new Date(),

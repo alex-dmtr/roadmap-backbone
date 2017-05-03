@@ -56,9 +56,9 @@ this["Handlebars"]["templates"]["group"] = Handlebars.template({"1":function(con
     + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.members : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "      </ul>\n\n      <h3>Posts</h3>\n      <ul class=\"posts\">\n"
     + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.posts : depth0),{"name":"each","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + "      </ul>\n  </div>\n  <div class=\"col-xs-6\">\n    <img src='"
+    + "      </ul>\n\n      <textarea class=\"form-control\" rows=\"2\" cols=\"10\" id=\"post-message\" placeholder=\"Write a post here\"></textarea>\n      <button class=\" btn btn-primary \" id='add-post' style=\"margin-top:10px\">Add post</button>\n  </div>\n  <div class=\"col-xs-6 \">\n    <img src=' "
     + alias4(((helper = (helper = helpers.avatarUrl || (depth0 != null ? depth0.avatarUrl : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"avatarUrl","hash":{},"data":data}) : helper)))
-    + "' class=\"img img-responsive img-thumbnail\"></img>\n  </div>\n</div>";
+    + " ' class=\"img img-responsive img-thumbnail \"></img>\n  </div>\n</div>";
 },"useData":true});
 this["Handlebars"]["templates"]["groups"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
     var stack1, alias1=container.lambda, alias2=container.escapeExpression, alias3=depth0 != null ? depth0 : {};

@@ -9,7 +9,7 @@ var Group = Bb.Model.extend({
     avatarUrl: 'avatarUrl',
   },
 
-  initialize: function() {
+  initialize() {
 
   }
 })
