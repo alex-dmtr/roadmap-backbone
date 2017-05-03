@@ -1,18 +1,29 @@
-var template = Handlebars.templates.flash
-var Flash = require('../models/flash')
+var template = Handlebars.templates.flash;
+var Flash = require('../flash');
 
 var FlashView = Mn.View.extend({
   // modelEvents: {
   //   'change': 'render'
   // },
 
-  template: template,
+  model: Flash.model,
 
-  model: new Flash(),
+  template,
 
-  initialize: function({error, info}) {
-    this.model.set('error', error)
-    this.model.set('info', info)
+  events: {
+    'click .close': function (dom) {
+      let link = dom.target;
+      let alert = $(link).data('alert');
+
+      Flash.removeAlert(alert);
+    }
+  },
+
+  initialize() {
+    var _this = this;
+    Flash.subscribe(model => {
+      _this.render();
+    });
   }
 
 })

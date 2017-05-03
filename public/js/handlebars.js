@@ -1,25 +1,35 @@
 this["Handlebars"] = this["Handlebars"] || {};
 this["Handlebars"]["templates"] = this["Handlebars"]["templates"] || {};
 this["Handlebars"]["templates"]["flash"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
-    var helper;
-
-  return "  <div class=\"alert alert-danger\">\n  <strong>Error</strong>\n    \n      <p>"
-    + container.escapeExpression(((helper = (helper = helpers.error || (depth0 != null ? depth0.error : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : {},{"name":"error","hash":{},"data":data}) : helper)))
-    + "</p>\n  </div>\n";
-},"3":function(container,depth0,helpers,partials,data) {
-    var helper;
-
-  return "  <div class=\"alert alert-info\">\n    <strong>Info</strong>\n    <p>"
-    + container.escapeExpression(((helper = (helper = helpers.info || (depth0 != null ? depth0.info : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : {},{"name":"info","hash":{},"data":data}) : helper)))
-    + "\n  </div>\n";
-},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1, alias1=depth0 != null ? depth0 : {};
 
-  return "<div>\n"
-    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.error : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + "\n"
-    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.info : depth0),{"name":"if","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + "\n</div>";
+  return " "
+    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.error : depth0),{"name":"if","hash":{},"fn":container.program(2, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + " "
+    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.info : depth0),{"name":"if","hash":{},"fn":container.program(4, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + " ";
+},"2":function(container,depth0,helpers,partials,data) {
+    var alias1=container.lambda, alias2=container.escapeExpression;
+
+  return "\n  <div class=\"alert alert-danger\">\n    <a href=\"#\" class=\"close\" aria-label=\"close\" data-alert="
+    + alias2(alias1((depth0 != null ? depth0.id : depth0), depth0))
+    + ">&times;</a>\n\n    <strong>Error</strong>\n\n    <p>"
+    + alias2(alias1((depth0 != null ? depth0.error : depth0), depth0))
+    + "</p>\n  </div>\n  ";
+},"4":function(container,depth0,helpers,partials,data) {
+    var alias1=container.lambda, alias2=container.escapeExpression;
+
+  return "\n  <div class=\"alert alert-info\">\n    <a href=\"#\" class=\"close\" aria-label=\"close\" data-alert="
+    + alias2(alias1((depth0 != null ? depth0.id : depth0), depth0))
+    + ">&times;</a>\n\n    <strong>Info</strong>\n    <p>"
+    + alias2(alias1((depth0 != null ? depth0.info : depth0), depth0))
+    + "</p>\n  </div>\n  ";
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1;
+
+  return "<div>\n  "
+    + ((stack1 = helpers.each.call(depth0 != null ? depth0 : {},(depth0 != null ? depth0.items : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + "\n\n</div>";
 },"useData":true});
 this["Handlebars"]["templates"]["group"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
     return "        <li>"
@@ -28,11 +38,11 @@ this["Handlebars"]["templates"]["group"] = Handlebars.template({"1":function(con
 },"3":function(container,depth0,helpers,partials,data) {
     var stack1, alias1=container.lambda, alias2=container.escapeExpression;
 
-  return "        <strong>"
+  return "        <li>\n          <strong>"
     + alias2(alias1(((stack1 = (depth0 != null ? depth0.owner : depth0)) != null ? stack1.username : stack1), depth0))
-    + "</strong>\n        <li>"
+    + "</strong>\n          <p>"
     + alias2(alias1((depth0 != null ? depth0.message : depth0), depth0))
-    + "</li>\n";
+    + "</p>\n        </li>\n";
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1, helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
 
@@ -44,7 +54,7 @@ this["Handlebars"]["templates"]["group"] = Handlebars.template({"1":function(con
     + alias4(container.lambda(((stack1 = (depth0 != null ? depth0.owner : depth0)) != null ? stack1.username : stack1), depth0))
     + "</strong>\n      <p>Members:</p>\n      <ul>\n"
     + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.members : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + "      </ul>\n\n      <h3>Posts</h3>\n      <ul>\n"
+    + "      </ul>\n\n      <h3>Posts</h3>\n      <ul class=\"posts\">\n"
     + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.posts : depth0),{"name":"each","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "      </ul>\n  </div>\n  <div class=\"col-xs-6\">\n    <img src='"
     + alias4(((helper = (helper = helpers.avatarUrl || (depth0 != null ? depth0.avatarUrl : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"avatarUrl","hash":{},"data":data}) : helper)))
@@ -53,41 +63,41 @@ this["Handlebars"]["templates"]["group"] = Handlebars.template({"1":function(con
 this["Handlebars"]["templates"]["groups"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
     var stack1, alias1=container.lambda, alias2=container.escapeExpression, alias3=depth0 != null ? depth0 : {};
 
-  return "  <tr >\n \n    <div class=\"row\">\n    <div class=\"col-xs-4\">\n      <img src=\""
+  return "      <tr>\n\n        <div class=\"row\">\n          <div class=\"col-xs-4\">\n            <img src=\""
     + alias2(alias1((depth0 != null ? depth0.avatarUrl : depth0), depth0))
-    + "\" class=\"img img-responsive\"></img>\n\n    </div>\n\n    <div class=\"col-xs-8\">\n"
+    + "\" class=\"img img-responsive\"></img>\n\n          </div>\n\n          <div class=\"col-xs-8\">\n"
     + ((stack1 = helpers["if"].call(alias3,(depth0 != null ? depth0.is_member : depth0),{"name":"if","hash":{},"fn":container.program(2, data, 0),"inverse":container.program(4, data, 0),"data":data})) != null ? stack1 : "")
-    + "      <p>"
+    + "            <p>"
     + alias2(alias1((depth0 != null ? depth0.description : depth0), depth0))
-    + "</p>\n      <p><em>"
+    + "</p>\n            <p><em>"
     + alias2(alias1((depth0 != null ? depth0.num_members : depth0), depth0))
     + " members</em></p>\n"
     + ((stack1 = helpers.unless.call(alias3,(depth0 != null ? depth0.is_member : depth0),{"name":"unless","hash":{},"fn":container.program(6, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + "      \n      <p>Created by: <strong>"
+    + "\n\n            <p>Created by: <strong>"
     + alias2(alias1(((stack1 = (depth0 != null ? depth0.owner : depth0)) != null ? stack1.username : stack1), depth0))
-    + "</strong></p>\n\n  \n    </div>\n    </div>\n  </tr>\n";
+    + "</strong></p>\n\n\n          </div>\n        </div>\n      </tr>\n";
 },"2":function(container,depth0,helpers,partials,data) {
     var alias1=container.lambda, alias2=container.escapeExpression;
 
-  return "      <h2>\n      <a href=\"/groups/"
+  return "            <h2>\n              <a href=\"/groups/"
     + alias2(alias1((depth0 != null ? depth0.id : depth0), depth0))
     + "\">"
     + alias2(alias1((depth0 != null ? depth0.name : depth0), depth0))
     + "</a> </h2>\n";
 },"4":function(container,depth0,helpers,partials,data) {
-    return "        <h2>"
+    return "            <h2>"
     + container.escapeExpression(container.lambda((depth0 != null ? depth0.name : depth0), depth0))
     + "</h2>\n";
 },"6":function(container,depth0,helpers,partials,data) {
-    return "      <a class='join-button' data-group="
+    return "            <a class='join-button' data-group="
     + container.escapeExpression(container.lambda((depth0 != null ? depth0.id : depth0), depth0))
-    + ">Join group</a>\n";
+    + " href=#>Join group</a> ";
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1;
 
-  return "<div>\n  <h1>Groups in your area</h1>\n  <table>\n    <tbody>\n"
+  return "<div>\n  <h1>Groups in your area</h1>\n\n  <!-- Trigger the modal with a button -->\n  <button type=\"button\" class=\"btn btn-success\" style=\"margin-bottom:10px\" data-toggle=\"modal\" data-target=\"#createGroupModal\">Create new group</button>\n\n  <table>\n    <tbody>\n"
     + ((stack1 = helpers.each.call(depth0 != null ? depth0 : {},(depth0 != null ? depth0.items : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + "\n  </tbody>\n  </table>\n</div>  ";
+    + "\n    </tbody>\n  </table>\n\n\n\n  <!-- Modal -->\n  <div id=\"createGroupModal\" class=\"modal fade\" role=\"dialog\">\n    <div class=\"modal-dialog\">\n\n      <!-- Modal content-->\n      <div class=\"modal-content\">\n        <div class=\"modal-header\">\n          <button type=\"button\" class=\"close\" data-dismiss=\"modal\">&times;</button>\n          <h4 class=\"modal-title\">Create a new group</h4>\n        </div>\n        <form>\n          <div class=\"modal-body\">\n\n            <div class=\"form-group\">\n              <label>Name</label>\n              <input type=\"text\" id=\"groupName\" placeholder=\"Group name\" class=\"form-control\" />\n            </div>\n            <div class=\"form-group\">\n              <label>Description</label><textarea id=\"groupDescription\" placeholder=\"Group description\" class=\"form-control\"\n                rows=\"2\" cols=\"10\"></textarea>\n            </div>\n            <div class=\"form-group\">\n              <label>Avatar URL</label><input type=\"text\" id=\"groupAvatarUrl\" placeholder=\"Group avatar URL\" class=\"form-control\"\n              />\n            </div>\n          </div>\n          <div class=\"modal-footer\">\n            <input type=\"submit\" class=\"btn btn-success\" id='groupSubmit' data-dismiss=\"modal\" />\n            <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">Close</button>\n          </div>\n\n        </form>\n      </div>\n\n    </div>\n  </div>\n</div>";
 },"useData":true});
 this["Handlebars"]["templates"]["home"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     return "<div>\n  <h2>Home</h2>\n  <p>Welcome to our groups website! You can meet awesome people here.</p>\n  <p>Joining is easy. Just click <a href='/register'>here</a> to go to to the sign up page.</p>\n</div>";
@@ -133,19 +143,21 @@ this["Handlebars"]["templates"]["profileedit"] = Handlebars.template({"compiler"
 
   return "<form role=\"form\" id=\"login-form\">\n  <h2>Edit profile</h2>\n  <div class=\"row\">\n    <div class=\"col-sm-6\">\n      <div class=\"form-group\">\n        <label for=\"username\">Username</label>\n        <input type=\"text\" id=\"username\" placeholder=\"Username\" value=\""
     + alias4(((helper = (helper = helpers.username || (depth0 != null ? depth0.username : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"username","hash":{},"data":data}) : helper)))
-    + "\" class=\"form-control\" readonly>\n      </div>\n    </div>\n    <div class=\"col-sm-6\">\n\n      <img src=\""
+    + "\" class=\"form-control\" readonly>\n      </div>\n      <div class=\"form-group\">\n        <label for=\"email\">Email address</label>\n        <input type=\"email\" id=\"email\" value="
+    + alias4(((helper = (helper = helpers.email || (depth0 != null ? depth0.email : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"email","hash":{},"data":data}) : helper)))
+    + " class=\"form-control\">\n      </div>\n    </div>\n    <div class=\"col-sm-6\">\n\n      <img src=\""
     + alias4(((helper = (helper = helpers.avatarUrl || (depth0 != null ? depth0.avatarUrl : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"avatarUrl","hash":{},"data":data}) : helper)))
     + "\" style=\"height:200px\" align=\"right\" />\n      <div class=\"form-group\">\n        <label for=\"avatarUrl\">Avatar</label>\n        <input type=\"url\" id=\"avatarUrl\" placeholder=\"Enter an URL for your avatar\" value=\""
     + alias4(((helper = (helper = helpers.avatarUrl || (depth0 != null ? depth0.avatarUrl : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"avatarUrl","hash":{},"data":data}) : helper)))
-    + "\" class=\"form-control\" alt=\"Avatar not found\">\n      </div>\n    </div>\n    <div class=\"form-group\">\n      <label for=\"email\">Email address</label>\n      <input type=\"email\" id=\"email\" value="
-    + alias4(((helper = (helper = helpers.email || (depth0 != null ? depth0.email : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"email","hash":{},"data":data}) : helper)))
-    + " class=\"form-control\">\n    </div>\n    <div class=\"form-group\">\n      <label for=\"description\">Description</label>\n      <textarea id=\"description\" placeholder=\"Tell us something about yourself\" rows=\"2\" cols=\"10\" class=\"form-control\"></textarea>\n    </div>\n    <div class=\"form-group\">\n      <label for=\"age\">Age</label>\n      <input type=\"number\" id=\"age\" value="
+    + "\" class=\"form-control\" alt=\"Avatar not found\">\n      </div>\n    </div>\n\n    <div class=\"form-group\">\n      <label for=\"description\">Description</label>\n      <textarea id=\"description\" placeholder=\"Tell us something about yourself\" rows=\"2\" cols=\"10\" class=\"form-control\" value=\""
+    + alias4(((helper = (helper = helpers.description || (depth0 != null ? depth0.description : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"description","hash":{},"data":data}) : helper)))
+    + "\"></textarea>\n    </div>\n    <div class=\"form-group\">\n      <label for=\"age\">Age</label>\n      <input type=\"number\" id=\"age\" value="
     + alias4(((helper = (helper = helpers.age || (depth0 != null ? depth0.age : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"age","hash":{},"data":data}) : helper)))
     + " min=\"18\" max=\"99\" class=\"form-control\">\n    </div>\n    <div class=\"form-group\">\n      <label for=\"currentProject\">Current Project</label>\n      <input type=\"text\" id=\"currentProject\" placeholder=\"What project are you working on right now?\" value=\""
     + alias4(((helper = (helper = helpers.currentProject || (depth0 != null ? depth0.currentProject : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"currentProject","hash":{},"data":data}) : helper)))
     + "\"\n        class=\"form-control\">\n    </div>\n    <div class=\"form-group\">\n      <label for=\"agency\">Agency</label>\n      <input type=\"text\" id=\"agency\" placeholder=\"Agency\" value=\""
     + alias4(((helper = (helper = helpers.agency || (depth0 != null ? depth0.agency : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"agency","hash":{},"data":data}) : helper)))
-    + "\" class=\"form-control\">\n    </div>\n\n    <div class=\"text-danger\" id=\"validation-error\">\n\n    </div>\n    <input type=\"submit\" class=\"btn btn-success\" id='save-button' value='Save changes'></input>\n    <input type=\"reset\" class=\"btn btn-default\" value='Reset changes'></input>\n</form>\n\n<!-- \nId, primary key,AI(auto incremented)  - unique \nusername - string,not null, 256(length)\nemail - string,not null, 256(length)\ndescription - string, nullable, 500(length)\npassword - string - plain- for the moment, no encryption needed, not null, 256(length)\navatarUrl - string, nullable, 500(length)\nage - integer,nullable, \ncurrentProject that he/she works on - string,nullable, 500(length)\nagency ( Brasov, Iasi, Cluj, Bucharest, Chisinau) - string,nullable, 500(length)\n\n  -->";
+    + "\" class=\"form-control\">\n    </div>\n\n    <div class=\"text-danger\" id=\"validation-error\">\n\n    </div>\n    <input type=\"submit\" class=\"btn btn-success\" id='save-button' value='Save changes'></input>\n    <input type=\"reset\" class=\"btn btn-default\" value='Reset changes'></input>\n    <input type=\"button\" class=\"btn btn-danger\" id='delete-button' value='Delete user'></input>\n</form>\n\n<!-- \nId, primary key,AI(auto incremented)  - unique \nusername - string,not null, 256(length)\nemail - string,not null, 256(length)\ndescription - string, nullable, 500(length)\npassword - string - plain- for the moment, no encryption needed, not null, 256(length)\navatarUrl - string, nullable, 500(length)\nage - integer,nullable, \ncurrentProject that he/she works on - string,nullable, 500(length)\nagency ( Brasov, Iasi, Cluj, Bucharest, Chisinau) - string,nullable, 500(length)\n\n  -->";
 },"useData":true});
 this["Handlebars"]["templates"]["register"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     return "<div>\n\n\n  <form role=\"form\" id=\"login-form\">\n    <h2>Create an account</h2>\n    <p>Create an account to view and access our groups.</p>\n    <p>We're a happy, growing community! :)</p>\n      <div class=\"form-group\">\n        <input type=\"text\" id=\"username\" placeholder=\"Username\" class=\"form-control\">\n      </div>\n      <div class=\"form-group\">\n        <input type=\"email\" id=\"email\" placeholder=\"Email address\" class=\"form-control\">\n      </div>\n      <div class=\"form-group\">\n        <input type=\"password\" id=\"password\"placeholder=\"Password\" class=\"form-control\">\n      </div>\n      <div class=\"form-group\">\n        <input type=\"password\" id=\"password2\" placeholder=\"Enter your password again\" class=\"form-control\">\n      </div>\n      <div class=\"text-danger\" id=\"validation-error\">\n\n      </div>\n          <input type=\"submit\" class=\"btn btn-success\" id='register-button' value='Create account'></input>\n    </form>\n</div>";

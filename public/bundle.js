@@ -154,7 +154,71 @@ var Groups = Bb.Collection.extend({
 
 module.exports = Groups;
 
-},{"../models/group":"/home/adumitru/coding/roadmap-backbone/app/models/group.js"}],"/home/adumitru/coding/roadmap-backbone/app/main.js":[function(require,module,exports){
+},{"../models/group":"/home/adumitru/coding/roadmap-backbone/app/models/group.js"}],"/home/adumitru/coding/roadmap-backbone/app/flash.js":[function(require,module,exports){
+"use strict";
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var FlashClass = function () {
+  function FlashClass() {
+    _classCallCheck(this, FlashClass);
+
+    this.model = {
+      items: []
+    };
+    this.handlers = [];
+  }
+
+  _createClass(FlashClass, [{
+    key: "pushInfo",
+    value: function pushInfo(message) {
+      var _this = this;
+
+      this.model.items.push({
+        info: message
+      });
+
+      this.handlers.forEach(function (func) {
+        func.call(window, _this.model);
+      });
+    }
+  }, {
+    key: "pushError",
+    value: function pushError(message) {
+      var _this2 = this;
+
+      this.model.items.push({
+        error: message
+      });
+
+      this.handlers.forEach(function (func) {
+        func.call(window, _this2.model);
+      });
+    }
+  }, {
+    key: "subscribe",
+    value: function subscribe(onChange) {
+      this.handlers.push(onChange);
+    }
+  }, {
+    key: "unsubscribe",
+    value: function unsubscribe(onChange) {
+      this.handlers = this.handlers.filter(function (item) {
+        if (item !== onChange) return item;
+      });
+    }
+  }]);
+
+  return FlashClass;
+}();
+
+var flashSingleton = new FlashClass();
+
+module.exports = flashSingleton;
+
+},{}],"/home/adumitru/coding/roadmap-backbone/app/main.js":[function(require,module,exports){
 'use strict';
 
 var App = require('./app');
@@ -216,18 +280,7 @@ $(function () {
   App.start();
 });
 
-},{"./app":"/home/adumitru/coding/roadmap-backbone/app/app.js","./auth":"/home/adumitru/coding/roadmap-backbone/app/auth.js"}],"/home/adumitru/coding/roadmap-backbone/app/models/flash.js":[function(require,module,exports){
-'use strict';
-
-var Flash = Bb.Model.extend({
-  defaults: {
-    error: ''
-  }
-});
-
-module.exports = Flash;
-
-},{}],"/home/adumitru/coding/roadmap-backbone/app/models/group.js":[function(require,module,exports){
+},{"./app":"/home/adumitru/coding/roadmap-backbone/app/app.js","./auth":"/home/adumitru/coding/roadmap-backbone/app/auth.js"}],"/home/adumitru/coding/roadmap-backbone/app/models/group.js":[function(require,module,exports){
 'use strict';
 
 var Group = Bb.Model.extend({
@@ -447,7 +500,7 @@ var Router = Mn.AppRouter.extend({
   },
   profileEdit: function profileEdit() {
     var layout = this.options.layoutView;
-    layout.triggerMethod('show:profileEdit', group);
+    layout.triggerMethod('show:profileEdit');
   }
 });
 
@@ -457,7 +510,7 @@ module.exports = Router;
 'use strict';
 
 var template = Handlebars.templates.flash;
-var Flash = require('../models/flash');
+var Flash = require('../flash');
 
 var FlashView = Mn.View.extend({
   // modelEvents: {
@@ -466,21 +519,19 @@ var FlashView = Mn.View.extend({
 
   template: template,
 
-  model: new Flash(),
+  initialize: function initialize() {
+    var _this = this;
 
-  initialize: function initialize(_ref) {
-    var error = _ref.error,
-        info = _ref.info;
-
-    this.model.set('error', error);
-    this.model.set('info', info);
+    Flash.subscribe(function (model) {
+      _this.model = model.toJSON();
+      _this.onRender();
+    });
   }
-
 });
 
 module.exports = FlashView;
 
-},{"../models/flash":"/home/adumitru/coding/roadmap-backbone/app/models/flash.js"}],"/home/adumitru/coding/roadmap-backbone/app/views/group.js":[function(require,module,exports){
+},{"../flash":"/home/adumitru/coding/roadmap-backbone/app/flash.js"}],"/home/adumitru/coding/roadmap-backbone/app/views/group.js":[function(require,module,exports){
 "use strict";
 
 var template = Hbs.templates.group;
@@ -498,6 +549,8 @@ var home = Handlebars.templates.home;
 var groupsTemplate = Handlebars.templates.groups;
 
 var auth = require('../auth');
+var Group = require('../models/group');
+var Flash = require('../flash');
 var Home = Mn.View.extend({
   getTemplate: function getTemplate() {
 
@@ -512,21 +565,45 @@ var Home = Mn.View.extend({
   },
 
   events: {
-    'click .join-button': 'joinGroup'
-  },
+    'click .join-button': function joinGroup(dom) {
+      var link = dom.target;
+      var group = $(link).data('group');
+      // console.log($(link).data('group'));
 
-  joinGroup: function joinGroup(dom) {
-    var link = dom.target;
-    var group = $(link).data('group');
-    // console.log($(link).data('group'));
+      this.triggerMethod('do:joingroup', group);
+    },
 
-    this.triggerMethod('do:joingroup', group);
+    'click #groupSubmit': function clickGroupSubmit(e) {
+      var _this = this;
+
+      e.preventDefault();
+      var group = {
+        name: $("#groupName").val(),
+        description: $("#groupDescription").val(),
+        avatarUrl: $("#groupAvatarUrl").val()
+      };
+
+      var newGroup = new Group();
+      // Object.keys(group, key => {
+      //   newGroup.set(key, group[key]);
+      // });
+
+      newGroup.save(group, {
+        url: 'https://localhost:3000/api/groups'
+      }).then(function () {
+        Flash.pushInfo("Group created succesfully");
+        _this.triggerMethod('show:home');
+      }).catch(function (err) {
+        Flash.pushError("Couldn't create group");
+      });
+    }
   }
+
 });
 
 module.exports = Home;
 
-},{"../auth":"/home/adumitru/coding/roadmap-backbone/app/auth.js"}],"/home/adumitru/coding/roadmap-backbone/app/views/layout.js":[function(require,module,exports){
+},{"../auth":"/home/adumitru/coding/roadmap-backbone/app/auth.js","../flash":"/home/adumitru/coding/roadmap-backbone/app/flash.js","../models/group":"/home/adumitru/coding/roadmap-backbone/app/models/group.js"}],"/home/adumitru/coding/roadmap-backbone/app/views/layout.js":[function(require,module,exports){
 'use strict';
 
 var NavView = require('./nav');
@@ -543,6 +620,7 @@ var User = require('../models/user');
 var auth = require('../auth');
 var Groups = require('../collections/groups');
 var Group = require('../models/group');
+var Flash = require('./flash');
 
 // var LocalStorage = require('backbone.localstorage')
 
@@ -568,6 +646,7 @@ var LayoutView = Mn.View.extend({
 
   onRender: function onRender() {
     this.showChildView('navRegion', this.navView);
+    this.showChildView('flashRegion', new FlashView());
     // this.triggerMethod('show:login')
   },
   initialize: function initialize() {
@@ -605,21 +684,28 @@ var LayoutView = Mn.View.extend({
     this.showChildView('mainRegion', this.registerView);
     Bb.history.navigate('register');
   },
-  onShowError: function onShowError(args) {
-    this.flashView = new FlashView({
-      error: args
-    });
 
-    // console.log(this.flashView.model.toJSON())
 
-    this.showChildView('flashRegion', this.flashView);
-  },
-  onShowInfo: function onShowInfo(args) {
-    this.flashView = new FlashView({
-      info: args
-    });
-    this.showChildView('flashRegion', this.flashView);
-  },
+  // onShowError(args) {
+  //   console.log("show error");
+  //   this.flashView = new FlashView({
+  //     error: args
+  //   })
+
+  //   // console.log(this.flashView.model.toJSON())
+
+  //   this.showChildView('flashRegion', this.flashView)
+  // },
+
+  // onShowInfo(args) {
+  //   console.log("show info");
+  //   this.flashView = new FlashView({
+  //     info: args
+  //   })
+  //   this.showChildView('flashRegion', this.flashView)
+
+  // },
+
   onDoLogin: function onDoLogin(user) {
     var _this2 = this;
 
@@ -630,7 +716,7 @@ var LayoutView = Mn.View.extend({
 
       var status = err.status;
 
-      if (status == 401) _this2.triggerMethod('show:error', "Username and password combination not recognised");else _this2.triggerMethod('show:error', "Server error");
+      if (status == 401) Flash.pushError("Username and password combination not recognised");else Flash.pushError("Server error");
     });
   },
   onShowProfile: function onShowProfile() {
@@ -677,10 +763,11 @@ var LayoutView = Mn.View.extend({
       return auth.doLogin(user);
     }).then(function () {
       _this5.onShowProfile();
-      _this5.triggerMethod('show:info', 'Welcome, ' + user.get('username') + '!');
+      Flash.pushInfo('Welcome, ' + user.get('username') + '!');
+      _this5.triggerMethod('show:profileEdit');
       _this5.navView.render();
     }).catch(function (error) {
-      _this5.triggerMethod('show:error', error);
+      Flash.pushError(error);
     });
   },
   onShowGroup: function onShowGroup(group) {
@@ -700,7 +787,7 @@ var LayoutView = Mn.View.extend({
       }));
       Bb.history.navigate('groups/' + group);
     }).catch(function (err) {
-      _this6.triggerMethod('show:error', JSON.stringify(err));
+      Flash.pushError(JSON.stringify(err));
       _this6.onShowHome();
     });
   },
@@ -717,7 +804,7 @@ var LayoutView = Mn.View.extend({
       success: function success(data) {
         console.log(data);
 
-        _this7.triggerMethod('show:info', "Join successful!");
+        Flash.pushInfo("Join successful!");
         _this7.onShowHome();
       },
       error: function error(err) {
@@ -797,17 +884,54 @@ var NavView = Mn.View.extend({
 module.exports = NavView;
 
 },{"../auth":"/home/adumitru/coding/roadmap-backbone/app/auth.js"}],"/home/adumitru/coding/roadmap-backbone/app/views/profile.edit.js":[function(require,module,exports){
-"use strict";
+'use strict';
 
-var template = Hbs.templates.profile.edit;
-
+var template = Hbs.templates.profileedit;
+var Flash = require('../flash');
 var ProfileEditView = Mn.View.extend({
-  template: template
+  template: template,
+
+  events: {
+    'click #save-button': function clickSaveButton(e) {
+      var _this = this;
+
+      e.preventDefault();
+      var obj = {
+        avatarUrl: $("#avatarUrl").val(),
+        email: $("#email").val(),
+        description: $("#description").val(),
+        age: $("#age").val(),
+        currentProject: $("#currentProject").val(),
+        agency: $("#agency").val()
+      };
+
+      Object.keys(obj).forEach(function (key) {
+        _this.model.set(key, obj[key]);
+      });
+
+      this.model.save().then(function () {
+        Flash.pushError("User data updated succesfuly");
+      }).catch(function (err) {
+        Flash.pushError("Error updating data");
+      });
+      // alert(JSON.stringify(obj));
+    },
+
+    'click #delete-button': function clickDeleteButton() {
+      var _this2 = this;
+
+      this.model.destroy().then(function () {
+        _this2.triggerMethod('do:logout');
+      }).catch(function (err) {
+        Flash.pushError("Delete unsuccesful");
+      });
+    }
+  }
 });
 
 module.exports = ProfileEditView;
 
-},{}],"/home/adumitru/coding/roadmap-backbone/app/views/profile.js":[function(require,module,exports){
+},{"../flash":"/home/adumitru/coding/roadmap-backbone/app/flash.js"}],"/home/adumitru/coding/roadmap-backbone/app/views/profile.js":[function(require,module,exports){
 'use strict';
 
 var template = Hbs.templates.profile;

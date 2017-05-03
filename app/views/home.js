@@ -1,14 +1,16 @@
-var home = Handlebars.templates.home
-var groupsTemplate = Handlebars.templates.groups
+var home = Handlebars.templates.home;
+var groupsTemplate = Handlebars.templates.groups;
 
-var auth = require('../auth')
+var auth = require('../auth');
+var Group = require('../models/group');
+var Flash = require('../flash');
 var Home = Mn.View.extend({
-  getTemplate: function() {
+  getTemplate: function () {
 
     if (!auth.isAuthenticated())
       return home
     else {
-    
+
       return groupsTemplate
 
     }
@@ -20,16 +22,42 @@ var Home = Mn.View.extend({
   },
 
   events: {
-    'click .join-button': 'joinGroup'
+    'click .join-button': function joinGroup(dom) {
+      let link = dom.target;
+      let group = $(link).data('group');
+      // console.log($(link).data('group'));
+
+      this.triggerMethod('do:joingroup', group);
+    },
+
+    'click #groupSubmit': function (e) {
+      e.preventDefault();
+      let group = {
+        name: $("#groupName").val(),
+        description: $("#groupDescription").val(),
+        avatarUrl: $("#groupAvatarUrl").val()
+      };
+
+      let newGroup = new Group();
+      // Object.keys(group, key => {
+      //   newGroup.set(key, group[key]);
+      // });
+
+      newGroup.save(group, {
+          url: `https://localhost:3000/api/groups`
+        })
+        .then(() => {
+          Flash.pushInfo("Group created succesfully");
+          this.triggerMethod('show:home');
+        })
+        .catch(err => {
+          Flash.pushError("Couldn't create group");
+        })
+
+    }
   },
 
-  joinGroup(dom) {
-    let link = dom.target;
-    let group = $(link).data('group');
-    // console.log($(link).data('group'));
 
-    this.triggerMethod('do:joingroup', group);
-  } 
 
 })
 

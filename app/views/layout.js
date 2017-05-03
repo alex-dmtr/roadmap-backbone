@@ -12,6 +12,7 @@ var User = require('../models/user');
 var auth = require('../auth')
 var Groups = require('../collections/groups')
 var Group = require('../models/group')
+var Flash = require('../flash');
 
 // var LocalStorage = require('backbone.localstorage')
 
@@ -38,7 +39,8 @@ var LayoutView = Mn.View.extend({
 
 
   onRender() {
-    this.showChildView('navRegion', this.navView)
+    this.showChildView('navRegion', this.navView);
+    this.showChildView('flashRegion', new FlashView());
     // this.triggerMethod('show:login')
   },
 
@@ -82,23 +84,25 @@ var LayoutView = Mn.View.extend({
     Bb.history.navigate('register')
   },
 
-  onShowError(args) {
-    this.flashView = new FlashView({
-      error: args
-    })
+  // onShowError(args) {
+  //   console.log("show error");
+  //   this.flashView = new FlashView({
+  //     error: args
+  //   })
 
-    // console.log(this.flashView.model.toJSON())
+  //   // console.log(this.flashView.model.toJSON())
 
-    this.showChildView('flashRegion', this.flashView)
-  },
+  //   this.showChildView('flashRegion', this.flashView)
+  // },
 
-  onShowInfo(args) {
-    this.flashView = new FlashView({
-      info: args
-    })
-    this.showChildView('flashRegion', this.flashView)
+  // onShowInfo(args) {
+  //   console.log("show info");
+  //   this.flashView = new FlashView({
+  //     info: args
+  //   })
+  //   this.showChildView('flashRegion', this.flashView)
 
-  },
+  // },
 
   onDoLogin(user) {
     auth.doLogin(user)
@@ -112,9 +116,9 @@ var LayoutView = Mn.View.extend({
 
 
         if (status == 401)
-          this.triggerMethod('show:error', "Username and password combination not recognised")
+          Flash.pushError("Username and password combination not recognised");
         else
-          this.triggerMethod('show:error', "Server error")
+          Flash.pushError("Server error");
       })
   },
 
@@ -166,11 +170,12 @@ var LayoutView = Mn.View.extend({
       })
       .then(() => {
         this.onShowProfile();
-        this.triggerMethod('show:info', `Welcome, ${user.get('username')}!`);
+        Flash.pushInfo(`Welcome, ${user.get('username')}!`);
+        this.triggerMethod('show:profileEdit');
         this.navView.render();
       })
       .catch((error) => {
-        this.triggerMethod('show:error', error)
+        Flash.pushError(error);
       })
   },
 
@@ -191,7 +196,7 @@ var LayoutView = Mn.View.extend({
         Bb.history.navigate(`groups/${group}`)
       })
       .catch((err) => {
-        this.triggerMethod('show:error', JSON.stringify(err))
+        Flash.pushError(JSON.stringify(err));
         this.onShowHome()
       })
   },
@@ -207,7 +212,7 @@ var LayoutView = Mn.View.extend({
       success: (data) => {
         console.log(data);
 
-        this.triggerMethod('show:info', "Join successful!");
+        Flash.pushInfo("Join successful!");
         this.onShowHome();
       },
       error: (err) => {

@@ -1,17 +1,19 @@
 <div>
-  {{#if error}}
+  {{#each items}} {{#if this.error}}
   <div class="alert alert-danger">
-  <strong>Error</strong>
-    
-      <p>{{error}}</p>
-  </div>
-  {{/if}}
+    <a href="#" class="close" aria-label="close" data-alert={{this.id}}>&times;</a>
 
-  {{#if info}}
-  <div class="alert alert-info">
-    <strong>Info</strong>
-    <p>{{info}}
+    <strong>Error</strong>
+
+    <p>{{this.error}}</p>
   </div>
-  {{/if}}
+  {{/if}} {{#if this.info}}
+  <div class="alert alert-info">
+    <a href="#" class="close" aria-label="close" data-alert={{this.id}}>&times;</a>
+
+    <strong>Info</strong>
+    <p>{{this.info}}</p>
+  </div>
+  {{/if}} {{/each}}
 
 </div>

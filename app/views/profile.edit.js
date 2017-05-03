@@ -1,5 +1,5 @@
 var template = Hbs.templates.profileedit;
-
+var Flash = require('../flash');
 var ProfileEditView = Mn.View.extend({
   template,
 
@@ -21,12 +21,22 @@ var ProfileEditView = Mn.View.extend({
 
       this.model.save()
         .then(() => {
-          alert('saved OK');
+          Flash.pushError("User data updated succesfuly");
         })
         .catch(err => {
-          alert(JSON.stringify(err));
-        })
+          Flash.pushError("Error updating data");
+        });
       // alert(JSON.stringify(obj));
+    },
+
+    'click #delete-button': function () {
+      this.model.destroy()
+        .then(() => {
+          this.triggerMethod('do:logout');
+        })
+        .catch(err => {
+          Flash.pushError("Delete unsuccesful");
+        })
     }
   }
 });

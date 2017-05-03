@@ -15,10 +15,12 @@
       </ul>
 
       <h3>Posts</h3>
-      <ul>
+      <ul class="posts">
         {{#each posts}}
-        <strong>{{this.owner.username}}</strong>
-        <li>{{this.message}}</li>
+        <li>
+          <strong>{{this.owner.username}}</strong>
+          <p>{{this.message}}</p>
+        </li>
         {{/each}}
       </ul>
   </div>
