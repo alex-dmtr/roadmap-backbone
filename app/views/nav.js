@@ -3,12 +3,22 @@ var auth = require('../auth')
 
 var NavView = Mn.View.extend({
 
-  getTemplate() {
-    return template({
-      user: auth.isAuthenticated() ? auth.user.toJSON() : null
-    })
-  },
+  // getTemplate() {
+  //   return template({
+  //     user: auth.isAuthenticated() ? auth.user.toJSON() : null
+  //   })
+  // },
 
+  template,
+
+  serializeData() {
+    var data = {};
+
+    if (auth.isAuthenticated())
+      data["user"] = auth.user.toJSON();
+
+    return data;
+  },
   triggers: {
     "click #home-button": "show:home",
     "click #login-button": "show:login",
