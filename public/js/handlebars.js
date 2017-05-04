@@ -38,11 +38,21 @@ this["Handlebars"]["templates"]["group"] = Handlebars.template({"1":function(con
 },"3":function(container,depth0,helpers,partials,data) {
     var stack1, alias1=container.lambda, alias2=container.escapeExpression;
 
-  return "        <li>\n          <strong>"
+  return "        <li class=\"post\" id=\"post"
+    + alias2(alias1((depth0 != null ? depth0.id : depth0), depth0))
+    + "\" data-post=\""
+    + alias2(alias1((depth0 != null ? depth0.id : depth0), depth0))
+    + "\">\n"
+    + ((stack1 = helpers["if"].call(depth0 != null ? depth0 : {},(depth0 != null ? depth0.canEdit : depth0),{"name":"if","hash":{},"fn":container.program(4, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + "\n\n          <strong>"
     + alias2(alias1(((stack1 = (depth0 != null ? depth0.owner : depth0)) != null ? stack1.username : stack1), depth0))
-    + "</strong>\n          <p>"
+    + "</strong>\n          <div class=\"post-view\">\n\n            <p>"
     + alias2(alias1((depth0 != null ? depth0.message : depth0), depth0))
-    + "</p>\n        </li>\n";
+    + "</p>\n          </div>\n          <div class=\"post-edit\" style=\"display:none\">\n            <textarea class=\"form-control post-message\" rows=\"2\" cols=\"10\">"
+    + alias2(alias1((depth0 != null ? depth0.message : depth0), depth0))
+    + "</textarea>\n            <button class=\"btn btn-primary save-post\">Save changes</button>\n            <button class=\"btn cancel-post\">Cancel</button>\n            <button class=\"btn btn-danger delete-post\" style=\"float:right\">Delete post</button>\n          </div>\n        </li>\n";
+},"4":function(container,depth0,helpers,partials,data) {
+    return "          <a href=\"javascript:;\" class=\"edit-post\"><span class=\"glyphicon glyphicon-pencil\" style=\"float:right\"></span></a>          ";
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1, helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
 

@@ -155,7 +155,7 @@ var Groups = Bb.Collection.extend({
 module.exports = Groups;
 
 },{"../models/group":"/home/adumitru/coding/roadmap-backbone/app/models/group.js"}],"/home/adumitru/coding/roadmap-backbone/app/flash.js":[function(require,module,exports){
-"use strict";
+'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -165,45 +165,72 @@ var FlashClass = function () {
   function FlashClass() {
     _classCallCheck(this, FlashClass);
 
-    this.model = {
+    var flashModel = Bb.Model.extend();
+    this.model = new flashModel({
       items: []
-    };
+    });
+    this.uid = 0;
     this.handlers = [];
   }
 
   _createClass(FlashClass, [{
-    key: "pushInfo",
+    key: 'pushInfo',
     value: function pushInfo(message) {
       var _this = this;
 
-      this.model.items.push({
-        info: message
+      var items = this.model.get('items');
+      items.push({
+        info: message,
+        id: this.uid++
       });
+
+      this.model.set('items', items);
 
       this.handlers.forEach(function (func) {
         func.call(window, _this.model);
       });
     }
   }, {
-    key: "pushError",
+    key: 'pushError',
     value: function pushError(message) {
       var _this2 = this;
 
-      this.model.items.push({
-        error: message
+      var items = this.model.get('items');
+      items.push({
+        error: message,
+        id: this.uid++
       });
+
+      this.model.set('items', items);
 
       this.handlers.forEach(function (func) {
         func.call(window, _this2.model);
       });
     }
   }, {
-    key: "subscribe",
+    key: 'removeAlert',
+    value: function removeAlert(id) {
+      var _this3 = this;
+
+      var items = this.model.get('items');
+
+      items = items.filter(function (item) {
+        if (item.id !== id) return item;
+      });
+
+      this.model.set('items', items);
+
+      this.handlers.forEach(function (func) {
+        func.call(window, _this3.model);
+      });
+    }
+  }, {
+    key: 'subscribe',
     value: function subscribe(onChange) {
       this.handlers.push(onChange);
     }
   }, {
-    key: "unsubscribe",
+    key: 'unsubscribe',
     value: function unsubscribe(onChange) {
       this.handlers = this.handlers.filter(function (item) {
         if (item !== onChange) return item;
@@ -375,7 +402,7 @@ module.exports = LoginUser;
 "use strict";
 
 var Post = Bb.Model.extend({
-  // idAttribute: "_id",
+
   defaults: {
     message: "msg",
     createdAt: new Date(),
@@ -517,14 +544,23 @@ var FlashView = Mn.View.extend({
   //   'change': 'render'
   // },
 
+  model: Flash.model,
+
   template: template,
+
+  events: {
+    'click .close': function clickClose(dom) {
+      var link = dom.target;
+      var alert = $(link).data('alert');
+
+      Flash.removeAlert(alert);
+    }
+  },
 
   initialize: function initialize() {
     var _this = this;
-
     Flash.subscribe(function (model) {
-      _this.model = model.toJSON();
-      _this.onRender();
+      _this.render();
     });
   }
 });
@@ -532,17 +568,99 @@ var FlashView = Mn.View.extend({
 module.exports = FlashView;
 
 },{"../flash":"/home/adumitru/coding/roadmap-backbone/app/flash.js"}],"/home/adumitru/coding/roadmap-backbone/app/views/group.js":[function(require,module,exports){
-"use strict";
+'use strict';
 
 var template = Hbs.templates.group;
+var auth = require('../auth');
+var Post = require('../models/post');
+var flash = require('../flash');
 
 var GroupView = Mn.View.extend({
-  template: template
+  template: template,
+
+  initialize: function initialize() {
+    // selectedPost ID
+    this.selectedPost = null;
+  },
+  serializeData: function serializeData() {
+    console.log("serializing data");
+
+    var data = this.model.toJSON();
+
+    data.posts = data.posts.map(function (post) {
+      post["canEdit"] = auth.user.get('id') === post.owner.id;
+
+      return post;
+    });
+    return data;
+  },
+
+
+  /**
+   * Sets a post "Edit Mode" visibility.
+   * 
+   * @param {Number} postID The post's ID.
+   * @param {Boolean} visible If the post should be in edit mode.
+   */
+  setPostEditVisible: function setPostEditVisible(postID, visible) {
+    var $post = $('#post' + postID);
+
+    var $postView = $post.children(".post-view");
+    var $postEdit = $post.children(".post-edit");
+
+    if (visible) {
+      $postView.hide();
+      $postEdit.show();
+    } else {
+      $postView.show();
+      $postEdit.hide();
+    }
+  },
+
+
+  events: {
+    'click .edit-post': function clickEditPost(dom) {
+      var link = dom.target;
+      var $post = $(link).parent().parent();
+      var postID = $post.data("post");
+
+      if (this.selectedPost) {
+        this.setPostEditVisible(this.selectedPost, false);
+      }
+
+      if (postID !== this.selectedPost) {
+
+        this.selectedPost = postID;
+        this.setPostEditVisible(postID, true);
+      }
+    },
+    'click #add-post': function clickAddPost() {
+      var _this = this;
+
+      var post = {
+        message: $("#post-message").val(),
+        ownerId: auth.user.get('id'),
+        groupId: this.model.get('id')
+      };
+
+      var newPost = new Post();
+
+      newPost.save(post, {
+        url: 'https://localhost:3000/api/group/' + post.groupId + '/post'
+      }).then(function () {
+        return _this.model.fetch();
+      }).then(function () {
+        _this.render();
+      }).catch(function (err) {
+        flash.pushError("Error adding post");
+      });
+    }
+  }
 });
 
 module.exports = GroupView;
 
-},{}],"/home/adumitru/coding/roadmap-backbone/app/views/home.js":[function(require,module,exports){
+},{"../auth":"/home/adumitru/coding/roadmap-backbone/app/auth.js","../flash":"/home/adumitru/coding/roadmap-backbone/app/flash.js","../models/post":"/home/adumitru/coding/roadmap-backbone/app/models/post.js"}],"/home/adumitru/coding/roadmap-backbone/app/views/home.js":[function(require,module,exports){
 'use strict';
 
 var home = Handlebars.templates.home;
@@ -620,7 +738,7 @@ var User = require('../models/user');
 var auth = require('../auth');
 var Groups = require('../collections/groups');
 var Group = require('../models/group');
-var Flash = require('./flash');
+var Flash = require('../flash');
 
 // var LocalStorage = require('backbone.localstorage')
 
@@ -817,7 +935,7 @@ var LayoutView = Mn.View.extend({
 
 module.exports = LayoutView;
 
-},{"../auth":"/home/adumitru/coding/roadmap-backbone/app/auth.js","../collections/groups":"/home/adumitru/coding/roadmap-backbone/app/collections/groups.js","../models/group":"/home/adumitru/coding/roadmap-backbone/app/models/group.js","../models/local.user":"/home/adumitru/coding/roadmap-backbone/app/models/local.user.js","../models/user":"/home/adumitru/coding/roadmap-backbone/app/models/user.js","./flash":"/home/adumitru/coding/roadmap-backbone/app/views/flash.js","./group":"/home/adumitru/coding/roadmap-backbone/app/views/group.js","./home":"/home/adumitru/coding/roadmap-backbone/app/views/home.js","./login":"/home/adumitru/coding/roadmap-backbone/app/views/login.js","./nav":"/home/adumitru/coding/roadmap-backbone/app/views/nav.js","./profile":"/home/adumitru/coding/roadmap-backbone/app/views/profile.js","./profile.edit":"/home/adumitru/coding/roadmap-backbone/app/views/profile.edit.js","./register":"/home/adumitru/coding/roadmap-backbone/app/views/register.js"}],"/home/adumitru/coding/roadmap-backbone/app/views/login.js":[function(require,module,exports){
+},{"../auth":"/home/adumitru/coding/roadmap-backbone/app/auth.js","../collections/groups":"/home/adumitru/coding/roadmap-backbone/app/collections/groups.js","../flash":"/home/adumitru/coding/roadmap-backbone/app/flash.js","../models/group":"/home/adumitru/coding/roadmap-backbone/app/models/group.js","../models/local.user":"/home/adumitru/coding/roadmap-backbone/app/models/local.user.js","../models/user":"/home/adumitru/coding/roadmap-backbone/app/models/user.js","./flash":"/home/adumitru/coding/roadmap-backbone/app/views/flash.js","./group":"/home/adumitru/coding/roadmap-backbone/app/views/group.js","./home":"/home/adumitru/coding/roadmap-backbone/app/views/home.js","./login":"/home/adumitru/coding/roadmap-backbone/app/views/login.js","./nav":"/home/adumitru/coding/roadmap-backbone/app/views/nav.js","./profile":"/home/adumitru/coding/roadmap-backbone/app/views/profile.js","./profile.edit":"/home/adumitru/coding/roadmap-backbone/app/views/profile.edit.js","./register":"/home/adumitru/coding/roadmap-backbone/app/views/register.js"}],"/home/adumitru/coding/roadmap-backbone/app/views/login.js":[function(require,module,exports){
 "use strict";
 
 var template = Handlebars.templates.login;
