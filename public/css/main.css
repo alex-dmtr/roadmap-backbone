@@ -1,11 +1,15 @@
-
-
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
+
 /* Add animation to "page content" */
+
 .animate-bottom {
   position: relative;
   -webkit-animation-name: animatebottom;
@@ -15,13 +19,25 @@
 }
 
 @-webkit-keyframes animatebottom {
-  from { bottom:-100px; opacity:0 } 
-  to { bottom:0px; opacity:1 }
+  from {
+    bottom: -100px;
+    opacity: 0
+  }
+  to {
+    bottom: 0px;
+    opacity: 1
+  }
 }
 
-@keyframes animatebottom { 
-  from{ bottom:-100px; opacity:0 } 
-  to{ bottom:0; opacity:1 }
+@keyframes animatebottom {
+  from {
+    bottom: -100px;
+    opacity: 0
+  }
+  to {
+    bottom: 0;
+    opacity: 1
+  }
 }
 
 #loader {
@@ -42,16 +58,21 @@
 }
 
 @-webkit-keyframes spin {
-  0% { -webkit-transform: rotate(0deg); }
-  100% { -webkit-transform: rotate(360deg); }
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
 }
+
 
 /* ==========================================================================
    Author's custom styles
    ========================================================================== */
 
-
-#login-form, #register-form {
+#login-form,
+#register-form {
   margin: auto;
   /*width: 50%;*/
   max-width: 900px;
@@ -59,35 +80,23 @@
 }
 
 body {
-    color: #444;
-    padding-bottom: 20px;
-    line-height: 1.6;
+  color: #444;
+  padding-bottom: 20px;
+  line-height: 1.6;
+  background-color: #EEEEEE
 }
 
 .container {
-  max-width: 1000px;
+  /*max-width: 1000px;*/
 }
-
 
 h1,
 h2,
 h3 {
-    line-height: 1.2;
+  line-height: 1.2;
 }
-
 
 #myDiv {
   display: none;
   text-align: center;
 }
-
-
-
-
-
-
-
-
-
-
-
