@@ -1,43 +1,44 @@
 <div>
- <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-  
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+  <nav class="navbar navbar-light" role="navigation">
+
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+          aria-controls="navbar">
             <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#" id='home-button'>Roadmap - Backbone</a>
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-          <ul class="nav navbar-nav">
+        <a class="navbar-brand" href="#" id='home-button'>Roadmap - Backbone</a>
+      </div>
+      <div id="navbar" class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">
 
-          </ul>
+        </ul>
 
-          <ul class="nav navbar-nav navbar-right">
-            {{#if user.is_auth}}
+        <ul class="nav navbar-nav navbar-right">
+          {{#if user.is_auth}}
 
-              <li>
-                <a href=# id='profile-button'>
-                  <span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{user.username}}
-                </a>
-              </li>
-              <li>
-                <a href=# id='logout-button'>
+          <li>
+            <a href=# id='profile-button'>
+              <span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{user.username}}
+            </a>
+          </li>
+          <li>
+            <a href=# id='logout-button'>
                   Logout
                 </a>
-              </li>
-            {{else}}
-              <li><a href=# id='login-button'>Sign in</a></li>
-              <li><a href=# id='register-button'>Sign up</a></li>
-            {{/if}}
-      </ul>
-        </div>
-  
+          </li>
+          {{else}}
+          <li><a href=# id='login-button'>Sign in</a></li>
+          <li><a href=# id='register-button'>Sign up</a></li>
+          {{/if}}
+        </ul>
       </div>
-    </nav>
 
-    
+    </div>
+  </nav>
+
+
 </div>
