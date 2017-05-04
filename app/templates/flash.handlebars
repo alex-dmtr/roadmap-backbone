@@ -1,7 +1,7 @@
 <div>
   {{#each items}} {{#if this.error}}
   <div class="alert alert-danger">
-    <a href="#" class="close" aria-label="close" data-alert={{this.id}}>&times;</a>
+    <a href="javascript:;" class="close" aria-label="close" data-alert={{this.id}}>&times;</a>
 
     <strong>Error</strong>
 
@@ -9,7 +9,7 @@
   </div>
   {{/if}} {{#if this.info}}
   <div class="alert alert-info">
-    <a href="#" class="close" aria-label="close" data-alert={{this.id}}>&times;</a>
+    <a href="javascript:;" class="close" aria-label="close" data-alert={{this.id}}>&times;</a>
 
     <strong>Info</strong>
     <p>{{this.info}}</p>
