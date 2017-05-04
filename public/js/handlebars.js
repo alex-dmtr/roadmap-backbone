@@ -11,7 +11,7 @@ this["Handlebars"]["templates"]["flash"] = Handlebars.template({"1":function(con
 },"2":function(container,depth0,helpers,partials,data) {
     var alias1=container.lambda, alias2=container.escapeExpression;
 
-  return "\n  <div class=\"alert alert-danger\">\n    <a href=\"#\" class=\"close\" aria-label=\"close\" data-alert="
+  return "\n  <div class=\"alert alert-danger\">\n    <a href=\"javascript:;\" class=\"close\" aria-label=\"close\" data-alert="
     + alias2(alias1((depth0 != null ? depth0.id : depth0), depth0))
     + ">&times;</a>\n\n    <strong>Error</strong>\n\n    <p>"
     + alias2(alias1((depth0 != null ? depth0.error : depth0), depth0))
@@ -19,7 +19,7 @@ this["Handlebars"]["templates"]["flash"] = Handlebars.template({"1":function(con
 },"4":function(container,depth0,helpers,partials,data) {
     var alias1=container.lambda, alias2=container.escapeExpression;
 
-  return "\n  <div class=\"alert alert-info\">\n    <a href=\"#\" class=\"close\" aria-label=\"close\" data-alert="
+  return "\n  <div class=\"alert alert-info\">\n    <a href=\"javascript:;\" class=\"close\" aria-label=\"close\" data-alert="
     + alias2(alias1((depth0 != null ? depth0.id : depth0), depth0))
     + ">&times;</a>\n\n    <strong>Info</strong>\n    <p>"
     + alias2(alias1((depth0 != null ? depth0.info : depth0), depth0))
@@ -121,17 +121,17 @@ this["Handlebars"]["templates"]["login"] = Handlebars.template({"compiler":[7,">
 this["Handlebars"]["templates"]["nav"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
     var stack1;
 
-  return "\n              <li>\n                <a href=# id='profile-button'>\n                  <span class=\"glyphicon glyphicon-user\" aria-hidden=\"true\"></span> "
+  return "\n          <li>\n            <a href=# id='profile-button'>\n              <span class=\"glyphicon glyphicon-user\" aria-hidden=\"true\"></span> "
     + container.escapeExpression(container.lambda(((stack1 = (depth0 != null ? depth0.user : depth0)) != null ? stack1.username : stack1), depth0))
-    + "\n                </a>\n              </li>\n              <li>\n                <a href=# id='logout-button'>\n                  Logout\n                </a>\n              </li>\n";
+    + "\n            </a>\n          </li>\n          <li>\n            <a href=# id='logout-button'>\n                  Logout\n                </a>\n          </li>\n";
 },"3":function(container,depth0,helpers,partials,data) {
-    return "              <li><a href=# id='login-button'>Sign in</a></li>\n              <li><a href=# id='register-button'>Sign up</a></li>\n";
+    return "          <li><a href=# id='login-button'>Sign in</a></li>\n          <li><a href=# id='register-button'>Sign up</a></li>\n";
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1;
 
-  return "<div>\n <nav class=\"navbar navbar-inverse navbar-fixed-top\" role=\"navigation\">\n  \n      <div class=\"container\">\n        <div class=\"navbar-header\">\n          <button type=\"button\" class=\"navbar-toggle collapsed\" data-toggle=\"collapse\" data-target=\"#navbar\" aria-expanded=\"false\" aria-controls=\"navbar\">\n            <span class=\"sr-only\">Toggle navigation</span>\n            <span class=\"icon-bar\"></span>\n            <span class=\"icon-bar\"></span>\n            <span class=\"icon-bar\"></span>\n          </button>\n          <a class=\"navbar-brand\" href=\"#\" id='home-button'>Roadmap - Backbone</a>\n        </div>\n        <div id=\"navbar\" class=\"navbar-collapse collapse\">\n          <ul class=\"nav navbar-nav\">\n\n          </ul>\n\n          <ul class=\"nav navbar-nav navbar-right\">\n"
+  return "<div>\n  <nav class=\"navbar navbar-light\" role=\"navigation\">\n\n    <div class=\"container\">\n      <div class=\"navbar-header\">\n        <button type=\"button\" class=\"navbar-toggle collapsed\" data-toggle=\"collapse\" data-target=\"#navbar\" aria-expanded=\"false\"\n          aria-controls=\"navbar\">\n            <span class=\"sr-only\">Toggle navigation</span>\n            <span class=\"icon-bar\"></span>\n            <span class=\"icon-bar\"></span>\n            <span class=\"icon-bar\"></span>\n          </button>\n        <a class=\"navbar-brand\" href=\"#\" id='home-button'>Roadmap - Backbone</a>\n      </div>\n      <div id=\"navbar\" class=\"navbar-collapse collapse\">\n        <ul class=\"nav navbar-nav\">\n\n        </ul>\n\n        <ul class=\"nav navbar-nav navbar-right\">\n"
     + ((stack1 = helpers["if"].call(depth0 != null ? depth0 : {},((stack1 = (depth0 != null ? depth0.user : depth0)) != null ? stack1.is_auth : stack1),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.program(3, data, 0),"data":data})) != null ? stack1 : "")
-    + "      </ul>\n        </div>\n  \n      </div>\n    </nav>\n\n    \n</div>";
+    + "        </ul>\n      </div>\n\n    </div>\n  </nav>\n\n\n</div>";
 },"useData":true});
 this["Handlebars"]["templates"]["profile"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
