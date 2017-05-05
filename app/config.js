@@ -1,4 +1,4 @@
-const protocol = 'https';
+const protocol = 'http';
 const address = 'localhost:3000';
 
 const apiPrefix = 'api';
