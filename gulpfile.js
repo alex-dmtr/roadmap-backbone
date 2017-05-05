@@ -9,11 +9,11 @@ var concat = require('gulp-concat')
 var shell = require('gulp-shell')
 
 
-gulp.task('build', ['scripts'], shell.task(['browserify --full-paths  ./app/main.js -t [ babelify --presets [ es2015 ] ] > ./public/bundle.js']))
+gulp.task('build', ['scripts'], shell.task(['browserify --full-paths  ./app/main.js -t [ babelify --presets [ es2015 ] ] > ./public/bundle/main.js']))
 
 gulp.task('inspect', ['build'], shell.task([
-	'browserify-inspect-bundle ./public/bundle.js',
-	'discify ./public/bundle.js > tree.html'
+	'browserify-inspect-bundle ./public/bundle/main.js',
+	'discify ./public/bundle/main.js > tree.html'
 ]))
 // gulp.task('hbs', shell.task([
 // 	'handlebars ./app/templates/*.handlebars -f ./app/templates/index.js'
@@ -21,7 +21,7 @@ gulp.task('inspect', ['build'], shell.task([
 
 gulp.task('copy-handlebars', () => {
 	gulp.src('./node_modules/handlebars/dist/handlebars.runtime.min.js')
-		.pipe(gulp.dest('./public/js/vendor/'));
+		.pipe(gulp.dest('./public/bundle/'));
 })
 gulp.task('hbs', ['copy-handlebars'], () => {
 	gulp.src('./app/templates/*.hbs')
@@ -33,8 +33,8 @@ gulp.task('hbs', ['copy-handlebars'], () => {
 			namespace: 'Handlebars.templates',
 			noRedeclare: true
 		}))
-		.pipe(concat('handlebars.js'))
-		.pipe(gulp.dest('./public/js/'));
+		.pipe(concat('templates.js'))
+		.pipe(gulp.dest('./public/bundle/'));
 });
 
 gulp.task('scripts', ['hbs'], () => {

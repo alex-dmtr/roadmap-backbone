@@ -1,6 +1,4 @@
-public/js/vendor/handlebars.runtime.min.js
-public/js/handlebars.js
-public/bundle.js
+public/bundle
 
 # Logs
 logs
