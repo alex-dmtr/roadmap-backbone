@@ -1,6 +1,7 @@
+const config = require('../config');
 var Group = Bb.Model.extend({
   // idAtribute: "_id",
-  urlRoot: "https://localhost:3000/api/group/",
+  urlRoot: config.urls.group(),
   defaults: {
     name: 'name',
     description: 'desc',

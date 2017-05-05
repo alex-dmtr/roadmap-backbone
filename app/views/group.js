@@ -3,6 +3,7 @@ var auth = require('../auth');
 var Post = require('../models/post');
 var Group = require('../models/group');
 var flash = require('../flash');
+var config = require('../config');
 
 var GroupView = Mn.View.extend({
   template,
@@ -88,7 +89,7 @@ var GroupView = Mn.View.extend({
       newPost.set('id', postID);
 
       newPost.save(postData, {
-          url: `https://localhost:3000/api/group/${postData.groupId}/post/${postID}`
+          url: config.urls.groupPost(postData.groupId, postID)
         }).then(() => {
           return this.model.fetch();
         }).then(() => {
@@ -121,7 +122,7 @@ var GroupView = Mn.View.extend({
       let groupID = this.model.get('id');
 
       newPost.destroy({
-          url: `https://localhost:3000/api/group/${groupID}/post/${postID}`
+          url: config.urls.groupPost(groupID, postID)
         })
         // for some reason, this errors out. ?!?
         .catch(err => {
@@ -147,7 +148,7 @@ var GroupView = Mn.View.extend({
       var newPost = new Post();
 
       newPost.save(post, {
-          url: `https://localhost:3000/api/group/${post.groupId}/post`
+          url: config.urls.groupPosts(post.groupId)
         }).then(() => {
           return this.model.fetch();
         })
@@ -170,7 +171,7 @@ var GroupView = Mn.View.extend({
       newGroup.set('id', data.id);
 
       newGroup.save(data, {
-          url: `https://localhost:3000/api/group/${data.id}`
+          url: config.urls.groupById(this.model.id)
         }).then(() => {
           return this.model.fetch();
         })
@@ -182,6 +183,19 @@ var GroupView = Mn.View.extend({
           console.error(err);
           flash.pushError("Error saving group");
         });
+    },
+    'click #groupDelete' () {
+      let newGroup = new Group();
+      newGroup.set('id', this.model.id);
+
+      newGroup.destroy({
+        url: config.urls.groupById(this.model.id)
+      }).then(() => {
+        this.triggerMethod('show:home');
+        flash.pushInfo('Delete succesful');
+      }).catch(err => {
+        flash.pushError('Error deleting group');
+      })
     }
   }
 })

@@ -1,5 +1,7 @@
+const config = require('../config');
+
 var User = Bb.Model.extend({
-  urlRoot: 'https://localhost:3000/api/users/'
+  urlRoot: config.urls.users()
 })
 
 module.exports = User;

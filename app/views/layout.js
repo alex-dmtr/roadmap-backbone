@@ -13,6 +13,7 @@ var auth = require('../auth')
 var Groups = require('../collections/groups')
 var Group = require('../models/group')
 var Flash = require('../flash');
+var config = require('../config');
 
 // var LocalStorage = require('backbone.localstorage')
 
@@ -201,13 +202,13 @@ var LayoutView = Mn.View.extend({
       })
   },
 
-  onDoJoinGroup(group) {
+  onDoJoinGroup(groupID) {
     if (!auth.isAuthenticated()) {
       return this.showHome()
     };
 
     $.ajax({
-      url: `https://localhost:3000/api/group/${group}/add/${auth.user.get('id')}`,
+      url: config.urls.joinGroup(groupID, auth.user.get('id')),
       method: 'PUT',
       success: (data) => {
         console.log(data);

@@ -1,4 +1,5 @@
 var LocalUser = require('./models/local.user')
+var config = require('./config');
 
 class AuthClass {
 
@@ -26,7 +27,7 @@ class AuthClass {
     return new Promise((resolve, reject) => {
       console.log(user.toJSON())
       $.post({
-        url: `https://localhost:3000/api/auth`,
+        url: config.urls.login(),
         data: {
           username: user.get('username'),
           password: user.get('password')
@@ -61,7 +62,7 @@ class AuthClass {
   doRegister(user) {
     return new Promise(function (resolve, reject) {
       $.post({
-        url: `https://localhost:3000/api/users`,
+        url: config.urls.users(),
         data: {
           username: user.get('username'),
           password: user.get('password'),

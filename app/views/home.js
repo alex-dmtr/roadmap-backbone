@@ -4,6 +4,8 @@ var groupsTemplate = Handlebars.templates.groups;
 var auth = require('../auth');
 var Group = require('../models/group');
 var Flash = require('../flash');
+var config = require('../config');
+
 var Home = Mn.View.extend({
   getTemplate: function () {
 
@@ -44,7 +46,7 @@ var Home = Mn.View.extend({
       // });
 
       newGroup.save(group, {
-          url: `https://localhost:3000/api/groups`
+          url: config.urls.groups()
         })
         .then(() => {
           Flash.pushInfo("Group created succesfully");

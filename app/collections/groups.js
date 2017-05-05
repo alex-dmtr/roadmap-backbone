@@ -1,6 +1,8 @@
 var Group = require('../models/group')
+var config = require('../config');
+
 var Groups = Bb.Collection.extend({
-  url: "https://localhost:3000/api/groups",
+  url: config.urls.groups,
   model: Group
 })
 
