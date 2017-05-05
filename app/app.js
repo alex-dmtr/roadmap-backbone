@@ -14,9 +14,9 @@ var Auth = require('./auth')
 var Groups = require('./collections/groups')
 
 var LayoutView = require('./views/layout')
-var App =  Mn.Application.extend({
+var App = Mn.Application.extend({
   region: '#app-hook',
-  onStart: function() {
+  onStart: function () {
     this.auth = Auth
     this.groups = Groups
     // console.log(this.options.layoutView)
@@ -31,17 +31,19 @@ var App =  Mn.Application.extend({
     this.showView(this.options.layoutView)
     // (new NavView()).render()
 
-  if (!Bb.history.started)
-      Bb.history.start({pushState: true, root: "/"})
+    if (!Bb.history.started)
+      Bb.history.start({
+        pushState: true,
+        root: "/"
+      })
   },
 })
 
 
 var myApp = new App({
-  layoutView:new LayoutView()
+  layoutView: new LayoutView()
 })
 
 module.exports = myApp
-
 
 // $.ajax({url: "https://localhost:3000/api/users", method: "GET", success: console.log, error: console.log})

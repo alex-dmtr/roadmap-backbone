@@ -24,7 +24,7 @@ gulp.task('copy-handlebars', () => {
 		.pipe(gulp.dest('./public/js/vendor/'));
 })
 gulp.task('hbs', ['copy-handlebars'], () => {
-	gulp.src('./app/templates/*.handlebars')
+	gulp.src('./app/templates/*.hbs')
 		.pipe(handlebars({
 			handlebars: require('handlebars')
 		}))
@@ -45,18 +45,22 @@ gulp.task('scripts', ['hbs'], () => {
 })
 gulp.task('default', ['build'], () => {
 	budo('./app/main.js', {
-		live: true,             // setup live reload 
-		port: 8000,             // use this port 
+		live: true, // setup live reload 
+		port: 8000, // use this port 
 		// watchGlob: ['app/**/*.*, public/**/*.{html,css}'],
 		dir: ['public'],
 		stream: process.stdout,
 		browserify: {
-			transform: [[babelify, { presets: ["es2015"]}]],
+			transform: [
+				[babelify, {
+					presets: ["es2015"]
+				}]
+			],
 			sourceType: 'module'
 		},
 
 		watchGlob: ['**/*.{html,css,handlebars}'],
-		
+
 		serve: 'bundle.js',
 		pushstate: true,
 		base: "/",
@@ -66,9 +70,9 @@ gulp.task('default', ['build'], () => {
 		console.log('LiveReload running on port %s', ev.livePort)
 	}).on('update', function (buffer) {
 		console.log('bundle - %d bytes', buffer.length)
-	}).on('reload', function(cb) {
+	}).on('reload', function (cb) {
 		gulp.start('scripts')
-		
+
 	})
 
 })

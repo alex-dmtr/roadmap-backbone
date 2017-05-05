@@ -34,7 +34,10 @@ var App = Mn.Application.extend({
     this.showView(this.options.layoutView);
     // (new NavView()).render()
 
-    if (!Bb.history.started) Bb.history.start({ pushState: true, root: "/" });
+    if (!Bb.history.started) Bb.history.start({
+      pushState: true,
+      root: "/"
+    });
   }
 });
 
@@ -583,12 +586,11 @@ var GroupView = Mn.View.extend({
     this.selectedPost = null;
   },
   serializeData: function serializeData() {
-    console.log("serializing data");
-
     var data = this.model.toJSON();
 
     data.posts = data.posts.map(function (post) {
       post["canEdit"] = auth.user.get('id') === post.owner.id;
+      post["message"] = post["message"].trim();
 
       return post;
     });
@@ -632,10 +634,78 @@ var GroupView = Mn.View.extend({
 
         this.selectedPost = postID;
         this.setPostEditVisible(postID, true);
+      } else {
+        this.selectedPost = null;
       }
     },
-    'click #add-post': function clickAddPost() {
+    'click .save-post': function clickSavePost(dom) {
       var _this = this;
+
+      var button = dom.target;
+      var $post = $(button).parent().parent();
+      var postID = $post.data("post");
+      var $messageBox = $post.find(".post-message");
+
+      var newPost = new Post();
+
+      var postData = {
+        message: $messageBox.val(),
+        ownerId: auth.user.get('id'),
+        groupId: this.model.get('id'),
+        id: postID
+      };
+
+      newPost.set('id', postID);
+
+      newPost.save(postData, {
+        url: 'https://localhost:3000/api/group/' + postData.groupId + '/post/' + postID
+      }).then(function () {
+        return _this.model.fetch();
+      }).then(function () {
+        return _this.render();
+      }).then(function () {
+        _this.setPostEditVisible(postID, false);
+        _this.selectedPost = null;
+      }).catch(function (err) {
+        flash.pushError("Error saving post");
+      });
+    },
+    'click .cancel-post': function clickCancelPost(dom) {
+      var button = dom.target;
+      var $post = $(button).parent().parent();
+      var postID = $post.data("post");
+
+      this.setPostEditVisible(postID, false);
+      if (this.selectedPost === postID) this.selectedPost = null;
+    },
+    'click .delete-post': function clickDeletePost(dom) {
+      var _this2 = this;
+
+      var button = dom.target;
+      var $post = $(button).parent().parent();
+      var postID = $post.data("post");
+
+      var newPost = new Post();
+      newPost.set('id', postID);
+      var groupID = this.model.get('id');
+
+      newPost.destroy({
+        url: 'https://localhost:3000/api/group/' + groupID + '/post/' + postID
+      })
+      // for some reason, this errors out. ?!?
+      .catch(function (err) {
+        // flash.pushError("Error deleting post");
+        console.error(err);
+      }).then(function () {
+        _this2.selectedPost = null;
+        _this2.setPostEditVisible(postID, false);
+        return _this2.model.fetch();
+      }).then(function () {
+        return _this2.render();
+      });
+    },
+    'click #add-post': function clickAddPost() {
+      var _this3 = this;
 
       var post = {
         message: $("#post-message").val(),
@@ -648,9 +718,9 @@ var GroupView = Mn.View.extend({
       newPost.save(post, {
         url: 'https://localhost:3000/api/group/' + post.groupId + '/post'
       }).then(function () {
-        return _this.model.fetch();
+        return _this3.model.fetch();
       }).then(function () {
-        _this.render();
+        _this3.render();
       }).catch(function (err) {
         flash.pushError("Error adding post");
       });
@@ -982,12 +1052,22 @@ var template = Handlebars.templates.nav;
 var auth = require('../auth');
 
 var NavView = Mn.View.extend({
-  getTemplate: function getTemplate() {
-    return template({
-      user: auth.isAuthenticated() ? auth.user.toJSON() : null
-    });
-  },
 
+  // getTemplate() {
+  //   return template({
+  //     user: auth.isAuthenticated() ? auth.user.toJSON() : null
+  //   })
+  // },
+
+  template: template,
+
+  serializeData: function serializeData() {
+    var data = {};
+
+    if (auth.isAuthenticated()) data["user"] = auth.user.toJSON();
+
+    return data;
+  },
 
   triggers: {
     "click #home-button": "show:home",
