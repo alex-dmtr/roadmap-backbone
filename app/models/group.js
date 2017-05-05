@@ -3,8 +3,6 @@ var Group = Bb.Model.extend({
   urlRoot: "https://localhost:3000/api/group/",
   defaults: {
     name: 'name',
-    owner: null,
-    members: null,
     description: 'desc',
     avatarUrl: 'avatarUrl',
   },

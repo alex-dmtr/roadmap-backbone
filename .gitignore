@@ -1,4 +1,6 @@
 public/bundle
+.idea
+.vscode
 
 # Logs
 logs

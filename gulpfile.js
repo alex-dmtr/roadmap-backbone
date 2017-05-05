@@ -59,9 +59,9 @@ gulp.task('default', ['build'], () => {
 			sourceType: 'module'
 		},
 
-		watchGlob: ['**/*.{html,css,handlebars}'],
+		watchGlob: ['**/*.{html,css,hbs}'],
 
-		serve: 'bundle.js',
+		serve: 'bundle/main.js',
 		pushstate: true,
 		base: "/",
 		open: true,

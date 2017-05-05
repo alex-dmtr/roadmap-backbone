@@ -1,6 +1,7 @@
 var template = Hbs.templates.group;
 var auth = require('../auth');
 var Post = require('../models/post');
+var Group = require('../models/group');
 var flash = require('../flash');
 
 var GroupView = Mn.View.extend({
@@ -13,6 +14,11 @@ var GroupView = Mn.View.extend({
   serializeData() {
     var data = this.model.toJSON();
 
+    data["canEdit"] = (auth.user.get('id') === data.owner.id);
+    // console.log(auth.user.get('id'), group.owner);
+
+    // alert("fuck");
+
     data.posts = data.posts.map(post => {
       post["canEdit"] = (auth.user.get('id') === post.owner.id);
       post["message"] = post["message"].trim();
@@ -24,7 +30,7 @@ var GroupView = Mn.View.extend({
 
   /**
    * Sets a post "Edit Mode" visibility.
-   * 
+   *
    * @param {Number} postID The post's ID.
    * @param {Boolean} visible If the post should be in edit mode.
    */
@@ -151,6 +157,31 @@ var GroupView = Mn.View.extend({
         .catch(err => {
           flash.pushError("Error adding post");
         })
+    },
+    'click #groupSubmit' () {
+      const data = {
+        id: this.model.get('id'),
+        name: $("#groupName").val(),
+        description: $("#groupDescription").val(),
+        avatarUrl: $("#groupAvatarUrl").val()
+      };
+
+      let newGroup = new Group();
+      newGroup.set('id', data.id);
+
+      newGroup.save(data, {
+          url: `https://localhost:3000/api/group/${data.id}`
+        }).then(() => {
+          return this.model.fetch();
+        })
+        .then(() => {
+          flash.pushInfo("Group saved succesfully");
+          return this.render();
+        })
+        .catch(err => {
+          console.error(err);
+          flash.pushError("Error saving group");
+        });
     }
   }
 })
