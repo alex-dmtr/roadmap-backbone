@@ -12,29 +12,39 @@ class FlashClass {
 
   pushInfo(message) {
     var items = this.model.get('items');
-    items.push({
+    var item = {
       info: message,
       id: this.uid++
-    });
+    };
+    items.push(item);
 
     this.model.set('items', items);
 
     this.handlers.forEach(func => {
-      func.call(window, this.model);
+      func.call(window, {
+        model: this.model,
+        push: item
+      });
     })
+
+
   }
 
   pushError(message) {
     var items = this.model.get('items');
-    items.push({
+    var item = {
       error: message,
       id: this.uid++
-    });
+    };
+    items.push(item);
 
     this.model.set('items', items);
 
     this.handlers.forEach(func => {
-      func.call(window, this.model);
+      func.call(window, {
+        model: this.model,
+        push: item
+      });
     })
   }
 
@@ -49,7 +59,10 @@ class FlashClass {
     this.model.set('items', items);
 
     this.handlers.forEach(func => {
-      func.call(window, this.model);
+      func.call(window, {
+        model: this.model,
+        pop: id
+      });
     });
   }
 

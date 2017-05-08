@@ -1,12 +1,11 @@
 <div>
 
   <div class="col-xs-6">
-
-    {{#if canEdit}}<button class="btn btn-default" style="float:right" data-toggle="modal" data-target="#editGroupModal">Edit group</button>{{/if}}
-
+    {{#unless canEdit}}<button class="btn btn-default" style="float:right" id="leave-group">Leave group</button> {{/unless}}
+    {{#if canEdit}}
+    <button class="btn btn-default" style="float:right" data-toggle="modal" data-target="#editGroupModal">Edit group</button>    {{/if}}
     <h1>{{name}} </h1>
     <p>{{description}}</p>
-
     <p>Group owner: <strong>{{owner.username}}</strong>
       <p>Members:</p>
       <ul>

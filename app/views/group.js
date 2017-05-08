@@ -196,6 +196,25 @@ var GroupView = Mn.View.extend({
       }).catch(err => {
         flash.pushError('Error deleting group');
       })
+    },
+    'click #leave-group' () {
+      let userID = auth.user.get('id');
+      let groupID = this.model.get('id');
+
+
+      let model = new Bb.Model();
+      model.set('id', userID);
+
+      model.destroy({
+          url: config.urls.groupRemoveMember(groupID, userID)
+        })
+        .then(() => {
+          this.triggerMethod('show:home');
+          flash.pushInfo("You've left the group");
+        })
+        .catch(err => {
+          flash.pushError("Error leaving group");
+        })
     }
   }
 })

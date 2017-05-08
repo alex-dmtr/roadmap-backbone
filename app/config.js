@@ -26,7 +26,9 @@ let urls = {
    * 
    * @returns {String} The URL.
    */
-  groupPosts: (groupID) => `/group/${groupID}/post`
+  groupPosts: (groupID) => `/group/${groupID}/post`,
+
+  groupRemoveMember: (groupID, userID) => `/group/${groupID}/remove/${userID}`
 };
 
 // prepend protocol, address and apiPrefix to all urls

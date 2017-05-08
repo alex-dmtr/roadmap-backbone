@@ -41,7 +41,7 @@ var Router = Mn.AppRouter.extend({
     'groups/:group': 'showGroup'
   },
 
-  initialize: function (options) {
+  initialize(options) {
     this.options = options
     // this.controller = new Controller ({
     //   initialData: this.getOption('initialData')
