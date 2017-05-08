@@ -10,7 +10,9 @@
       <p>Members:</p>
       <ul>
         {{#each members}}
-        <li>{{this.username}}</li>
+        <li>{{this.username}} {{#if this.canRemove}}
+          <a href="javascript:;" style="float:right" class="remove-member" data-userid="{{this.id}}"><span class="glyphicon glyphicon-minus"><span></a>          {{/if}}
+        </li>
         {{/each}}
       </ul>
 
