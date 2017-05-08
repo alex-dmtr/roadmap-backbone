@@ -13,20 +13,28 @@ var GroupView = Mn.View.extend({
     this.selectedPost = null;
   },
   serializeData() {
-    var data = this.model.toJSON();
+    var group = this.model.toJSON();
+    var userID = auth.user.get('id');
+    var isOwner = (userID === group.owner.id);
 
-    data["canEdit"] = (auth.user.get('id') === data.owner.id);
+    group["canEdit"] = isOwner;
     // console.log(auth.user.get('id'), group.owner);
 
     // alert("fuck");
 
-    data.posts = data.posts.map(post => {
-      post["canEdit"] = (auth.user.get('id') === post.owner.id);
+    group.members = group.members.map(member => {
+      member["canRemove"] = isOwner && userID !== member.id;
+
+      return member;
+    })
+
+    group.posts = group.posts.map(post => {
+      post["canEdit"] = (userID === group.owner.id);
       post["message"] = post["message"].trim();
 
       return post;
     });
-    return data;
+    return group;
   },
 
   /**
@@ -70,6 +78,28 @@ var GroupView = Mn.View.extend({
         this.selectedPost = null;
       }
 
+    },
+    'click .remove-member' (dom) {
+      let link = dom.target;
+      let userID = $(link).parent().data('userid');
+      let groupID = this.model.get('id');
+
+
+      let model = new Bb.Model();
+      model.set('id', userID);
+
+      model.destroy({
+          url: config.urls.groupRemoveMember(groupID, userID)
+        })
+        .then(() => {
+          flash.pushInfo("User removed");
+          return this.model.fetch();
+        }).then(() => {
+          return this.render();
+        })
+        .catch(err => {
+          flash.pushError("Eror removing user");
+        })
     },
     'click .save-post' (dom) {
       let button = dom.target;
