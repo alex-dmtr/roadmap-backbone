@@ -24,8 +24,9 @@
             {{/if}}
             <p>{{this.description}}</p>
             <p><em>{{this.num_members}} members</em></p>
-            {{#unless this.is_member}}
-            <a class='join-button' data-group={{this.id}} href=#>Join group</a> {{/unless}}
+            {{#if this.is_member}}
+            <a href="/groups/{{this.id}}">>> Go to group</a> {{else}}
+            <a class='join-button' data-group={{this.id}} href=#>Join group</a> {{/if}}
 
             <p>Created by: <strong>{{this.owner.username}}</strong></p>
 
