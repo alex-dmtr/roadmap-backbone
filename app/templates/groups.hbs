@@ -4,77 +4,82 @@
   <!-- Trigger the modal with a button -->
   <button type="button" class="btn btn-success" style="margin-bottom:10px" data-toggle="modal" data-target="#createGroupModal">Create new group</button>
 
-  <table>
-    <tbody>
-      {{#each items}}
-      <tr>
+<table>
+  <tbody>
+    {{#each items}}
+    <tr>
 
-        <div class="row">
-          <div class="col-xs-4">
+      <div class="row">
+        <div class="col-xs-4">
+          {{#unless this.is_member}}
+          <img src="{{this.avatarUrl}}" class="img img-responsive"></img>
+          {{else}}
+          <a href="/groups/{{this.id}}">
             <img src="{{this.avatarUrl}}" class="img img-responsive"></img>
-
-          </div>
-
-          <div class="col-xs-8">
-            {{#if this.is_member}}
-            <h2>
-              <a href="/groups/{{this.id}}">{{this.name}}</a> </h2>
-            {{else}}
-            <h2>{{this.name}}</h2>
-            {{/if}}
-            <p>{{this.description}}</p>
-            <p><em>{{this.num_members}} members</em></p>
-            {{#if this.is_member}}
-            <a href="/groups/{{this.id}}">>> Go to group</a> {{else}}
-            <a class='join-button' data-group={{this.id}} href=#>Join group</a> {{/if}}
-
-            <p>Created by: <strong>{{this.owner.username}}</strong></p>
-
-
-          </div>
+          </a>
+          {{/unless}}
         </div>
-      </tr>
-      {{/each}}
 
-    </tbody>
-  </table>
+        <div class="col-xs-8">
+          {{#if this.is_member}}
+          <h2>
+            <a href="/groups/{{this.id}}">{{this.name}}</a> </h2>
+          {{else}}
+          <h2>{{this.name}}</h2>
+          {{/if}}
+          <p>{{this.description}}</p>
+          <p><em>{{this.num_members}} members</em></p>
+          {{#if this.is_member}}
+          <a href="/groups/{{this.id}}">>> Go to group</a> {{else}}
+          <a class='join-button' data-group={{this.id}} href=#>Join group</a> {{/if}}
+
+          <p>Created by: <strong>{{this.owner.username}}</strong></p>
 
 
-
-  <!-- Modal -->
-  <div id="createGroupModal" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Create a new group</h4>
         </div>
-        <form>
-          <div class="modal-body">
-
-            <div class="form-group">
-              <label>Name</label>
-              <input type="text" id="groupName" placeholder="Group name" class="form-control" />
-            </div>
-            <div class="form-group">
-              <label>Description</label><textarea id="groupDescription" placeholder="Group description" class="form-control"
-                rows="2" cols="10"></textarea>
-            </div>
-            <div class="form-group">
-              <label>Avatar URL</label><input type="text" id="groupAvatarUrl" placeholder="Group avatar URL" class="form-control"
-              />
-            </div>
-          </div>
-          <div class="modal-footer">
-            <input type="submit" class="btn btn-success" id='groupSubmit' data-dismiss="modal" />
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          </div>
-
-        </form>
       </div>
+    </tr>
+    {{/each}}
 
+  </tbody>
+</table>
+
+
+
+<!-- Modal -->
+<div id="createGroupModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Create a new group</h4>
+      </div>
+      <form>
+        <div class="modal-body">
+
+          <div class="form-group">
+            <label>Name</label>
+            <input type="text" id="groupName" placeholder="Group name" class="form-control" />
+          </div>
+          <div class="form-group">
+            <label>Description</label><textarea id="groupDescription" placeholder="Group description" class="form-control"
+              rows="2" cols="10"></textarea>
+          </div>
+          <div class="form-group">
+            <label>Avatar URL</label><input type="text" id="groupAvatarUrl" placeholder="Group avatar URL" class="form-control"
+            />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <input type="submit" class="btn btn-success" id='groupSubmit' data-dismiss="modal" />
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+
+      </form>
     </div>
+
   </div>
+</div>
 </div>
